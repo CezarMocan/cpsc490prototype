@@ -149,8 +149,7 @@ var App = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         null,
-        this.props.children,
-        _react2.default.createElement(_Footer2.default, null)
+        this.props.children
       );
     }
   }]);
@@ -242,12 +241,6 @@ var Footer = function (_React$Component) {
                   'strong',
                   null,
                   'Information'
-                ),
-                ' and ',
-                _react2.default.createElement(
-                  'strong',
-                  null,
-                  'Copyright'
                 )
               ),
               _react2.default.createElement(
@@ -272,22 +265,6 @@ var Footer = function (_React$Component) {
                   'React'
                 ),
                 ' with Flux architecture and server-side rendering.'
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                'You may view the ',
-                _react2.default.createElement(
-                  'a',
-                  { href: 'https://github.com/sahat/newedenfaces-react' },
-                  'Source Code'
-                ),
-                ' behind this project on GitHub.'
-              ),
-              _react2.default.createElement(
-                'p',
-                null,
-                '© 2015 Sahat Yalkabov.'
               )
             )
           )
@@ -336,8 +313,12 @@ var Home = function (_React$Component) {
     value: function render() {
       return _react2.default.createElement(
         'div',
-        { className: 'alert alert-info' },
-        'Hello from Home Component'
+        { className: 'home-page-title col-sm-12' },
+        _react2.default.createElement(
+          'h1',
+          null,
+          ' BunPouMon!! '
+        )
       );
     }
   }]);

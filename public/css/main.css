@@ -7299,3 +7299,10 @@ footer {
   background-color: aliceblue;
   width: 100%;
 }
+.home-page-title {
+  border-bottom: 1px solid #222222;
+}
+.home-page-title h1 {
+  font-size: 28px;
+  margin-top: 15px;
+}
