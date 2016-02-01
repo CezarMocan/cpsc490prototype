@@ -7293,3 +7293,9 @@ img.mfp-img {
   right: 0;
   padding-top: 0;
 }
+footer {
+  position: absolute;
+  bottom: 0;
+  background-color: aliceblue;
+  width: 100%;
+}

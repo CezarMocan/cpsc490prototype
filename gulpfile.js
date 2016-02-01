@@ -12,6 +12,7 @@ var babelify = require('babelify');
 var browserify = require('browserify');
 var watchify = require('watchify');
 var uglify = require('gulp-uglify');
+var cjsx = require('gulp-cjsx');
 
 var production = process.env.NODE_ENV === 'production';
 
@@ -111,6 +112,7 @@ gulp.task('styles', function() {
 gulp.task('watch', function() {
   gulp.watch('app/stylesheets/**/*.less', ['styles']);
 });
+ 
 
 gulp.task('default', ['styles', 'vendor', 'browserify-watch', 'watch']);
 gulp.task('build', ['styles', 'vendor', 'browserify']);
