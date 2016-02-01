@@ -1,0 +1,25 @@
+{
+  "name": "bunpoumon",
+  "description": "Bunpoumon!!",
+  "main": "server.js",
+  "authors": [
+    "Cezar Mocan"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/CezarMocan/bunpoumon",
+  "moduleType": [
+    "globals",
+    "node"
+  ],
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.2.0"
+  }
+}
