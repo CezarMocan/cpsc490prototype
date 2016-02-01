@@ -4,7 +4,8 @@
   "description": "Bunpoumon!!",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "node server.js",
+    "watch": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -16,6 +17,9 @@
     "url": "https://github.com/CezarMocan/bunpoumon/issues"
   },
   "homepage": "https://github.com/CezarMocan/bunpoumon#readme",
+  "babel": {
+    "presets": ["es2015", "react"]
+  },
   "dependencies": {
     "alt": "^0.17.8",
     "async": "^1.5.0",
