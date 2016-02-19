@@ -6,24 +6,44 @@ class LessonsActions {
       'getLessonsSuccess',
       'getLessonsFail'
     );
+
+    this.compareLessons = (a, b) => {
+      // console.log(parseInt(a.grouporder) + " " + parseInt(b.grouporder))
+      if (parseInt(a.grouporder) < parseInt(b.grouporder))
+        return -1;
+      else if (parseInt(a.grouporder) > parseInt(b.grouporder))
+        return 1;
+      else
+        return 0;
+    }
   }
 
   getLessons() {
-
-    setTimeout( () => {
-      this.actions.getLessonsSuccess({
-        "lessons": ["Lesson 1", "Lesson 2", "Lesson 3"]
-      })
-    }, 5000);
-    /*
-    $.ajax({ url: '/api/characters/top' })
+    $.ajax({ url: '/api/lessons' })
       .done((data) => {
-        this.actions.getTopCharactersSuccess(data)
+        let lessons = data.filter((lesson) => {
+          if (parseInt(lesson.restrictedaccess) == 1)
+            return false;
+          return true;
+        }).map((lesson) => {
+          return {
+            "name": lesson.activitygroupname,
+            "id": lesson.activitygroupid,
+            "displayId": lesson.activitygroupcode,
+            "topicId": lesson.topicid,
+            "order": parseInt(lesson.grouporder)
+          }
+        })
+
+        lessons.sort((a, b) => a.order - b.order)
+        console.log("pula")
+        console.log(lessons);
+
+        this.actions.getLessonsSuccess(lessons)
       })
       .fail((jqXhr) => {
-        this.actions.getTopCharactersFail(jqXhr)
+        this.actions.getLessonsFail(jqXhr)
       });
-    */
   }
 }
 

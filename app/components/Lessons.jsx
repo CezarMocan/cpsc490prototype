@@ -28,9 +28,9 @@ class Lessons extends React.Component {
     console.log(this.state.lessons);
     let lessons = this.state.lessons.map((lesson) => {
       return (
-        <li>
-          <h4> {lesson} </h4>
-        </li>
+        <div>
+          <h4> {lesson.displayId} {lesson.name} </h4>
+        </div>
         /*
         <li key={character.characterId}>
           <Link to={'/characters/' + character.characterId}>
@@ -45,9 +45,9 @@ class Lessons extends React.Component {
       <div>
         <div className='col-sm-5'>
           <h1> Lessons </h1>
-          <ul>
+          <div>
             {lessons}
-          </ul>
+          </div>
         </div>
       </div>
     );

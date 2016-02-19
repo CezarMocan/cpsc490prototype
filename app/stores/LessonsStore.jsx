@@ -8,7 +8,7 @@ class LessonsStore {
   }
 
   onGetLessonsSuccess(data) {
-    this.lessons = data.lessons;
+    this.lessons = data;
   }
 
   onGetLessonsFail(jqXhr) {

@@ -65,6 +65,11 @@ var LessonsActions = function () {
     _classCallCheck(this, LessonsActions);
 
     this.generateActions('getLessonsSuccess', 'getLessonsFail');
+
+    this.compareLessons = function (a, b) {
+      // console.log(parseInt(a.grouporder) + " " + parseInt(b.grouporder))
+      if (parseInt(a.grouporder) < parseInt(b.grouporder)) return -1;else if (parseInt(a.grouporder) > parseInt(b.grouporder)) return 1;else return 0;
+    };
   }
 
   _createClass(LessonsActions, [{
@@ -72,20 +77,30 @@ var LessonsActions = function () {
     value: function getLessons() {
       var _this = this;
 
-      setTimeout(function () {
-        _this.actions.getLessonsSuccess({
-          "lessons": ["Lesson 1", "Lesson 2", "Lesson 3"]
+      $.ajax({ url: '/api/lessons' }).done(function (data) {
+        var lessons = data.filter(function (lesson) {
+          if (parseInt(lesson.restrictedaccess) == 1) return false;
+          return true;
+        }).map(function (lesson) {
+          return {
+            "name": lesson.activitygroupname,
+            "id": lesson.activitygroupid,
+            "displayId": lesson.activitygroupcode,
+            "topicId": lesson.topicid,
+            "order": parseInt(lesson.grouporder)
+          };
         });
-      }, 5000);
-      /*
-      $.ajax({ url: '/api/characters/top' })
-        .done((data) => {
-          this.actions.getTopCharactersSuccess(data)
-        })
-        .fail((jqXhr) => {
-          this.actions.getTopCharactersFail(jqXhr)
+
+        lessons.sort(function (a, b) {
+          return a.order - b.order;
         });
-      */
+        console.log("pula");
+        console.log(lessons);
+
+        _this.actions.getLessonsSuccess(lessons);
+      }).fail(function (jqXhr) {
+        _this.actions.getLessonsFail(jqXhr);
+      });
     }
   }]);
 
@@ -145,6 +160,8 @@ var App = function (_React$Component) {
 
   _createClass(App, [{
     key: 'render',
+
+    /* <Footer /> */
     value: function render() {
       return _react2.default.createElement(
         'div',
@@ -395,13 +412,15 @@ var Lessons = function (_React$Component) {
       console.log(this.state.lessons);
       var lessons = this.state.lessons.map(function (lesson) {
         return _react2.default.createElement(
-          'li',
+          'div',
           null,
           _react2.default.createElement(
             'h4',
             null,
             ' ',
-            lesson,
+            lesson.displayId,
+            ' ',
+            lesson.name,
             ' '
           )
         )
@@ -427,7 +446,7 @@ var Lessons = function (_React$Component) {
             ' Lessons '
           ),
           _react2.default.createElement(
-            'ul',
+            'div',
             null,
             lessons
           )
@@ -587,7 +606,7 @@ var LessonsStore = function () {
   _createClass(LessonsStore, [{
     key: 'onGetLessonsSuccess',
     value: function onGetLessonsSuccess(data) {
-      this.lessons = data.lessons;
+      this.lessons = data;
     }
   }, {
     key: 'onGetLessonsFail',

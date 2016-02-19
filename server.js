@@ -12,11 +12,20 @@ var ReactDOM = require('react-dom/server');
 var Router = require('react-router');
 var routes = require('./app/routes');
 
+var dbService = require('./db_service.js');
+
+
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
 app.listen(app.get('port'), function() {
   console.log("Node app is running at localhost:" + app.get('port'));
+});
+
+app.get('/api/lessons', function(request, response) {
+  dbService.getTable(function(result) { // Need to do this in order to keep the context
+    response.send(result)
+  }, 'activity_group');
 });
 
 app.use(function(req, res) {
