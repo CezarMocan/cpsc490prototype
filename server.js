@@ -14,7 +14,6 @@ var routes = require('./app/routes');
 
 var dbService = require('./db_service.js');
 
-
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -23,9 +22,15 @@ app.listen(app.get('port'), function() {
 });
 
 app.get('/api/lessons', function(request, response) {
-  dbService.getTable(function(result) { // Need to do this in order to keep the context
+  dbService.getAllLessons(function(result) { // Need to do this in order to keep the context
     response.send(result)
-  }, 'activity_group');
+  });
+});
+
+app.get('/api/activity/:activityId', function(request, response) {
+  dbService.getActivity(request.params.activityId, function(result) { // Need to do this in order to keep the context
+    response.send(result)
+  });
 });
 
 app.use(function(req, res) {

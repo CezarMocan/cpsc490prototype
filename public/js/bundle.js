@@ -15,6 +15,64 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+var ActivityActions = function () {
+  function ActivityActions() {
+    _classCallCheck(this, ActivityActions);
+
+    this.generateActions('getActivitySuccess', 'getActivityFail');
+  }
+
+  _createClass(ActivityActions, [{
+    key: 'getActivity',
+    value: function getActivity(activityId) {
+      var _this = this;
+
+      $.ajax({ url: '/api/activity/' + activityId }).done(function (data) {
+        var lessons = data.filter(function (lesson) {
+          if (parseInt(lesson.restrictedaccess) == 1) return false;
+          return true;
+        }).map(function (lesson) {
+          return {
+            "name": lesson.ActivityGroupName,
+            "id": lesson.ActivityGroupID,
+            "displayId": lesson.ActivityGroupCode,
+            "topic": lesson.Topic,
+            "order": parseInt(lesson.GroupOrder)
+          };
+        });
+
+        console.log("pula");
+        console.log(lessons);
+
+        _this.actions.getActivitySuccess(lessons);
+      }).fail(function (jqXhr) {
+        _this.actions.getActivityFail(jqXhr);
+      });
+    }
+  }]);
+
+  return ActivityActions;
+}();
+
+exports.default = _alt2.default.createActions(ActivityActions);
+
+},{"../alt":4}],2:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 var FooterActions = function () {
   function FooterActions() {
     _classCallCheck(this, FooterActions);
@@ -43,7 +101,7 @@ var FooterActions = function () {
 
 exports.default = _alt2.default.createActions(FooterActions);
 
-},{"../alt":3}],2:[function(require,module,exports){
+},{"../alt":4}],3:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -83,11 +141,11 @@ var LessonsActions = function () {
           return true;
         }).map(function (lesson) {
           return {
-            "name": lesson.activitygroupname,
-            "id": lesson.activitygroupid,
-            "displayId": lesson.activitygroupcode,
-            "topicId": lesson.topicid,
-            "order": parseInt(lesson.grouporder)
+            "name": lesson.ActivityGroupName,
+            "id": lesson.ActivityGroupID,
+            "displayId": lesson.ActivityGroupCode,
+            "topic": lesson.Topic,
+            "order": parseInt(lesson.GroupOrder)
           };
         });
 
@@ -109,7 +167,7 @@ var LessonsActions = function () {
 
 exports.default = _alt2.default.createActions(LessonsActions);
 
-},{"../alt":3}],3:[function(require,module,exports){
+},{"../alt":4}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -124,7 +182,83 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = new _alt2.default();
 
-},{"alt":"alt"}],4:[function(require,module,exports){
+},{"alt":"alt"}],5:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _reactRouter = require('react-router');
+
+var _ActivityStore = require('../stores/ActivityStore.jsx');
+
+var _ActivityStore2 = _interopRequireDefault(_ActivityStore);
+
+var _ActivityActions = require('../actions/ActivityActions.jsx');
+
+var _ActivityActions2 = _interopRequireDefault(_ActivityActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Activity = function (_React$Component) {
+  _inherits(Activity, _React$Component);
+
+  function Activity(props) {
+    _classCallCheck(this, Activity);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Activity).call(this, props));
+
+    _this.state = _ActivityStore2.default.getState();
+    _this.onChange = _this.onChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(Activity, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      _ActivityStore2.default.listen(this.onChange);
+      _ActivityActions2.default.getActivity(this.props.params.activityId);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      LessonsStore.unlisten(this.onChange);
+    }
+  }, {
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      return _react2.default.createElement(
+        'div',
+        null,
+        ' x '
+      );
+    }
+  }]);
+
+  return Activity;
+}(_react2.default.Component);
+
+exports.default = Activity;
+
+},{"../actions/ActivityActions.jsx":1,"../stores/ActivityStore.jsx":12,"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -176,7 +310,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Footer.jsx":5,"react":"react"}],5:[function(require,module,exports){
+},{"./Footer.jsx":7,"react":"react"}],7:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -295,7 +429,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":10,"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":2,"../stores/FooterStore.jsx":13,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -345,7 +479,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],7:[function(require,module,exports){
+},{"react":"react"}],9:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -418,10 +552,15 @@ var Lessons = function (_React$Component) {
             'h4',
             null,
             ' ',
-            lesson.displayId,
-            ' ',
-            lesson.name,
-            ' '
+            _react2.default.createElement(
+              'a',
+              { href: "/lesson/" + lesson.id },
+              lesson.displayId,
+              ' ',
+              lesson.topic,
+              ': ',
+              lesson.name
+            )
           )
         )
         /*
@@ -460,7 +599,7 @@ var Lessons = function (_React$Component) {
 
 exports.default = Lessons;
 
-},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":11,"react":"react","react-router":"react-router"}],8:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":3,"../stores/LessonsStore.jsx":14,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -493,7 +632,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":9,"history/lib/createBrowserHistory":18,"react":"react","react-dom":"react-dom","react-router":"react-router"}],9:[function(require,module,exports){
+},{"./routes":11,"history/lib/createBrowserHistory":21,"react":"react","react-dom":"react-dom","react-router":"react-router"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -518,16 +657,68 @@ var _Lessons = require('./components/Lessons.jsx');
 
 var _Lessons2 = _interopRequireDefault(_Lessons);
 
+var _Activity = require('./components/Activity.jsx');
+
+var _Activity2 = _interopRequireDefault(_Activity);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createElement(
   _reactRouter.Route,
   { component: _App2.default },
   _react2.default.createElement(_reactRouter.Route, { path: '/', component: _Home2.default }),
-  _react2.default.createElement(_reactRouter.Route, { path: '/lessons', component: _Lessons2.default })
+  _react2.default.createElement(_reactRouter.Route, { path: '/lessons', component: _Lessons2.default }),
+  _react2.default.createElement(_reactRouter.Route, { path: '/activity/:activityId', component: _Activity2.default })
 );
 
-},{"./components/App":4,"./components/Home":6,"./components/Lessons.jsx":7,"react":"react","react-router":"react-router"}],10:[function(require,module,exports){
+},{"./components/Activity.jsx":5,"./components/App":6,"./components/Home":8,"./components/Lessons.jsx":9,"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+'use strict';
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _ActivityActions = require('../actions/ActivityActions.jsx');
+
+var _ActivityActions2 = _interopRequireDefault(_ActivityActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var ActivityStore = function () {
+  function ActivityStore() {
+    _classCallCheck(this, ActivityStore);
+
+    this.bindActions(_ActivityActions2.default);
+    this.lessons = [];
+  }
+
+  _createClass(ActivityStore, [{
+    key: 'onGetActivitySuccess',
+    value: function onGetActivitySuccess(data) {
+      this.lessons = data;
+    }
+  }, {
+    key: 'onGetActivityFail',
+    value: function onGetActivityFail(jqXhr) {
+      // Handle multiple response formats, fallback to HTTP status code number.
+      toastr.error(jqXhr.responseJSON && jqXhr.responseJSON.message || jqXhr.responseText || jqXhr.statusText);
+    }
+  }]);
+
+  return ActivityStore;
+}();
+
+exports.default = _alt2.default.createStore(ActivityStore);
+
+},{"../actions/ActivityActions.jsx":1,"../alt":4}],13:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -574,7 +765,7 @@ var FooterStore = function () {
 
 exports.default = _alt2.default.createStore(FooterStore);
 
-},{"../actions/FooterActions.jsx":1,"../alt":3}],11:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":2,"../alt":4}],14:[function(require,module,exports){
 'use strict';
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -621,7 +812,7 @@ var LessonsStore = function () {
 
 exports.default = _alt2.default.createStore(LessonsStore);
 
-},{"../actions/LessonsActions.jsx":2,"../alt":3}],12:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":3,"../alt":4}],15:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -714,7 +905,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -746,7 +937,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -773,7 +964,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],15:[function(require,module,exports){
+},{}],18:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -844,7 +1035,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":12,"warning":30}],16:[function(require,module,exports){
+},{"_process":15,"warning":33}],19:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -925,13 +1116,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1112,7 +1303,7 @@ function createBrowserHistory() {
 exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":13,"./DOMStateStorage":15,"./DOMUtils":16,"./ExecutionEnvironment":17,"./createDOMHistory":19,"./parsePath":24,"_process":12,"invariant":29}],19:[function(require,module,exports){
+},{"./Actions":16,"./DOMStateStorage":18,"./DOMUtils":19,"./ExecutionEnvironment":20,"./createDOMHistory":22,"./parsePath":27,"_process":15,"invariant":32}],22:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1155,7 +1346,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":16,"./ExecutionEnvironment":17,"./createHistory":20,"_process":12,"invariant":29}],20:[function(require,module,exports){
+},{"./DOMUtils":19,"./ExecutionEnvironment":20,"./createHistory":23,"_process":15,"invariant":32}],23:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1447,7 +1638,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":13,"./AsyncUtils":14,"./createLocation":21,"./deprecate":22,"./parsePath":24,"./runTransitionHook":25,"deep-equal":26}],21:[function(require,module,exports){
+},{"./Actions":16,"./AsyncUtils":17,"./createLocation":24,"./deprecate":25,"./parsePath":27,"./runTransitionHook":28,"deep-equal":29}],24:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -1502,7 +1693,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":13,"./parsePath":24}],22:[function(require,module,exports){
+},{"./Actions":16,"./parsePath":27}],25:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -1518,7 +1709,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],23:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1532,7 +1723,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1579,7 +1770,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":23,"_process":12,"warning":30}],25:[function(require,module,exports){
+},{"./extractPath":26,"_process":15,"warning":33}],28:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1606,7 +1797,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":12,"warning":30}],26:[function(require,module,exports){
+},{"_process":15,"warning":33}],29:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -1702,7 +1893,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":27,"./lib/keys.js":28}],27:[function(require,module,exports){
+},{"./lib/is_arguments.js":30,"./lib/keys.js":31}],30:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -1724,7 +1915,7 @@ function unsupported(object){
     false;
 };
 
-},{}],28:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -1735,7 +1926,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],29:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -1790,7 +1981,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":12}],30:[function(require,module,exports){
+},{"_process":15}],33:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -1854,4 +2045,4 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":12}]},{},[8]);
+},{"_process":15}]},{},[10]);

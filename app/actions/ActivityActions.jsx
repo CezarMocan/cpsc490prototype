@@ -1,25 +1,15 @@
 import alt from '../alt';
 
-class LessonsActions {
+class ActivityActions {
   constructor() {
     this.generateActions(
-      'getLessonsSuccess',
-      'getLessonsFail'
+      'getActivitySuccess',
+      'getActivityFail'
     );
-
-    this.compareLessons = (a, b) => {
-      // console.log(parseInt(a.grouporder) + " " + parseInt(b.grouporder))
-      if (parseInt(a.grouporder) < parseInt(b.grouporder))
-        return -1;
-      else if (parseInt(a.grouporder) > parseInt(b.grouporder))
-        return 1;
-      else
-        return 0;
-    }
   }
 
-  getLessons() {
-    $.ajax({ url: '/api/lessons' })
+  getActivity(activityId) {
+    $.ajax({ url: '/api/activity/' + activityId })
       .done((data) => {
         let lessons = data.filter((lesson) => {
           if (parseInt(lesson.restrictedaccess) == 1)
@@ -35,16 +25,15 @@ class LessonsActions {
           }
         })
 
-        lessons.sort((a, b) => a.order - b.order)
         console.log("pula")
         console.log(lessons);
 
-        this.actions.getLessonsSuccess(lessons)
+        this.actions.getActivitySuccess(lessons)
       })
       .fail((jqXhr) => {
-        this.actions.getLessonsFail(jqXhr)
+        this.actions.getActivityFail(jqXhr)
       });
   }
 }
 
-export default alt.createActions(LessonsActions);
+export default alt.createActions(ActivityActions);
