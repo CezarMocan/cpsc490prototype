@@ -245,6 +245,7 @@ var Activity = function (_React$Component) {
   }, {
     key: 'render',
     value: function render() {
+      console.log(this.props);
       return _react2.default.createElement(
         'div',
         null,
@@ -554,7 +555,7 @@ var Lessons = function (_React$Component) {
             ' ',
             _react2.default.createElement(
               'a',
-              { href: "/lesson/" + lesson.id },
+              { href: "/activity/" + lesson.id },
               lesson.displayId,
               ' ',
               lesson.topic,

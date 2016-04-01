@@ -29,7 +29,7 @@ class Lessons extends React.Component {
     let lessons = this.state.lessons.map((lesson) => {
       return (
         <div>
-          <h4> <a href={"/lesson/" + lesson.id}>{lesson.displayId} {lesson.topic}: {lesson.name}</a></h4>
+          <h4> <a href={"/activity/" + lesson.id}>{lesson.displayId} {lesson.topic}: {lesson.name}</a></h4>
         </div>
         /*
         <li key={character.characterId}>
