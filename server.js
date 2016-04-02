@@ -33,6 +33,12 @@ app.get('/api/activity/:activityId', function(request, response) {
   });
 });
 
+app.get('/api/activityInfo/:activityId', function(request, response) {
+  dbService.getActivityInfo(request.params.activityId, function(result) { // Need to do this in order to keep the context
+    response.send(result)
+  });
+});
+
 app.use(function(req, res) {
   Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
     if (err) {

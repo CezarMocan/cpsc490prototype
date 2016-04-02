@@ -28,6 +28,9 @@ SELECT g."ActivityGroupID", g."ActivityGroupCode", g."ActivityGroupName", g."Res
 
 1.1 Particles—Instruction
 
+SELECT "Particle"."ParticleID", "Particle"."Particle", "Particle"."Notes", "Particle"."ParticleImage", "ParticleFunction"."ParticleFunctionID", "ParticleFunction"."ParticleFunction", "ParticleFunction"."ParticleFunctionNotes", "ParticleExample"."ParticleExampleSentence", "ParticleExample"."ParticleExampleTranslation" FROM "Particle" INNER JOIN "ActivityToParticle" ON "Particle"."ParticleID" = "ActivityToParticle"."ParticleID" INNER JOIN "ParticleFunction" ON "Particle"."ParticleID" = "ParticleFunction"."ParticleID" INNER JOIN "ParticleExample" ON "ParticleExample"."ParticleFunctionID" = "ParticleFunction"."ParticleFunctionID" WHERE ((("ActivityToParticle"."ActivityID")=1)) ORDER BY "ActivityToParticle"."ActivityItemOrder";
+
+
 SELECT "Particle"."ParticleID", "Particle"."Particle", "Particle"."Notes", "Particle"."ParticleImage" FROM "Particle" INNER JOIN "ActivityToParticle" ON "Particle"."ParticleID" = "ActivityToParticle"."ParticleID" WHERE ((("ActivityToParticle"."ActivityID")=1)) ORDER BY "ActivityToParticle"."ActivityItemOrder";
 
 SELECT "ParticleFunction"."ParticleFunctionID", "ParticleFunction"."ParticleFunction", "ParticleFunction"."ParticleFunctionNotes" FROM "ParticleFunction" WHERE "ParticleFunction"."ParticleID"=9;
