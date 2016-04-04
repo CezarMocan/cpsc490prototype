@@ -23,19 +23,7 @@ app.listen(app.get('port'), function() {
 
 app.get('/api/lessons', function(request, response) {
   dbService.getAllLessons(function(result) { // Need to do this in order to keep the context
-    response.send(result)
-  });
-});
-
-app.get('/api/activity/:activityId', function(request, response) {
-  dbService.getActivity(request.params.activityId, function(result) { // Need to do this in order to keep the context
-    response.send(result)
-  });
-});
-
-app.get('/api/activityInfo/:activityId', function(request, response) {
-  dbService.getActivityInfo(request.params.activityId, function(result) { // Need to do this in order to keep the context
-    response.send(result)
+    // response.send(result)
   });
 });
 

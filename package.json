@@ -1,7 +1,7 @@
 {
-  "name": "bunpoumon",
+  "name": "cpsc490prototype",
   "version": "1.0.0",
-  "description": "Bunpoumon!!",
+  "description": "CPSC 490 Prototype",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -10,14 +10,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CezarMocan/bunpoumon.git"
+    "url": "git+https://github.com/CezarMocan/cpsc490prototype.git"
   },
   "author": "Cezar Mocan",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CezarMocan/bunpoumon/issues"
+    "url": "https://github.com/CezarMocan/cpsc490prototype/issues"
   },
-  "homepage": "https://github.com/CezarMocan/bunpoumon#readme",
+  "homepage": "https://github.com/CezarMocan/cpsc490prototype#readme",
   "babel": {
     "presets": [
       "es2015",

@@ -1,12 +1,12 @@
 {
-  "name": "bunpoumon",
-  "description": "Bunpoumon!!",
+  "name": "cpsc490prototype",
+  "description": "CPSC 490 Prototype",
   "main": "server.js",
   "authors": [
     "Cezar Mocan"
   ],
   "license": "ISC",
-  "homepage": "https://github.com/CezarMocan/bunpoumon",
+  "homepage": "https://github.com/CezarMocan/cpsc490prototype",
   "moduleType": [
     "globals",
     "node"

@@ -1,1 +1,1 @@
-Bunpoumon!!
+CPSC 490 Prototype
