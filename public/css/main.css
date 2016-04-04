@@ -6937,12 +6937,10 @@ button.toast-close-button {
 }
 .mfp-zoom-out-cur,
 .mfp-zoom-out-cur .mfp-image-holder .mfp-close {
-  cursor: -webkit-zoom-out;
   cursor: zoom-out;
 }
 .mfp-zoom {
   cursor: pointer;
-  cursor: -webkit-zoom-in;
   cursor: zoom-in;
 }
 .mfp-auto-cursor .mfp-content {
@@ -7292,27 +7290,6 @@ img.mfp-img {
   top: 0;
   right: 0;
   padding-top: 0;
-}
-.subactivity1-container .particles-list {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: -ms-flexbox;
-  display: flex;
-}
-.subactivity1-container .particles-list .particle {
-  cursor: pointer;
-}
-.subactivity1-container .particles-list .particle.selected {
-  color: red;
-}
-.subactivity1-container .particle-table-contents {
-  padding-top: 20px;
-}
-.subactivity1-container .particle-table-contents .particle-table {
-  width: 100%;
-}
-#app {
-  padding: 20px 100px;
 }
 footer {
   position: absolute;
