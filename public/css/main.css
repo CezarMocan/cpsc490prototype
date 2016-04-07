@@ -7291,16 +7291,40 @@ img.mfp-img {
   right: 0;
   padding-top: 0;
 }
+@font-face {
+  font-family: 'Democratica';
+  src: url('../fonts/democratica.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'Democratica';
+  src: url('../fonts/democratica-bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+.header-container {
+  padding: 20px 0;
+}
+.header-container .logo {
+  color: black;
+  font-family: 'Democratica';
+  font-weight: bold;
+  font-size: 16pt;
+}
+.header-container .logo .bronze {
+  color: #905923;
+}
 footer {
   position: absolute;
   bottom: 0;
   background-color: aliceblue;
   width: 100%;
 }
-.home-page-title {
+.home .home-page-title {
   border-bottom: 1px solid #222222;
 }
-.home-page-title h1 {
+.home .home-page-title h1 {
   font-size: 28px;
   margin-top: 15px;
 }
