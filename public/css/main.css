@@ -6788,7 +6788,7 @@ button.toast-close-button {
   border-radius: 3px 3px 3px 3px;
   background-position: 15px center;
   background-repeat: no-repeat;
-  box-shadow: 0 0 12px #999999;
+  box-shadow: 0 0 12px #7d7d7d;
   color: #FFFFFF;
   opacity: 0.8;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
@@ -7303,17 +7303,71 @@ img.mfp-img {
   font-weight: bold;
   font-style: normal;
 }
-.header-container {
+@font-face {
+  font-family: 'AkzidenzGrotesk';
+  src: url('../fonts/AkzidenzGroteskMed.otf');
+  font-weight: normal;
+  font-style: normal;
+}
+.gallery-conservative {
+  padding-left: 70px;
+  padding-right: 100px;
+}
+.gallery-conservative .grey {
+  color: #7d7d7d;
+}
+.gallery-conservative .bronze {
+  color: #905923;
+}
+.gallery-conservative .link:hover {
+  text-decoration: line-through;
+}
+.gallery-conservative .no-padding {
+  padding: 0;
+}
+.gallery-conservative .header-container {
   padding: 20px 0;
 }
-.header-container .logo {
+.gallery-conservative .header-container .logo {
   color: black;
   font-family: 'Democratica';
   font-weight: bold;
-  font-size: 16pt;
+  font-size: 25pt;
+  overflow: visible;
+  white-space: nowrap;
 }
-.header-container .logo .bronze {
+.gallery-conservative .header-container .logo-museum {
+  color: black;
+  font-size: 10pt;
+  margin-top: -15px;
+  margin-left: 27px;
+  overflow: visible;
+  white-space: nowrap;
+}
+.gallery-conservative .header-container .logo-museum .at-the {
+  font-family: 'Democratica';
+  font-weight: bold;
+}
+.gallery-conservative .header-container .logo-museum .host-museum {
+  font-family: 'AkzidenzGrotesk';
+  font-size: 8pt;
+}
+.gallery-conservative .header-container .nav-container {
+  text-align: right;
+}
+.gallery-conservative .header-container .nav-container .top-nav {
+  cursor: pointer;
+  font-family: 'Democratica';
+  font-weight: bold;
+  font-size: 12pt;
+  padding-left: 25px;
+  line-height: 3.1;
+}
+.gallery-conservative .header-container .nav-container .top-nav.selected {
   color: #905923;
+}
+.gallery-conservative .about-container {
+  margin-top: 200px;
 }
 footer {
   position: absolute;

@@ -6,7 +6,7 @@ class TestApp1 extends React.Component {
 	/* <Footer /> */
   render() {
     return (
-      <div>
+      <div className="gallery-conservative">
       	<Header />
         {this.props.children}
       </div>

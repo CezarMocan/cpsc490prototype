@@ -5,6 +5,7 @@ import TestApp1 from './components/TestApp1';
 import Home from './components/Home';
 import Lessons from './components/Lessons.jsx';
 import Credits from './components/Credits.jsx';
+import About from './components/GalleryConservative/About.jsx';
 
 export default (
   <Route component={App}>
@@ -12,6 +13,7 @@ export default (
     <Route path='/lessons' component={Lessons} />
     <Route path='/testApp1' component={TestApp1}>
 		<Route path='credits' component={Credits} />
+		<Route path='about' component={About} />
     </Route>
   </Route>
 );
