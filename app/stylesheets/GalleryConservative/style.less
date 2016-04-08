@@ -1,6 +1,7 @@
 @bronze: #905923;
 @black: #000000;
 @grey: #7d7d7d;
+@bgcolor: white;
 
 .gallery-conservative {
 	padding-left: 70px;
@@ -14,18 +15,36 @@
 		color: @bronze;
 	}
 
-	.link {
+	a {
+		color: inherit;
+	    font-family: 'Democratica';
+	    font-weight: bold;
+	    text-transform: lowercase;
+	    font-size: 115%;
+
 		&:hover {
 			text-decoration: line-through;
 		}
 	}
+
 
 	.no-padding {
 		padding: 0;
 	}
 
 	.header-container {
+		position: fixed;
+		width: calc(~"100% - 170px");
+		background: @bgcolor;
+		top: 0;
+
 		padding: 20px 0;
+
+		a {
+		    text-transform: none;
+		    font-size: 100%;
+		}
+
 		.logo {
 			color: black;
 			font-family: 'Democratica';
@@ -70,7 +89,53 @@
 		}
 	}
 
-	.about-container {
-		margin-top: 200px;
+	.text-page-container {
+		margin-top: 170px;
+		padding-left: 70px;
+		padding-right: 80px;
+		padding-bottom: 50px;
+		display: flex;
+		flex-wrap: wrap;
+
+		.text-page-title {
+			font-family: 'Democratica';
+			font-weight: bold;
+			font-size: 18pt;
+			color: @bronze;
+		}
+
+		.text-page-left-column {
+			flex: 1.7;
+			//width: 60%;
+		}
+		.text-page-right-column {
+			flex: 1;
+			margin-top: 52px;
+			text-align: right;
+		}
 	}
+
+	.paragraph-content {
+		font-family: courier;
+		font-size: 11pt;
+		margin-top: 20px;
+	}
+
+	.side-element {
+		margin-bottom: 100px;
+		.section-title {
+			font-family: 'Democratica';
+			font-weight: bold;
+			font-size: 14pt;
+			color: @bronze;
+		}
+
+		.side-paragraph-content {
+			font-family: courier;
+			font-size: 9pt;
+			margin-top: 10px;
+			line-height: 1.8;
+		}
+	}
+
 }

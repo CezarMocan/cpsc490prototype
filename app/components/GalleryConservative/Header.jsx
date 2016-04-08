@@ -1,11 +1,12 @@
 import React from 'react';
+import { Router, Route, Link, browserHistory } from 'react-router'
 
 class Header extends React.Component {
 	/* <Footer /> */
   render() {
     return (
       <div className="header-container">
-        <div className="col-sm-3 col-xs-1 no-padding">
+        <div className="col-sm-6 col-xs-2 no-padding">
         	<div className="logo-container">
         		<span className="logo">a handful of <span className="bronze">bronze</span></span>
         	</div>
@@ -14,12 +15,11 @@ class Header extends React.Component {
 	        	<span className="host-museum">WADSWORTH ATHENEUM <span className="grey">MUSEUM OF ART</span></span>
 	        </div>
         </div>
-        <div className="col-sm-6"> </div>
-        <div className="col-sm-3 nav-container">
-	        <span className="top-nav link selected">ABOUT</span>
-	        <span className="top-nav link">EXHIBITION</span>
-	        <span className="top-nav link">HISTORY</span>
-	        <span className="top-nav link">CREDITS</span>
+        <div className="col-sm-6 col-xs-2 no-padding nav-container">
+	        <span className="top-nav"><Link to="/testApp1/about">ABOUT</Link></span>
+	        <span className="top-nav"><Link to="/testApp1/exhibition">EXHIBITION</Link></span>
+	        <span className="top-nav"><Link to="/testApp1/history">HISTORY</Link></span>
+	        <span className="top-nav"><Link to="/testApp1/credits">CREDITS</Link></span>
 	    </div>
       </div>
     );
