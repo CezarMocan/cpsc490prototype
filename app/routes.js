@@ -8,6 +8,7 @@ import Credits from './components/GalleryConservative/Credits.jsx';
 import About from './components/GalleryConservative/About.jsx';
 import History from './components/GalleryConservative/History.jsx';
 import Exhibition from './components/GalleryConservative/Exhibition.jsx';
+import ExhibitionDiscrete from './components/GalleryConservative/ExhibitionDiscrete.jsx';
 
 export default (
   <Route component={App}>
@@ -18,6 +19,7 @@ export default (
 		<Route path='about' component={About} />
 		<Route path='history' component={History} />
 		<Route path='exhibition' component={Exhibition} />
+		<Route path='exhibition2' component={ExhibitionDiscrete} />
     </Route>
   </Route>
 );

@@ -7420,6 +7420,10 @@ img.mfp-img {
   font-size: 11pt;
   margin-top: 20px;
 }
+.gallery-conservative .paragraph-content img.image-warrior {
+  -webkit-transition-property: height, width;
+  -webkit-transition-duration: 1s;
+}
 .gallery-conservative .side-element {
   margin-bottom: 100px;
 }
