@@ -1,0 +1,76 @@
+<!DOCTYOE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<a href="#" data-trackingjs='{"event":"click", "category":"category", "action":"action", "label":"label", "value":"1"}'>click to send event</a>
+<div data-trackingjs='{"event":"click", "category":"categoryDiv", "action":"actionDiv", "label":"labelDiv", "value":"2"}'>click to send event</div>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/example/js/bind.js"></script>
+<script src="/scripts/adapter/ua.js"></script>
+<script src="/scripts/tracking.js"></script>
+<script src="/scripts/multiTrack.js"></script>
+<script type="text/javascript">
+    var trackingJSone = new trackingJS({
+        namespace: 'one',
+        type: 'ua',
+        analyticsCode: 'UA-57009541-1',
+        url: 'auto',
+        pageview: false,
+        debug: true
+    });
+
+    var trackingJStwo = new trackingJS({
+        namespace: 'two',
+        type: 'ua',
+        analyticsCode: 'UA-57009541-2',
+        url: 'auto',
+        pageview: false,
+        debug: true
+    });
+
+    multiTrackJS.register(trackingJSone);
+    multiTrackJS.register(trackingJStwo);
+
+    trackingJSone.pageview('test/default', 'only UA-57009541-1');
+    trackingJStwo.pageview('test/multi', 'only UA-57009541-2');
+
+    multiTrackJS.pageview('test/multi', 'UA-57009541-1 and UA-57009541-2');
+    multiTrackJS.event('category1', 'action', 'label', 1);
+
+    var multiEcTrack = new multiTrackJS.registerEcommerce();
+    multiEcTrack.setId(1);
+    multiEcTrack.addItem({
+        id: '1',
+        name: 'Product 1',
+        sku: 'xyz-1',
+        category: 'Products Cat',
+        price: 11,
+        quantity: 1
+    });
+
+    multiEcTrack.addItem({
+        id: '2',
+        name: 'Product 2',
+        sku: 'xyz-2',
+        category: 'Products Cat',
+        price: 22,
+        quantity: 2
+    });
+
+    multiEcTrack.send();
+
+    /**
+     * append a click item to the body-tag and register the event
+     */
+    setTimeout(function() {
+        $('body').append('<div data-trackingjs="{&quot;event&quot;:&quot;click&quot;, &quot;category&quot;:&quot;categoryDiv-test&quot;, &quot;action&quot;:&quot;actionDiv&quot;, &quot;label&quot;:&quot;labelDiv&quot;, &quot;value&quot;:&quot;2&quot;}">click to send event - test</div>');
+        multiTrackJS.updateEvents();
+    }, 5000);
+
+</script>
+</body>
+</html>

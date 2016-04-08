@@ -1,0 +1,21 @@
+{
+    "name": "trackingJS",
+    "version": "0.6.1",
+    "homepage": "https://github.com/dominikmatt/trackingJS",
+    "authors": [
+        "Dominik Matt <mail@matt-dominik.at>"
+    ],
+    "description": "A tracking plugin for Google Analytics.",
+    "keywords": [
+        "google",
+        "ua",
+        "universal analytics",
+        "tracking",
+        "track",
+        "eCommerce",
+        "event",
+        "event bundle"
+    ],
+    "license": "Apache License",
+    "ignore": []
+}

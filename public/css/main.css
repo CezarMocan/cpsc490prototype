@@ -7337,7 +7337,8 @@ img.mfp-img {
   width: calc(100% - 170px);
   background: white;
   top: 0;
-  padding: 20px 0;
+  padding: 20px 0 10px;
+  box-shadow: 0 1px rgba(123, 123, 123, 0.1);
 }
 .gallery-conservative .header-container a {
   text-transform: none;

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <title>defaults - TrackingJS</title>
+    </head>
+    <body>
+
+    <a href="#" data-trackingjs-on="click" data-trackingjs-category="ddd">test</a>
+
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="/example/js/bind.js"></script>
+    <script src="/scripts/adapter/ua.js"></script>
+    <script src="/scripts/tracking.js"></script>
+    <script type="text/javascript">
+        var trackingJS = new trackingJS({
+            namespace: 'example',
+            type: 'ua',
+            analyticsCode: 'UA-57009541-1',
+            url: 'auto',
+            pageview: false,
+            anonymizeIp: true,
+            set: {
+                dimension1: 'dimension test'
+            }
+        });
+
+
+        trackingJS.pageview('test/1', 'test title1', function() {
+            console.log('pageview sended');
+        });
+
+        trackingJS.event('category1', 'action', 'label', 1, function() {
+            console.log('event sended');
+        });
+
+
+    </script>
+    </body>
+</html>

@@ -1,0 +1,63 @@
+<!DOCTYOE html>
+<html>
+<head>
+
+</head>
+<body>
+
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="/example/js/bind.js"></script>
+<script src="/scripts/adapter/ua.js"></script>
+<script src="/scripts/tracking.js"></script>
+<script type="text/javascript">
+    var tracking = new trackingJS({
+        type: 'ua',
+        analyticsCode: 'UA-57009541-1',
+        url: 'auto',
+        pageview: false
+    });
+
+    var orderID = new Date().getTime();
+
+    var ecTracking = tracking.registerEcommerce();
+    ecTracking.setId(orderID);
+    ecTracking.setAffiliation('test store');
+    ecTracking.setShipping(5);
+    ecTracking.setTax(20);
+
+    ecTracking.addItem({
+        id: orderID,
+        name: 'Product 1',
+        sku: 'xyz-1',
+        category: 'Products Cat',
+        price: 11,
+        quantity: 1
+    });
+
+    ecTracking.addItem({
+        id: orderID,
+        name: 'Product 2',
+        sku: 'xyz-2',
+        category: 'Products Cat',
+        price: 22,
+        quantity: 2
+    });
+
+    ecTracking.addItem({
+        id: orderID,
+        name: 'Product 3',
+        sku: 'xyz-3',
+        category: 'Products Cat',
+        price: 33,
+        quantity: 0
+    });
+
+    ecTracking.send();
+
+    //if you send the ecommerce data with onclick event and redirect to a page send a event and wait for this event
+    tracking.event('buy', 'send', 'price', ecTracking.getRevenue(), function(err, status) {
+        console.log('do redirect');
+    });
+</script>
+</body>
+</html>

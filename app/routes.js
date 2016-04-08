@@ -1,12 +1,13 @@
 import React from 'react';
 import {Route} from 'react-router';
 import App from './components/App';
-import TestApp1 from './components/TestApp1';
+import TestApp1 from './components/TestApp1.jsx';
 import Home from './components/Home';
 import Lessons from './components/Lessons.jsx';
 import Credits from './components/GalleryConservative/Credits.jsx';
 import About from './components/GalleryConservative/About.jsx';
 import History from './components/GalleryConservative/History.jsx';
+import Exhibition from './components/GalleryConservative/Exhibition.jsx';
 
 export default (
   <Route component={App}>
@@ -16,6 +17,7 @@ export default (
 		<Route path='credits' component={Credits} />
 		<Route path='about' component={About} />
 		<Route path='history' component={History} />
+		<Route path='exhibition' component={Exhibition} />
     </Route>
   </Route>
 );

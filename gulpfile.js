@@ -34,7 +34,13 @@ gulp.task('vendor', function() {
     'bower_components/jquery/dist/jquery.js',
     'bower_components/bootstrap/dist/js/bootstrap.js',
     'bower_components/magnific-popup/dist/jquery.magnific-popup.js',
-    'bower_components/toastr/toastr.js'
+    'bower_components/toastr/toastr.js',
+    'bower_components/tracking/build/tracking-min.js',
+    'bower_components/tracking/build/data/face-min.js',
+    'bower_components/tracking/build/data/eye-min.js',
+    'bower_components/tracking/build/data/mouth-min.js',
+    'bower_components/headtrackr/headtrackr.min.js',
+    'bower_components/dat-gui/build/dat.gui.min.js',
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));
