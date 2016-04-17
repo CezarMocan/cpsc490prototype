@@ -295,7 +295,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":18,"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":19,"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -550,7 +550,10 @@ var Exhibition = function (_React$Component) {
       $(document).unbind('headtrackrStatus');
       console.log(this.htracker);
       delete this.htracker;
-      //context.props.history.push('testApp1/credits');
+    }
+  }, {
+    key: 'navigateAway',
+    value: function navigateAway() {
       window.location = '/testApp1/credits';
     }
   }, {
@@ -567,9 +570,10 @@ var Exhibition = function (_React$Component) {
     key: 'headStatusFun',
     value: function headStatusFun(ev) {
       var event = ev.originalEvent;
-      console.log(event);
+      //console.log(event);
       if (event.status == 'redetecting') {
         this.killAllEvents(this);
+        this.navigateAway();
       }
     }
   }, {
@@ -598,6 +602,11 @@ var Exhibition = function (_React$Component) {
 
       $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
       $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.killAllEvents();
     }
   }, {
     key: 'render',
@@ -661,29 +670,33 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var Exhibition = function (_React$Component) {
-  _inherits(Exhibition, _React$Component);
+var ExhibitionDiscrete = function (_React$Component) {
+  _inherits(ExhibitionDiscrete, _React$Component);
 
   /* <Footer /> */
 
-  function Exhibition(props) {
-    _classCallCheck(this, Exhibition);
+  function ExhibitionDiscrete(props) {
+    _classCallCheck(this, ExhibitionDiscrete);
 
-    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Exhibition).call(this, props));
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ExhibitionDiscrete).call(this, props));
 
     _this.state = { z: 50, x: 0, y: 0 };
     return _this;
   }
 
-  _createClass(Exhibition, [{
+  _createClass(ExhibitionDiscrete, [{
     key: 'killAllEvents',
     value: function killAllEvents(context) {
       //TODO: This is now working.
       $(document).unbind('headtrackingEvent');
+      $(document).unbind('facetrackingEvent');
       $(document).unbind('headtrackrStatus');
       console.log(this.htracker);
       delete this.htracker;
-      //context.props.history.push('testApp1/credits');
+    }
+  }, {
+    key: 'navigateAway',
+    value: function navigateAway() {
       window.location = '/testApp1/credits';
     }
   }, {
@@ -700,10 +713,28 @@ var Exhibition = function (_React$Component) {
     key: 'headStatusFun',
     value: function headStatusFun(ev) {
       var event = ev.originalEvent;
-      console.log(event);
+      //console.log(event);
       if (event.status == 'redetecting') {
         this.killAllEvents(this);
+        this.navigateAway();
       }
+    }
+  }, {
+    key: 'faceTrackingFun',
+    value: function faceTrackingFun(ev) {
+      var event = ev.originalEvent;
+      var x = this.state.x;
+      var y = this.state.y;
+      var z = this.state.z;
+
+      this.setState({
+        x: x,
+        y: y,
+        z: z,
+        angle: event.angle
+      });
+
+      console.log(event.angle);
     }
   }, {
     key: 'componentDidMount',
@@ -713,7 +744,7 @@ var Exhibition = function (_React$Component) {
       var canvasInput = document.getElementById('inputCanvas');
       var canvasOutput = document.getElementById('outputCanvas');
 
-      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput });
+      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput, calcAngles: true });
       this.htracker.init(videoInput, canvasInput);
       this.htracker.start();
 
@@ -722,15 +753,23 @@ var Exhibition = function (_React$Component) {
       var redetectingStrike = 0;
 
       var headTrackingFun = function headTrackingFun(event) {
+        var angle = this.state.angle;
         this.setState({
           x: event.x,
           y: event.y,
-          z: event.z
+          z: event.z,
+          angle: angle
         });
       };
 
       $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
       $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
+      $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.killAllEvents();
     }
   }, {
     key: 'render',
@@ -751,7 +790,9 @@ var Exhibition = function (_React$Component) {
             ' ',
             parseInt(this.state.x),
             ' ',
-            parseInt(this.state.y)
+            parseInt(this.state.y),
+            ' ',
+            this.state.angle
           ),
           _react2.default.createElement(
             'div',
@@ -759,7 +800,7 @@ var Exhibition = function (_React$Component) {
             _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
             _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none' } }),
             _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior', src: 'img/01.png', style: { height: (this.state.z > 55 ? 500 : 350) + 'px', marginLeft: 400 + 'px' } })
+            _react2.default.createElement('img', { className: 'image-warrior', src: 'img/01.png', style: { transform: 'rotate(' + -(this.state.angle / 3.14 * 360 + 180) + 'deg)', height: (this.state.z > 55 ? 500 : 350) + 'px', marginLeft: 400 + 'px' } })
           )
         ),
         _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
@@ -767,12 +808,185 @@ var Exhibition = function (_React$Component) {
     }
   }]);
 
-  return Exhibition;
+  return ExhibitionDiscrete;
 }(_react2.default.Component);
 
-exports.default = Exhibition;
+exports.default = ExhibitionDiscrete;
 
 },{"react":"react"}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExhibitionLeftRight = function (_React$Component) {
+  _inherits(ExhibitionLeftRight, _React$Component);
+
+  /* <Footer /> */
+
+  function ExhibitionLeftRight(props) {
+    _classCallCheck(this, ExhibitionLeftRight);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ExhibitionLeftRight).call(this, props));
+
+    _this.state = { z: 50, x: 0, y: 0 };
+    return _this;
+  }
+
+  _createClass(ExhibitionLeftRight, [{
+    key: 'killAllEvents',
+    value: function killAllEvents(context) {
+      //TODO: This is now working.
+      $(document).unbind('headtrackingEvent');
+      $(document).unbind('facetrackingEvent');
+      $(document).unbind('headtrackrStatus');
+      console.log(this.htracker);
+      delete this.htracker;
+    }
+  }, {
+    key: 'navigateAway',
+    value: function navigateAway() {
+      window.location = '/testApp1/credits';
+    }
+  }, {
+    key: 'headTrackingFun',
+    value: function headTrackingFun(ev) {
+      var event = ev.originalEvent;
+      this.setState({
+        x: event.x,
+        y: event.y,
+        z: event.z
+      });
+    }
+  }, {
+    key: 'headStatusFun',
+    value: function headStatusFun(ev) {
+      var event = ev.originalEvent;
+      //console.log(event);
+      if (event.status == 'redetecting') {
+        this.killAllEvents(this);
+        this.navigateAway();
+      }
+    }
+  }, {
+    key: 'faceTrackingFun',
+    value: function faceTrackingFun(ev) {
+      var event = ev.originalEvent;
+      var x = this.state.x;
+      var y = this.state.y;
+      var z = this.state.z;
+
+      this.setState({
+        x: x,
+        y: y,
+        z: z,
+        angle: event.angle
+      });
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      //window.addEventListener('resize', this.handleResize);
+      var videoInput = document.getElementById('inputVideo');
+      var canvasInput = document.getElementById('inputCanvas');
+      var canvasOutput = document.getElementById('outputCanvas');
+
+      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput, calcAngles: true });
+      this.htracker.init(videoInput, canvasInput);
+      this.htracker.start();
+
+      var context = this;
+
+      var redetectingStrike = 0;
+
+      var headTrackingFun = function headTrackingFun(event) {
+        var angle = this.state.angle;
+        this.setState({
+          x: event.x,
+          y: event.y,
+          z: event.z,
+          angle: angle
+        });
+      };
+
+      $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
+      $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
+      $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      this.killAllEvents();
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var context = this;
+
+      return _react2.default.createElement(
+        'div',
+        { className: 'text-page-container credits-container' },
+        _react2.default.createElement(
+          'div',
+          { className: 'text-page-left-column exhibition-left-column' },
+          _react2.default.createElement(
+            'div',
+            { className: 'text-page-title exhibition-title' },
+            'warrior ',
+            parseInt(this.state.z),
+            ' ',
+            parseInt(this.state.x),
+            ' ',
+            parseInt(this.state.y),
+            ' ',
+            this.state.angle
+          ),
+          _react2.default.createElement(
+            'div',
+            { className: 'paragraph-content exhibition-contents' },
+            _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
+            _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'inherit', position: 'fixed', right: 0, top: '50px' } }),
+            _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_01.png', style: { display: this.state.x < -7 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_02.png', style: { display: this.state.x >= -7 && this.state.x < -6 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_03.png', style: { display: this.state.x >= -6 && this.state.x < -5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_04.png', style: { display: this.state.x >= -5 && this.state.x < -4 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_05.png', style: { display: this.state.x >= -4 && this.state.x < -3.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_06.png', style: { display: this.state.x >= -3.5 && this.state.x < -2.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_07.png', style: { display: this.state.x >= -2.5 && this.state.x < 2.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_08.png', style: { display: this.state.x >= 2.5 && this.state.x < 3.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_09.png', style: { display: this.state.x >= 3.5 && this.state.x < 4.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_10.png', style: { display: this.state.x >= 4.5 && this.state.x < 5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_11.png', style: { display: this.state.x >= 5 && this.state.x < 5.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_12.png', style: { display: this.state.x >= 5.5 ? 'block' : 'none' } })
+          )
+        ),
+        _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
+      );
+    }
+  }]);
+
+  return ExhibitionLeftRight;
+}(_react2.default.Component);
+
+exports.default = ExhibitionLeftRight;
+
+},{"react":"react"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -884,6 +1098,15 @@ var Header = function (_React$Component) {
             { className: 'top-nav' },
             _react2.default.createElement(
               _reactRouter.Link,
+              { to: '/testApp1/exhibition3' },
+              'E3'
+            )
+          ),
+          _react2.default.createElement(
+            'span',
+            { className: 'top-nav' },
+            _react2.default.createElement(
+              _reactRouter.Link,
               { to: '/testApp1/history' },
               'HISTORY'
             )
@@ -907,7 +1130,7 @@ var Header = function (_React$Component) {
 
 exports.default = Header;
 
-},{"react":"react","react-router":"react-router"}],11:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -975,7 +1198,7 @@ var History = function (_React$Component) {
 
 exports.default = History;
 
-},{"react":"react"}],12:[function(require,module,exports){
+},{"react":"react"}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1036,7 +1259,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],13:[function(require,module,exports){
+},{"react":"react"}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1156,7 +1379,7 @@ var Lessons = function (_React$Component) {
 
 exports.default = Lessons;
 
-},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":19,"react":"react","react-router":"react-router"}],14:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":20,"react":"react","react-router":"react-router"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1233,7 +1456,7 @@ var RouteTransition = _react2.default.createClass({
 
 exports.default = RouteTransition;
 
-},{"react":"react","react-motion":45}],15:[function(require,module,exports){
+},{"react":"react","react-motion":46}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1308,7 +1531,7 @@ var TestApp1 = function (_React$Component) {
 
 exports.default = TestApp1;
 
-},{"./Footer.jsx":5,"./GalleryConservative/Header.jsx":10,"./RouteTransition.jsx":14,"react":"react"}],16:[function(require,module,exports){
+},{"./Footer.jsx":5,"./GalleryConservative/Header.jsx":11,"./RouteTransition.jsx":15,"react":"react"}],17:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -1341,7 +1564,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":17,"history/lib/createBrowserHistory":26,"react":"react","react-dom":"react-dom","react-router":"react-router"}],17:[function(require,module,exports){
+},{"./routes":18,"history/lib/createBrowserHistory":27,"react":"react","react-dom":"react-dom","react-router":"react-router"}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1390,6 +1613,10 @@ var _ExhibitionDiscrete = require('./components/GalleryConservative/ExhibitionDi
 
 var _ExhibitionDiscrete2 = _interopRequireDefault(_ExhibitionDiscrete);
 
+var _ExhibitionLeftRight = require('./components/GalleryConservative/ExhibitionLeftRight.jsx');
+
+var _ExhibitionLeftRight2 = _interopRequireDefault(_ExhibitionLeftRight);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 exports.default = _react2.default.createElement(
@@ -1404,11 +1631,12 @@ exports.default = _react2.default.createElement(
     _react2.default.createElement(_reactRouter.Route, { path: 'about', component: _About2.default }),
     _react2.default.createElement(_reactRouter.Route, { path: 'history', component: _History2.default }),
     _react2.default.createElement(_reactRouter.Route, { path: 'exhibition', component: _Exhibition2.default }),
-    _react2.default.createElement(_reactRouter.Route, { path: 'exhibition2', component: _ExhibitionDiscrete2.default })
+    _react2.default.createElement(_reactRouter.Route, { path: 'exhibition2', component: _ExhibitionDiscrete2.default }),
+    _react2.default.createElement(_reactRouter.Route, { path: 'exhibition3', component: _ExhibitionLeftRight2.default })
   )
 );
 
-},{"./components/App":4,"./components/GalleryConservative/About.jsx":6,"./components/GalleryConservative/Credits.jsx":7,"./components/GalleryConservative/Exhibition.jsx":8,"./components/GalleryConservative/ExhibitionDiscrete.jsx":9,"./components/GalleryConservative/History.jsx":11,"./components/Home":12,"./components/Lessons.jsx":13,"./components/TestApp1.jsx":15,"react":"react","react-router":"react-router"}],18:[function(require,module,exports){
+},{"./components/App":4,"./components/GalleryConservative/About.jsx":6,"./components/GalleryConservative/Credits.jsx":7,"./components/GalleryConservative/Exhibition.jsx":8,"./components/GalleryConservative/ExhibitionDiscrete.jsx":9,"./components/GalleryConservative/ExhibitionLeftRight.jsx":10,"./components/GalleryConservative/History.jsx":12,"./components/Home":13,"./components/Lessons.jsx":14,"./components/TestApp1.jsx":16,"react":"react","react-router":"react-router"}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1455,7 +1683,7 @@ var FooterStore = function () {
 
 exports.default = _alt2.default.createStore(FooterStore);
 
-},{"../actions/FooterActions.jsx":1,"../alt":3}],19:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":1,"../alt":3}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1502,7 +1730,7 @@ var LessonsStore = function () {
 
 exports.default = _alt2.default.createStore(LessonsStore);
 
-},{"../actions/LessonsActions.jsx":2,"../alt":3}],20:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":2,"../alt":3}],21:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1595,7 +1823,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],21:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1627,7 +1855,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1654,7 +1882,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1725,7 +1953,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":20,"warning":38}],24:[function(require,module,exports){
+},{"_process":21,"warning":39}],25:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -1806,13 +2034,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -1993,7 +2221,7 @@ function createBrowserHistory() {
 exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":21,"./DOMStateStorage":23,"./DOMUtils":24,"./ExecutionEnvironment":25,"./createDOMHistory":27,"./parsePath":32,"_process":20,"invariant":37}],27:[function(require,module,exports){
+},{"./Actions":22,"./DOMStateStorage":24,"./DOMUtils":25,"./ExecutionEnvironment":26,"./createDOMHistory":28,"./parsePath":33,"_process":21,"invariant":38}],28:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2036,7 +2264,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":24,"./ExecutionEnvironment":25,"./createHistory":28,"_process":20,"invariant":37}],28:[function(require,module,exports){
+},{"./DOMUtils":25,"./ExecutionEnvironment":26,"./createHistory":29,"_process":21,"invariant":38}],29:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2328,7 +2556,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":21,"./AsyncUtils":22,"./createLocation":29,"./deprecate":30,"./parsePath":32,"./runTransitionHook":33,"deep-equal":34}],29:[function(require,module,exports){
+},{"./Actions":22,"./AsyncUtils":23,"./createLocation":30,"./deprecate":31,"./parsePath":33,"./runTransitionHook":34,"deep-equal":35}],30:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2383,7 +2611,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":21,"./parsePath":32}],30:[function(require,module,exports){
+},{"./Actions":22,"./parsePath":33}],31:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -2399,7 +2627,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],31:[function(require,module,exports){
+},{}],32:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2413,7 +2641,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],32:[function(require,module,exports){
+},{}],33:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2460,7 +2688,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":31,"_process":20,"warning":38}],33:[function(require,module,exports){
+},{"./extractPath":32,"_process":21,"warning":39}],34:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2487,7 +2715,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":20,"warning":38}],34:[function(require,module,exports){
+},{"_process":21,"warning":39}],35:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -2583,7 +2811,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":35,"./lib/keys.js":36}],35:[function(require,module,exports){
+},{"./lib/is_arguments.js":36,"./lib/keys.js":37}],36:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -2605,7 +2833,7 @@ function unsupported(object){
     false;
 };
 
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -2616,7 +2844,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],37:[function(require,module,exports){
+},{}],38:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -2671,7 +2899,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":20}],38:[function(require,module,exports){
+},{"_process":21}],39:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -2735,7 +2963,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":20}],39:[function(require,module,exports){
+},{"_process":21}],40:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2977,7 +3205,7 @@ var Motion = _react2['default'].createClass({
 
 exports['default'] = Motion;
 module.exports = exports['default'];
-},{"./mapToZero":42,"./shouldStopAnimation":47,"./stepper":49,"./stripStyle":50,"performance-now":51,"raf":52,"react":"react"}],40:[function(require,module,exports){
+},{"./mapToZero":43,"./shouldStopAnimation":48,"./stepper":50,"./stripStyle":51,"performance-now":52,"raf":53,"react":"react"}],41:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3240,7 +3468,7 @@ var StaggeredMotion = _react2['default'].createClass({
 
 exports['default'] = StaggeredMotion;
 module.exports = exports['default'];
-},{"./mapToZero":42,"./shouldStopAnimation":47,"./stepper":49,"./stripStyle":50,"performance-now":51,"raf":52,"react":"react"}],41:[function(require,module,exports){
+},{"./mapToZero":43,"./shouldStopAnimation":48,"./stepper":50,"./stripStyle":51,"performance-now":52,"raf":53,"react":"react"}],42:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3729,7 +3957,7 @@ module.exports = exports['default'];
 
 // the array that keeps track of currently rendered stuff! Including stuff
 // that you've unmounted but that's still animating. This is where it lives
-},{"./mapToZero":42,"./mergeDiff":43,"./shouldStopAnimation":47,"./stepper":49,"./stripStyle":50,"performance-now":51,"raf":52,"react":"react"}],42:[function(require,module,exports){
+},{"./mapToZero":43,"./mergeDiff":44,"./shouldStopAnimation":48,"./stepper":50,"./stripStyle":51,"performance-now":52,"raf":53,"react":"react"}],43:[function(require,module,exports){
 
 
 // currently used to initiate the velocity style object to 0
@@ -3749,7 +3977,7 @@ function mapToZero(obj) {
 }
 
 module.exports = exports['default'];
-},{}],43:[function(require,module,exports){
+},{}],44:[function(require,module,exports){
 
 
 // core keys merging algorithm. If previous render's keys are [a, b], and the
@@ -3858,7 +4086,7 @@ function mergeDiff(prev, next, onRemove) {
 
 module.exports = exports['default'];
 // to loop through and find a key's index each time), but I no longer care
-},{}],44:[function(require,module,exports){
+},{}],45:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3869,7 +4097,7 @@ exports["default"] = {
   stiff: { stiffness: 210, damping: 20 }
 };
 module.exports = exports["default"];
-},{}],45:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3901,7 +4129,7 @@ exports.presets = _interopRequire(_presets);
 var _reorderKeys = require('./reorderKeys');
 
 exports.reorderKeys = _interopRequire(_reorderKeys);
-},{"./Motion":39,"./StaggeredMotion":40,"./TransitionMotion":41,"./presets":44,"./reorderKeys":46,"./spring":48}],46:[function(require,module,exports){
+},{"./Motion":40,"./StaggeredMotion":41,"./TransitionMotion":42,"./presets":45,"./reorderKeys":47,"./spring":49}],47:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -3921,7 +4149,7 @@ function reorderKeys() {
 
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":20}],47:[function(require,module,exports){
+},{"_process":21}],48:[function(require,module,exports){
 
 
 // usage assumption: currentStyle values have already been rendered but it says
@@ -3953,7 +4181,7 @@ function shouldStopAnimation(currentStyle, style, currentVelocity) {
 }
 
 module.exports = exports['default'];
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3977,7 +4205,7 @@ function spring(val, config) {
 }
 
 module.exports = exports['default'];
-},{"./presets":44}],49:[function(require,module,exports){
+},{"./presets":45}],50:[function(require,module,exports){
 
 
 // stepper is used a lot. Saves allocation to return the same array wrapper.
@@ -4021,7 +4249,7 @@ function stepper(secondPerFrame, x, v, destX, k, b, precision) {
 
 module.exports = exports["default"];
 // array reference around.
-},{}],50:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 
 // turn {x: {val: 1, stiffness: 1, damping: 2}, y: 2} generated by
 // `{x: spring(1, {stiffness: 1, damping: 2}), y: 2}` into {x: 1, y: 2}
@@ -4043,7 +4271,7 @@ function stripStyle(style) {
 }
 
 module.exports = exports['default'];
-},{}],51:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.7.1
 (function() {
@@ -4079,7 +4307,7 @@ module.exports = exports['default'];
 }).call(this);
 
 }).call(this,require('_process'))
-},{"_process":20}],52:[function(require,module,exports){
+},{"_process":21}],53:[function(require,module,exports){
 (function (global){
 var now = require('performance-now')
   , root = typeof window === 'undefined' ? global : window
@@ -4155,4 +4383,4 @@ module.exports.polyfill = function() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"performance-now":51}]},{},[16]);
+},{"performance-now":52}]},{},[17]);

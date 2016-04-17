@@ -19,6 +19,7 @@ class Header extends React.Component {
 	        <span className="top-nav"><Link to="/testApp1/about">ABOUT</Link></span>
 	        <span className="top-nav"><Link to="/testApp1/exhibition">E1</Link></span>
 	        <span className="top-nav"><Link to="/testApp1/exhibition2">E2</Link></span>
+          <span className="top-nav"><Link to="/testApp1/exhibition3">E3</Link></span>
 	        <span className="top-nav"><Link to="/testApp1/history">HISTORY</Link></span>
 	        <span className="top-nav"><Link to="/testApp1/credits">CREDITS</Link></span>
 	    </div>

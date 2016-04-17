@@ -13,7 +13,9 @@ class Exhibition extends React.Component {
     $(document).unbind('headtrackrStatus');
     console.log(this.htracker);
     delete this.htracker;
-    //context.props.history.push('testApp1/credits');
+  }
+
+  navigateAway() {
     window.location = '/testApp1/credits'
   }
 
@@ -28,9 +30,10 @@ class Exhibition extends React.Component {
 
   headStatusFun(ev) {
     var event = ev.originalEvent;
-    console.log(event);
+    //console.log(event);
     if (event.status == 'redetecting') {
       this.killAllEvents(this);
+      this.navigateAway()
     }
   }
 
@@ -60,6 +63,10 @@ class Exhibition extends React.Component {
 
     $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
     $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
+  }
+
+  componentWillUnmount() {
+    this.killAllEvents();
   }
 
   render() {

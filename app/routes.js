@@ -9,6 +9,7 @@ import About from './components/GalleryConservative/About.jsx';
 import History from './components/GalleryConservative/History.jsx';
 import Exhibition from './components/GalleryConservative/Exhibition.jsx';
 import ExhibitionDiscrete from './components/GalleryConservative/ExhibitionDiscrete.jsx';
+import ExhibitionLeftRight from './components/GalleryConservative/ExhibitionLeftRight.jsx';
 
 export default (
   <Route component={App}>
@@ -20,6 +21,7 @@ export default (
 		<Route path='history' component={History} />
 		<Route path='exhibition' component={Exhibition} />
 		<Route path='exhibition2' component={ExhibitionDiscrete} />
+    <Route path='exhibition3' component={ExhibitionLeftRight} />
     </Route>
   </Route>
 );

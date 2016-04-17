@@ -7422,7 +7422,16 @@ img.mfp-img {
 }
 .gallery-conservative .paragraph-content img.image-warrior {
   -webkit-transition-property: height, width;
-  -webkit-transition-duration: 1s;
+  -webkit-transition-duration: .5s;
+}
+.gallery-conservative .paragraph-content img.image-warrior-rotating {
+  -webkit-transition-property: height, width;
+  -webkit-transition-duration: .5s;
+  height: 800px;
+  display: block;
+  position: fixed;
+  top: 25px;
+  left: 300px;
 }
 .gallery-conservative .side-element {
   margin-bottom: 100px;

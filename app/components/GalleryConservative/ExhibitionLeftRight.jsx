@@ -1,6 +1,6 @@
 import React from 'react';
 
-class ExhibitionDiscrete extends React.Component {
+class ExhibitionLeftRight extends React.Component {
 	/* <Footer /> */
   constructor(props) {
     super(props);
@@ -50,8 +50,6 @@ class ExhibitionDiscrete extends React.Component {
       z: z,
       angle: event.angle
     });
-
-    console.log(event.angle);
   }
 
   componentDidMount() {
@@ -101,10 +99,21 @@ class ExhibitionDiscrete extends React.Component {
           <div className="paragraph-content exhibition-contents">
 
             <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
-            <canvas id="outputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
+            <canvas id="outputCanvas" width="320" height="240" style={{display:'inherit', position: 'fixed', right: 0, top: '50px'}}></canvas>
             <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
 
-            <img className="image-warrior" src="img/01.png" style={{transform: 'rotate(' + (-(this.state.angle / 3.14 * 360 + 180)) + 'deg)', height: (this.state.z > 55 ? 500 : 350) + 'px', marginLeft: 400 + 'px' }}/>
+            <img className="image-warrior-rotating" src="img/glass_01.png" style={{display: ((this.state.x < -7) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_02.png" style={{display: ((this.state.x >= -7 && this.state.x < -6) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_03.png" style={{display: ((this.state.x >= -6 && this.state.x < -5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_04.png" style={{display: ((this.state.x >= -5 && this.state.x < -4) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_05.png" style={{display: ((this.state.x >= -4 && this.state.x < -3.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_06.png" style={{display: ((this.state.x >= -3.5 && this.state.x < -2.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_07.png" style={{display: ((this.state.x >= -2.5 && this.state.x < 2.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_08.png" style={{display: ((this.state.x >= 2.5 && this.state.x < 3.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_09.png" style={{display: ((this.state.x >= 3.5 && this.state.x < 4.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_10.png" style={{display: ((this.state.x >= 4.5 && this.state.x < 5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_11.png" style={{display: ((this.state.x >= 5 && this.state.x < 5.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_12.png" style={{display: ((this.state.x >= 5.5) ? 'block' : 'none')}}/>
           </div>
         </div>
         <div className="text-page-right-column history-right-column">
@@ -114,4 +123,4 @@ class ExhibitionDiscrete extends React.Component {
   }
 }
 
-export default ExhibitionDiscrete;
+export default ExhibitionLeftRight;
