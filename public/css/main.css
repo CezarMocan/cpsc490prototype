@@ -7333,6 +7333,7 @@ img.mfp-img {
   padding: 0;
 }
 .gallery-conservative .header-container {
+  z-index: 1000000000;
   position: fixed;
   width: calc(100% - 170px);
   background: white;

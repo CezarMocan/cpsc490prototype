@@ -43,7 +43,7 @@ var FooterActions = function () {
 
 exports.default = _alt2.default.createActions(FooterActions);
 
-},{"../alt":3}],2:[function(require,module,exports){
+},{"../alt":4}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -109,7 +109,30 @@ var LessonsActions = function () {
 
 exports.default = _alt2.default.createActions(LessonsActions);
 
-},{"../alt":3}],3:[function(require,module,exports){
+},{"../alt":4}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var WebcamActions = function WebcamActions() {
+  _classCallCheck(this, WebcamActions);
+
+  this.generateActions('webcamUpdate');
+};
+
+exports.default = _alt2.default.createActions(WebcamActions);
+
+},{"../alt":4}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -124,7 +147,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 exports.default = new _alt2.default();
 
-},{"alt":"alt"}],4:[function(require,module,exports){
+},{"alt":"alt"}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -176,7 +199,7 @@ var App = function (_React$Component) {
 
 exports.default = App;
 
-},{"./Footer.jsx":5,"react":"react"}],5:[function(require,module,exports){
+},{"./Footer.jsx":6,"react":"react"}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -295,7 +318,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":19,"react":"react","react-router":"react-router"}],6:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":20,"react":"react","react-router":"react-router"}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -416,7 +439,7 @@ var About = function (_React$Component) {
 
 exports.default = About;
 
-},{"react":"react"}],7:[function(require,module,exports){
+},{"react":"react"}],8:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -507,7 +530,7 @@ var Credits = function (_React$Component) {
 
 exports.default = Credits;
 
-},{"react":"react"}],8:[function(require,module,exports){
+},{"react":"react"}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -519,6 +542,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _WebcamStore = require('../../stores/WebcamStore.jsx');
+
+var _WebcamStore2 = _interopRequireDefault(_WebcamStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -538,75 +565,26 @@ var Exhibition = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Exhibition).call(this, props));
 
-    _this.state = { height: 0, width: 0, x: 0, y: 0 };
+    _this.state = _WebcamStore2.default.getState();
+    _this.onChange = _this.onChange.bind(_this);
+    console.log(_this.state);
     return _this;
   }
 
   _createClass(Exhibition, [{
-    key: 'killAllEvents',
-    value: function killAllEvents(context) {
-      //TODO: This is now working.
-      $(document).unbind('headtrackingEvent');
-      $(document).unbind('headtrackrStatus');
-      console.log(this.htracker);
-      delete this.htracker;
-    }
-  }, {
-    key: 'navigateAway',
-    value: function navigateAway() {
-      window.location = '/testApp1/credits';
-    }
-  }, {
-    key: 'headTrackingFun',
-    value: function headTrackingFun(ev) {
-      var event = ev.originalEvent;
-      this.setState({
-        x: event.x,
-        y: event.y,
-        z: event.z
-      });
-    }
-  }, {
-    key: 'headStatusFun',
-    value: function headStatusFun(ev) {
-      var event = ev.originalEvent;
-      //console.log(event);
-      if (event.status == 'redetecting') {
-        this.killAllEvents(this);
-        this.navigateAway();
-      }
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      //window.addEventListener('resize', this.handleResize);
-      var videoInput = document.getElementById('inputVideo');
-      var canvasInput = document.getElementById('inputCanvas');
-      var canvasOutput = document.getElementById('outputCanvas');
-
-      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput });
-      this.htracker.init(videoInput, canvasInput);
-      this.htracker.start();
-
-      var context = this;
-
-      var redetectingStrike = 0;
-
-      var headTrackingFun = function headTrackingFun(event) {
-        this.setState({
-          x: event.x,
-          y: event.y,
-          z: event.z
-        });
-      };
-
-      $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
-      $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
+      _WebcamStore2.default.listen(this.onChange);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      this.killAllEvents();
+      _WebcamStore2.default.unlisten(this.onChange);
     }
   }, {
     key: 'render',
@@ -624,19 +602,17 @@ var Exhibition = function (_React$Component) {
             { className: 'text-page-title exhibition-title' },
             'warrior ',
             _react2.default.createElement('br', null),
-            this.state.z,
+            this.state.webcamParams.Z,
             ' ',
-            this.state.x,
+            this.state.webcamParams.X,
             ' ',
-            this.state.y
+            this.state.webcamParams.Y
           ),
           _react2.default.createElement(
             'div',
             { className: 'paragraph-content exhibition-contents' },
-            _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-            _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-            _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
-            _react2.default.createElement('img', { src: 'img/01.png', style: { height: 10 * this.state.z + 'px', marginLeft: 400 - 30 * this.state.x + 'px' } })
+            _react2.default.createElement('img', { src: 'img/01.png', style: { height: 10 * this.state.webcamParams.Z + 'px',
+                marginLeft: 400 - 30 * this.state.webcamParams.X + 'px' } })
           )
         ),
         _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
@@ -649,7 +625,7 @@ var Exhibition = function (_React$Component) {
 
 exports.default = Exhibition;
 
-},{"react":"react"}],9:[function(require,module,exports){
+},{"../../stores/WebcamStore.jsx":22,"react":"react"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -661,6 +637,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _WebcamStore = require('../../stores/WebcamStore.jsx');
+
+var _WebcamStore2 = _interopRequireDefault(_WebcamStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -680,102 +660,30 @@ var ExhibitionDiscrete = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ExhibitionDiscrete).call(this, props));
 
-    _this.state = { z: 50, x: 0, y: 0 };
+    _this.state = _WebcamStore2.default.getState();
+    _this.onChange = _this.onChange.bind(_this);
+    console.log(_this.state);
     return _this;
   }
 
   _createClass(ExhibitionDiscrete, [{
-    key: 'killAllEvents',
-    value: function killAllEvents(context) {
-      //TODO: This is now working.
-      $(document).unbind('headtrackingEvent');
-      $(document).unbind('facetrackingEvent');
-      $(document).unbind('headtrackrStatus');
-      console.log(this.htracker);
-      delete this.htracker;
-    }
-  }, {
-    key: 'navigateAway',
-    value: function navigateAway() {
-      window.location = '/testApp1/credits';
-    }
-  }, {
-    key: 'headTrackingFun',
-    value: function headTrackingFun(ev) {
-      var event = ev.originalEvent;
-      this.setState({
-        x: event.x,
-        y: event.y,
-        z: event.z
-      });
-    }
-  }, {
-    key: 'headStatusFun',
-    value: function headStatusFun(ev) {
-      var event = ev.originalEvent;
-      //console.log(event);
-      if (event.status == 'redetecting') {
-        this.killAllEvents(this);
-        this.navigateAway();
-      }
-    }
-  }, {
-    key: 'faceTrackingFun',
-    value: function faceTrackingFun(ev) {
-      var event = ev.originalEvent;
-      var x = this.state.x;
-      var y = this.state.y;
-      var z = this.state.z;
-
-      this.setState({
-        x: x,
-        y: y,
-        z: z,
-        angle: event.angle
-      });
-
-      console.log(event.angle);
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      //window.addEventListener('resize', this.handleResize);
-      var videoInput = document.getElementById('inputVideo');
-      var canvasInput = document.getElementById('inputCanvas');
-      var canvasOutput = document.getElementById('outputCanvas');
-
-      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput, calcAngles: true });
-      this.htracker.init(videoInput, canvasInput);
-      this.htracker.start();
-
-      var context = this;
-
-      var redetectingStrike = 0;
-
-      var headTrackingFun = function headTrackingFun(event) {
-        var angle = this.state.angle;
-        this.setState({
-          x: event.x,
-          y: event.y,
-          z: event.z,
-          angle: angle
-        });
-      };
-
-      $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
-      $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
-      $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
+      _WebcamStore2.default.listen(this.onChange);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      this.killAllEvents();
+      _WebcamStore2.default.unlisten(this.onChange);
     }
   }, {
     key: 'render',
     value: function render() {
-      var context = this;
-
       return _react2.default.createElement(
         'div',
         { className: 'text-page-container credits-container' },
@@ -786,21 +694,18 @@ var ExhibitionDiscrete = function (_React$Component) {
             'div',
             { className: 'text-page-title exhibition-title' },
             'warrior ',
-            parseInt(this.state.z),
+            parseInt(this.state.webcamParams.Z),
             ' ',
-            parseInt(this.state.x),
+            parseInt(this.state.webcamParams.X),
             ' ',
-            parseInt(this.state.y),
+            parseInt(this.state.webcamParams.Y),
             ' ',
-            this.state.angle
+            this.state.webcamParams.angle
           ),
           _react2.default.createElement(
             'div',
             { className: 'paragraph-content exhibition-contents' },
-            _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-            _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-            _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior', src: 'img/01.png', style: { transform: 'rotate(' + -(this.state.angle / 3.14 * 360 + 180) + 'deg)', height: (this.state.z > 55 ? 500 : 350) + 'px', marginLeft: 400 + 'px' } })
+            _react2.default.createElement('img', { className: 'image-warrior', src: 'img/01.png', style: { transform: 'rotate(' + -(this.state.webcamParams.angle / 3.14 * 360 + 180) + 'deg)', height: (this.state.webcamParams.Z > 55 ? 500 : 350) + 'px', marginLeft: 400 + 'px' } })
           )
         ),
         _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
@@ -813,7 +718,7 @@ var ExhibitionDiscrete = function (_React$Component) {
 
 exports.default = ExhibitionDiscrete;
 
-},{"react":"react"}],10:[function(require,module,exports){
+},{"../../stores/WebcamStore.jsx":22,"react":"react"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -825,6 +730,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
+
+var _WebcamStore = require('../../stores/WebcamStore.jsx');
+
+var _WebcamStore2 = _interopRequireDefault(_WebcamStore);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -844,100 +753,31 @@ var ExhibitionLeftRight = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(ExhibitionLeftRight).call(this, props));
 
-    _this.state = { z: 50, x: 0, y: 0 };
+    _this.state = _WebcamStore2.default.getState();
+    _this.onChange = _this.onChange.bind(_this);
+    console.log(_this.state);
     return _this;
   }
 
   _createClass(ExhibitionLeftRight, [{
-    key: 'killAllEvents',
-    value: function killAllEvents(context) {
-      //TODO: This is now working.
-      $(document).unbind('headtrackingEvent');
-      $(document).unbind('facetrackingEvent');
-      $(document).unbind('headtrackrStatus');
-      console.log(this.htracker);
-      delete this.htracker;
-    }
-  }, {
-    key: 'navigateAway',
-    value: function navigateAway() {
-      window.location = '/testApp1/credits';
-    }
-  }, {
-    key: 'headTrackingFun',
-    value: function headTrackingFun(ev) {
-      var event = ev.originalEvent;
-      this.setState({
-        x: event.x,
-        y: event.y,
-        z: event.z
-      });
-    }
-  }, {
-    key: 'headStatusFun',
-    value: function headStatusFun(ev) {
-      var event = ev.originalEvent;
-      //console.log(event);
-      if (event.status == 'redetecting') {
-        this.killAllEvents(this);
-        this.navigateAway();
-      }
-    }
-  }, {
-    key: 'faceTrackingFun',
-    value: function faceTrackingFun(ev) {
-      var event = ev.originalEvent;
-      var x = this.state.x;
-      var y = this.state.y;
-      var z = this.state.z;
-
-      this.setState({
-        x: x,
-        y: y,
-        z: z,
-        angle: event.angle
-      });
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
     }
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      //window.addEventListener('resize', this.handleResize);
-      var videoInput = document.getElementById('inputVideo');
-      var canvasInput = document.getElementById('inputCanvas');
-      var canvasOutput = document.getElementById('outputCanvas');
-
-      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput, calcAngles: true });
-      this.htracker.init(videoInput, canvasInput);
-      this.htracker.start();
-
-      var context = this;
-
-      var redetectingStrike = 0;
-
-      var headTrackingFun = function headTrackingFun(event) {
-        var angle = this.state.angle;
-        this.setState({
-          x: event.x,
-          y: event.y,
-          z: event.z,
-          angle: angle
-        });
-      };
-
-      $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
-      $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
-      $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
+      _WebcamStore2.default.listen(this.onChange);
     }
   }, {
     key: 'componentWillUnmount',
     value: function componentWillUnmount() {
-      this.killAllEvents();
+      _WebcamStore2.default.unlisten(this.onChange);
     }
   }, {
     key: 'render',
     value: function render() {
-      var context = this;
-
+      // {parseInt(this.state.webcamParams.Z)} {parseInt(this.state.webcamParams.X)} {parseInt(this.state.webcamParams.Y)} {this.state.webcamParams.angle}
       return _react2.default.createElement(
         'div',
         { className: 'text-page-container credits-container' },
@@ -947,33 +787,23 @@ var ExhibitionLeftRight = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'text-page-title exhibition-title' },
-            'warrior ',
-            parseInt(this.state.z),
-            ' ',
-            parseInt(this.state.x),
-            ' ',
-            parseInt(this.state.y),
-            ' ',
-            this.state.angle
+            'warrior'
           ),
           _react2.default.createElement(
             'div',
             { className: 'paragraph-content exhibition-contents' },
-            _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-            _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'inherit', position: 'fixed', right: 0, top: '50px' } }),
-            _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_01.png', style: { display: this.state.x < -7 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_02.png', style: { display: this.state.x >= -7 && this.state.x < -6 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_03.png', style: { display: this.state.x >= -6 && this.state.x < -5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_04.png', style: { display: this.state.x >= -5 && this.state.x < -4 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_05.png', style: { display: this.state.x >= -4 && this.state.x < -3.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_06.png', style: { display: this.state.x >= -3.5 && this.state.x < -2.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_07.png', style: { display: this.state.x >= -2.5 && this.state.x < 2.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_08.png', style: { display: this.state.x >= 2.5 && this.state.x < 3.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_09.png', style: { display: this.state.x >= 3.5 && this.state.x < 4.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_10.png', style: { display: this.state.x >= 4.5 && this.state.x < 5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_11.png', style: { display: this.state.x >= 5 && this.state.x < 5.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_12.png', style: { display: this.state.x >= 5.5 ? 'block' : 'none' } })
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_01.png', style: { display: this.state.webcamParams.X < -7 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_02.png', style: { display: this.state.webcamParams.X >= -7 && this.state.webcamParams.X < -6 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_03.png', style: { display: this.state.webcamParams.X >= -6 && this.state.webcamParams.X < -5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_04.png', style: { display: this.state.webcamParams.X >= -5 && this.state.webcamParams.X < -4 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_05.png', style: { display: this.state.webcamParams.X >= -4 && this.state.webcamParams.X < -3.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_06.png', style: { display: this.state.webcamParams.X >= -3.5 && this.state.webcamParams.X < -2.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_07.png', style: { display: this.state.webcamParams.X >= -2.5 && this.state.webcamParams.X < 2.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_08.png', style: { display: this.state.webcamParams.X >= 2.5 && this.state.webcamParams.X < 3.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_09.png', style: { display: this.state.webcamParams.X >= 3.5 && this.state.webcamParams.X < 4.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_10.png', style: { display: this.state.webcamParams.X >= 4.5 && this.state.webcamParams.X < 5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_11.png', style: { display: this.state.webcamParams.X >= 5 && this.state.webcamParams.X < 5.5 ? 'block' : 'none' } }),
+            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_12.png', style: { display: this.state.webcamParams.X >= 5.5 ? 'block' : 'none' } })
           )
         ),
         _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
@@ -986,7 +816,7 @@ var ExhibitionLeftRight = function (_React$Component) {
 
 exports.default = ExhibitionLeftRight;
 
-},{"react":"react"}],11:[function(require,module,exports){
+},{"../../stores/WebcamStore.jsx":22,"react":"react"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1130,7 +960,7 @@ var Header = function (_React$Component) {
 
 exports.default = Header;
 
-},{"react":"react","react-router":"react-router"}],12:[function(require,module,exports){
+},{"react":"react","react-router":"react-router"}],13:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1198,7 +1028,7 @@ var History = function (_React$Component) {
 
 exports.default = History;
 
-},{"react":"react"}],13:[function(require,module,exports){
+},{"react":"react"}],14:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1259,7 +1089,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],14:[function(require,module,exports){
+},{"react":"react"}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1379,7 +1209,7 @@ var Lessons = function (_React$Component) {
 
 exports.default = Lessons;
 
-},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":20,"react":"react","react-router":"react-router"}],15:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":21,"react":"react","react-router":"react-router"}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1456,7 +1286,7 @@ var RouteTransition = _react2.default.createClass({
 
 exports.default = RouteTransition;
 
-},{"react":"react","react-motion":46}],16:[function(require,module,exports){
+},{"react":"react","react-motion":48}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1481,6 +1311,14 @@ var _Header = require('./GalleryConservative/Header.jsx');
 
 var _Header2 = _interopRequireDefault(_Header);
 
+var _WebcamStore = require('../stores/WebcamStore.jsx');
+
+var _WebcamStore2 = _interopRequireDefault(_WebcamStore);
+
+var _WebcamActions = require('../actions/WebcamActions.jsx');
+
+var _WebcamActions2 = _interopRequireDefault(_WebcamActions);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -1497,16 +1335,166 @@ var TestApp1 = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(TestApp1).call(this, props));
 
-    _this.state = { height: 600 };
+    _this.onChange = _this.onChange.bind(_this);
+    // this.state = {height: 600}
+    _this.state = _WebcamStore2.default.getState();
+    console.log(_this.state);
     return _this;
   }
 
   _createClass(TestApp1, [{
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: 'killAllEvents',
+    value: function killAllEvents(context) {
+      $(document).unbind('headtrackingEvent');
+      $(document).unbind('headtrackrStatus');
+      console.log(this.htracker);
+      delete this.htracker;
+    }
+  }, {
+    key: 'navigateAway',
+    value: function navigateAway() {
+      window.location = '/testApp1/credits';
+    }
+  }, {
+    key: 'headTrackingFun',
+    value: function headTrackingFun(ev) {
+      var angle = this.state.webcamParams.angle;
+      var event = ev.originalEvent;
+      var obj = {
+        X: event.x,
+        Y: event.y,
+        Z: event.z,
+        angle: angle
+      };
+      //console.log(obj)
+      _WebcamActions2.default.webcamUpdate(obj);
+    }
+  }, {
+    key: 'headStatusFun',
+    value: function headStatusFun(ev) {
+      var event = ev.originalEvent;
+      //console.log(event);
+      if (event.status == 'redetecting') {
+        this.killAllEvents(this);
+        this.navigateAway();
+      }
+    }
+  }, {
+    key: 'faceTrackingFun',
+    value: function faceTrackingFun(ev) {
+      var event = ev.originalEvent;
+      var x = this.state.webcamParams.X;
+      var y = this.state.webcamParams.Y;
+      var z = this.state.webcamParams.Z;
+
+      var obj = {
+        X: x,
+        Y: y,
+        Z: z,
+        angle: event.angle
+      };
+
+      _WebcamActions2.default.webcamUpdate(obj);
+    }
+  }, {
+    key: 'resizeCanvas',
+    value: function resizeCanvas(canvas, canvasContext) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      this.drawStuff(canvasContext);
+    }
+  }, {
+    key: 'drawStuff',
+    value: function drawStuff(canvasContext) {
+      console.log(window.innerWidth);
+      console.log(window.innerHeight);
+      // context.fillStyle = "#FF0000";
+      // context.fillRect(0,0,window.innerWidth / 2,window.innerHeight / 2);
+      var imgData = canvasContext.createImageData(window.innerWidth, window.innerHeight); // only do this once per page
+      for (var i = 0; i <= 1000000; i++) {
+        var y = Math.round(Math.random() * window.innerWidth);
+        var x = Math.round(Math.random() * window.innerHeight);
+        var index = (x * window.innerWidth + y) * 4;
+
+        imgData.data[index + 0] = 0;
+        imgData.data[index + 1] = 0;
+        imgData.data[index + 2] = 0;
+        // Un-comment below if you want a random RGB color. Otherwise, all points are black.
+        //imgData.data[index + Math.round(Math.random() * 3)] = 255;
+        imgData.data[index + 3] = 255;
+      }
+
+      canvasContext.putImageData(imgData, 0, 0);
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
-      //window.addEventListener('resize', this.handleResize);
-      console.log(window.innerHeight);
+      _WebcamStore2.default.listen(this.onChange);
+
       this.setState({ height: window.innerHeight - 200 });
+
+      var videoInput = document.getElementById('inputVideo');
+      var canvasInput = document.getElementById('inputCanvas');
+      var canvasOutput = document.getElementById('outputCanvas');
+
+      this.htracker = new headtrackr.Tracker({ ui: false, detectionInterval: 20, debug: canvasOutput, calcAngles: true });
+      this.htracker.init(videoInput, canvasInput);
+      this.htracker.start();
+
+      $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
+      $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
+      $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
+
+      var canvas = document.getElementById('dotsCanvas');
+      console.log(canvas);
+      var context = canvas.getContext('2d');
+
+      // resize the canvas to fill browser window dynamically
+      window.addEventListener('resize', this.resizeCanvas.bind(this, canvas, context), false);
+      this.resizeCanvas(canvas, context);
+
+      var xList = [],
+          yList = [];
+      for (var i = 0; i < 20; i++) {
+        var y = Math.round(Math.random() * window.innerWidth);
+        var x = Math.round(Math.random() * window.innerHeight);
+        xList.push(x);
+        yList.push(y);
+      }
+
+      var oddIteration = 0;
+      var interval = setInterval(function () {
+        var imgData = context.getImageData(0, 0, window.innerWidth, window.innerHeight);
+
+        for (var i = 0; i < xList.length; i++) {
+          var windowWidth = window.innerWidth;
+          var index = (xList[i] * windowWidth + yList[i]) * 4;
+          var squareSize = 4;
+
+          for (var iBlink = 0; iBlink < squareSize; iBlink++) {
+            for (var jBlink = 0; jBlink < squareSize; jBlink++) {
+              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 0] = 255;
+              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 1] = 0;
+              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 2] = 0;
+              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 3] = oddIteration * 255;
+            }
+          }
+        }
+
+        context.putImageData(imgData, 0, 0);
+        oddIteration = 1 - oddIteration;
+      }, 800);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _WebcamStore2.default.unlisten(this.onChange);
+      this.killAllEvents();
     }
   }, {
     key: 'render',
@@ -1517,6 +1505,10 @@ var TestApp1 = function (_React$Component) {
         'div',
         { className: 'gallery-conservative' },
         _react2.default.createElement(_Header2.default, null),
+        _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none' } }),
+        _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
+        _react2.default.createElement('canvas', { id: 'dotsCanvas', style: { zIndex: 100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement(
           _RouteTransition2.default,
           { id: this.props.location.pathname, height: context.state.height },
@@ -1531,7 +1523,7 @@ var TestApp1 = function (_React$Component) {
 
 exports.default = TestApp1;
 
-},{"./Footer.jsx":5,"./GalleryConservative/Header.jsx":11,"./RouteTransition.jsx":15,"react":"react"}],17:[function(require,module,exports){
+},{"../actions/WebcamActions.jsx":3,"../stores/WebcamStore.jsx":22,"./Footer.jsx":6,"./GalleryConservative/Header.jsx":12,"./RouteTransition.jsx":16,"react":"react"}],18:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -1564,7 +1556,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":18,"history/lib/createBrowserHistory":27,"react":"react","react-dom":"react-dom","react-router":"react-router"}],18:[function(require,module,exports){
+},{"./routes":19,"history/lib/createBrowserHistory":29,"react":"react","react-dom":"react-dom","react-router":"react-router"}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1636,7 +1628,7 @@ exports.default = _react2.default.createElement(
   )
 );
 
-},{"./components/App":4,"./components/GalleryConservative/About.jsx":6,"./components/GalleryConservative/Credits.jsx":7,"./components/GalleryConservative/Exhibition.jsx":8,"./components/GalleryConservative/ExhibitionDiscrete.jsx":9,"./components/GalleryConservative/ExhibitionLeftRight.jsx":10,"./components/GalleryConservative/History.jsx":12,"./components/Home":13,"./components/Lessons.jsx":14,"./components/TestApp1.jsx":16,"react":"react","react-router":"react-router"}],19:[function(require,module,exports){
+},{"./components/App":5,"./components/GalleryConservative/About.jsx":7,"./components/GalleryConservative/Credits.jsx":8,"./components/GalleryConservative/Exhibition.jsx":9,"./components/GalleryConservative/ExhibitionDiscrete.jsx":10,"./components/GalleryConservative/ExhibitionLeftRight.jsx":11,"./components/GalleryConservative/History.jsx":13,"./components/Home":14,"./components/Lessons.jsx":15,"./components/TestApp1.jsx":17,"react":"react","react-router":"react-router"}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1683,7 +1675,7 @@ var FooterStore = function () {
 
 exports.default = _alt2.default.createStore(FooterStore);
 
-},{"../actions/FooterActions.jsx":1,"../alt":3}],20:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":1,"../alt":4}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1730,7 +1722,55 @@ var LessonsStore = function () {
 
 exports.default = _alt2.default.createStore(LessonsStore);
 
-},{"../actions/LessonsActions.jsx":2,"../alt":3}],21:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":2,"../alt":4}],22:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _alt = require('../alt');
+
+var _alt2 = _interopRequireDefault(_alt);
+
+var _WebcamActions = require('../actions/WebcamActions.jsx');
+
+var _WebcamActions2 = _interopRequireDefault(_WebcamActions);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var WebcamStore = function () {
+  function WebcamStore() {
+    _classCallCheck(this, WebcamStore);
+
+    this.bindActions(_WebcamActions2.default);
+    this.webcamParams = {
+      X: 0,
+      Y: 0,
+      Z: 0,
+      angle: 0
+    };
+    this.height = 600;
+  }
+
+  _createClass(WebcamStore, [{
+    key: 'onWebcamUpdate',
+    value: function onWebcamUpdate(webcamParams) {
+      //console.log(webcamParams)
+      this.webcamParams = webcamParams;
+    }
+  }]);
+
+  return WebcamStore;
+}();
+
+exports.default = _alt2.default.createStore(WebcamStore);
+
+},{"../actions/WebcamActions.jsx":3,"../alt":4}],23:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -1823,7 +1863,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],22:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -1855,7 +1895,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],23:[function(require,module,exports){
+},{}],25:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -1882,7 +1922,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],24:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -1953,7 +1993,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":21,"warning":39}],25:[function(require,module,exports){
+},{"_process":23,"warning":41}],27:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2034,13 +2074,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],26:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],27:[function(require,module,exports){
+},{}],29:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2221,7 +2261,7 @@ function createBrowserHistory() {
 exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":22,"./DOMStateStorage":24,"./DOMUtils":25,"./ExecutionEnvironment":26,"./createDOMHistory":28,"./parsePath":33,"_process":21,"invariant":38}],28:[function(require,module,exports){
+},{"./Actions":24,"./DOMStateStorage":26,"./DOMUtils":27,"./ExecutionEnvironment":28,"./createDOMHistory":30,"./parsePath":35,"_process":23,"invariant":40}],30:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2264,7 +2304,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":25,"./ExecutionEnvironment":26,"./createHistory":29,"_process":21,"invariant":38}],29:[function(require,module,exports){
+},{"./DOMUtils":27,"./ExecutionEnvironment":28,"./createHistory":31,"_process":23,"invariant":40}],31:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2556,7 +2596,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":22,"./AsyncUtils":23,"./createLocation":30,"./deprecate":31,"./parsePath":33,"./runTransitionHook":34,"deep-equal":35}],30:[function(require,module,exports){
+},{"./Actions":24,"./AsyncUtils":25,"./createLocation":32,"./deprecate":33,"./parsePath":35,"./runTransitionHook":36,"deep-equal":37}],32:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2611,7 +2651,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":22,"./parsePath":33}],31:[function(require,module,exports){
+},{"./Actions":24,"./parsePath":35}],33:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -2627,7 +2667,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],32:[function(require,module,exports){
+},{}],34:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2641,7 +2681,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],33:[function(require,module,exports){
+},{}],35:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2688,7 +2728,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":32,"_process":21,"warning":39}],34:[function(require,module,exports){
+},{"./extractPath":34,"_process":23,"warning":41}],36:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2715,7 +2755,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":21,"warning":39}],35:[function(require,module,exports){
+},{"_process":23,"warning":41}],37:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -2811,7 +2851,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":36,"./lib/keys.js":37}],36:[function(require,module,exports){
+},{"./lib/is_arguments.js":38,"./lib/keys.js":39}],38:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -2833,7 +2873,7 @@ function unsupported(object){
     false;
 };
 
-},{}],37:[function(require,module,exports){
+},{}],39:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -2844,7 +2884,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],38:[function(require,module,exports){
+},{}],40:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -2899,7 +2939,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":21}],39:[function(require,module,exports){
+},{"_process":23}],41:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -2963,7 +3003,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":21}],40:[function(require,module,exports){
+},{"_process":23}],42:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3205,7 +3245,7 @@ var Motion = _react2['default'].createClass({
 
 exports['default'] = Motion;
 module.exports = exports['default'];
-},{"./mapToZero":43,"./shouldStopAnimation":48,"./stepper":50,"./stripStyle":51,"performance-now":52,"raf":53,"react":"react"}],41:[function(require,module,exports){
+},{"./mapToZero":45,"./shouldStopAnimation":50,"./stepper":52,"./stripStyle":53,"performance-now":54,"raf":55,"react":"react"}],43:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3468,7 +3508,7 @@ var StaggeredMotion = _react2['default'].createClass({
 
 exports['default'] = StaggeredMotion;
 module.exports = exports['default'];
-},{"./mapToZero":43,"./shouldStopAnimation":48,"./stepper":50,"./stripStyle":51,"performance-now":52,"raf":53,"react":"react"}],42:[function(require,module,exports){
+},{"./mapToZero":45,"./shouldStopAnimation":50,"./stepper":52,"./stripStyle":53,"performance-now":54,"raf":55,"react":"react"}],44:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3957,7 +3997,7 @@ module.exports = exports['default'];
 
 // the array that keeps track of currently rendered stuff! Including stuff
 // that you've unmounted but that's still animating. This is where it lives
-},{"./mapToZero":43,"./mergeDiff":44,"./shouldStopAnimation":48,"./stepper":50,"./stripStyle":51,"performance-now":52,"raf":53,"react":"react"}],43:[function(require,module,exports){
+},{"./mapToZero":45,"./mergeDiff":46,"./shouldStopAnimation":50,"./stepper":52,"./stripStyle":53,"performance-now":54,"raf":55,"react":"react"}],45:[function(require,module,exports){
 
 
 // currently used to initiate the velocity style object to 0
@@ -3977,7 +4017,7 @@ function mapToZero(obj) {
 }
 
 module.exports = exports['default'];
-},{}],44:[function(require,module,exports){
+},{}],46:[function(require,module,exports){
 
 
 // core keys merging algorithm. If previous render's keys are [a, b], and the
@@ -4086,7 +4126,7 @@ function mergeDiff(prev, next, onRemove) {
 
 module.exports = exports['default'];
 // to loop through and find a key's index each time), but I no longer care
-},{}],45:[function(require,module,exports){
+},{}],47:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -4097,7 +4137,7 @@ exports["default"] = {
   stiff: { stiffness: 210, damping: 20 }
 };
 module.exports = exports["default"];
-},{}],46:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4129,7 +4169,7 @@ exports.presets = _interopRequire(_presets);
 var _reorderKeys = require('./reorderKeys');
 
 exports.reorderKeys = _interopRequire(_reorderKeys);
-},{"./Motion":40,"./StaggeredMotion":41,"./TransitionMotion":42,"./presets":45,"./reorderKeys":47,"./spring":49}],47:[function(require,module,exports){
+},{"./Motion":42,"./StaggeredMotion":43,"./TransitionMotion":44,"./presets":47,"./reorderKeys":49,"./spring":51}],49:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4149,7 +4189,7 @@ function reorderKeys() {
 
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":21}],48:[function(require,module,exports){
+},{"_process":23}],50:[function(require,module,exports){
 
 
 // usage assumption: currentStyle values have already been rendered but it says
@@ -4181,7 +4221,7 @@ function shouldStopAnimation(currentStyle, style, currentVelocity) {
 }
 
 module.exports = exports['default'];
-},{}],49:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4205,7 +4245,7 @@ function spring(val, config) {
 }
 
 module.exports = exports['default'];
-},{"./presets":45}],50:[function(require,module,exports){
+},{"./presets":47}],52:[function(require,module,exports){
 
 
 // stepper is used a lot. Saves allocation to return the same array wrapper.
@@ -4249,7 +4289,7 @@ function stepper(secondPerFrame, x, v, destX, k, b, precision) {
 
 module.exports = exports["default"];
 // array reference around.
-},{}],51:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 
 // turn {x: {val: 1, stiffness: 1, damping: 2}, y: 2} generated by
 // `{x: spring(1, {stiffness: 1, damping: 2}), y: 2}` into {x: 1, y: 2}
@@ -4271,7 +4311,7 @@ function stripStyle(style) {
 }
 
 module.exports = exports['default'];
-},{}],52:[function(require,module,exports){
+},{}],54:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.7.1
 (function() {
@@ -4307,7 +4347,7 @@ module.exports = exports['default'];
 }).call(this);
 
 }).call(this,require('_process'))
-},{"_process":21}],53:[function(require,module,exports){
+},{"_process":23}],55:[function(require,module,exports){
 (function (global){
 var now = require('performance-now')
   , root = typeof window === 'undefined' ? global : window
@@ -4383,4 +4423,4 @@ module.exports.polyfill = function() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"performance-now":52}]},{},[17]);
+},{"performance-now":54}]},{},[18]);
