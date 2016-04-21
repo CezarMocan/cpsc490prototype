@@ -139,7 +139,7 @@ var WebcamActions = function () {
       var _this = this;
 
       setTimeout(function () {
-        _this.actions.getNoVisitorsSuccess(500);
+        _this.actions.getNoVisitorsSuccess(5000);
       }, 1000);
     }
   }]);
@@ -1431,7 +1431,7 @@ var TestApp1 = function (_React$Component) {
     }
   }, {
     key: 'resizeCanvas',
-    value: function resizeCanvas(canvas, canvasContext) {
+    value: function resizeCanvas() {
       _WebcamActions2.default.windowSizeUpdate({
         height: window.innerHeight,
         width: window.innerWidth
@@ -1440,11 +1440,12 @@ var TestApp1 = function (_React$Component) {
   }, {
     key: 'drawPastUsers',
     value: function drawPastUsers(canvasContext) {
-      var imgData = canvasContext.createImageData(window.innerWidth, window.innerHeight); // only do this once per page
+      var imgData = canvasContext.createImageData(this.state.width, this.state.height); // only do this once per page
+      var windowWidth = this.state.width;
       for (var i = 0; i < this.state.noVisitors; i++) {
         var y = this.state.pointData[i].x;
         var x = this.state.pointData[i].y;
-        var index = (x * window.innerWidth + y) * 4;
+        var index = (x * windowWidth + y) * 4;
 
         imgData.data[index + 0] = 0;
         imgData.data[index + 1] = 0;
@@ -1474,8 +1475,8 @@ var TestApp1 = function (_React$Component) {
             b: this.getRandom(255)
           };
         }
-        var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * window.innerWidth); //Math.round(Math.random() * window.innerWidth)
-        var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * window.innerHeight);
+        var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * this.state.width); //Math.round(Math.random() * window.innerWidth)
+        var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * this.state.height);
         positionList.push({
           x: x,
           y: y,
@@ -1483,10 +1484,10 @@ var TestApp1 = function (_React$Component) {
         });
       }
 
-      var imgData = canvasContext.getImageData(0, 0, window.innerWidth, window.innerHeight);
+      var imgData = canvasContext.getImageData(0, 0, this.state.width, this.state.height);
+      var windowWidth = this.state.width;
 
       for (var i = 0; i < positionList.length; i++) {
-        var windowWidth = window.innerWidth;
         var index = (positionList[i].x * windowWidth + positionList[i].y) * 4;
         var squareSize = 2;
 
@@ -1524,13 +1525,13 @@ var TestApp1 = function (_React$Component) {
       $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
       $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
 
-      var canvas = document.getElementById('dotsCanvas');
-      var context = canvas.getContext('2d');
+      var currentUsersCanvas = document.getElementById('currentUsersCanvas');
+      var context = currentUsersCanvas.getContext('2d');
 
       // resize the canvas to fill browser window dynamically
-      window.addEventListener('resize', this.resizeCanvas.bind(this, canvas, context), false);
-      this.resizeCanvas(canvas, context);
-      this.drawCurrentUsers([], context);
+      window.addEventListener('resize', this.resizeCanvas.bind(this), false);
+      this.resizeCanvas();
+      // this.drawCurrentUsers([], context);
 
       var that = this;
       this.socket = io();
@@ -1545,13 +1546,18 @@ var TestApp1 = function (_React$Component) {
         return;
       }
 
-      var canvas = document.getElementById('dotsCanvas');
-      var canvasContext = canvas.getContext('2d');
-
-      canvas.width = this.state.width;
-      canvas.height = this.state.height;
-
+      var pastUsersCanvas = document.getElementById('pastUsersCanvas');
+      var canvasContext = pastUsersCanvas.getContext('2d');
+      pastUsersCanvas.width = this.state.width;
+      pastUsersCanvas.height = this.state.height;
       this.drawPastUsers(canvasContext);
+
+      var currentUsersCanvas = document.getElementById('currentUsersCanvas');
+      canvasContext = currentUsersCanvas.getContext('2d');
+      currentUsersCanvas.width = this.state.width;
+      currentUsersCanvas.height = this.state.height;
+      var imgData = canvasContext.createImageData(this.state.width, this.state.height); // only do this once per page
+      this.drawCurrentUsers([], canvasContext);
     }
   }, {
     key: 'componentWillUnmount',
@@ -1569,9 +1575,10 @@ var TestApp1 = function (_React$Component) {
         { className: 'gallery-conservative' },
         _react2.default.createElement(_Header2.default, null),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none' } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none', position: 'fixed', top: 0, right: 0 } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'dotsCanvas', style: { zIndex: 100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
+        _react2.default.createElement('canvas', { id: 'pastUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
+        _react2.default.createElement('canvas', { id: 'currentUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement(
           _RouteTransition2.default,
           { id: this.props.location.pathname, height: context.state.height - 200 },
@@ -1834,17 +1841,17 @@ var WebcamStore = function () {
     value: function onWindowSizeUpdate(windowSizeObj) {
       this.height = windowSizeObj.height;
       this.width = windowSizeObj.width;
-      this.updateImgData();
+      this.updatePastUsersCanvas();
     }
   }, {
     key: 'onGetNoVisitorsSuccess',
     value: function onGetNoVisitorsSuccess(noVisitors) {
       this.noVisitors = noVisitors;
-      this.updateImgData();
+      this.updatePastUsersCanvas();
     }
   }, {
-    key: 'updateImgData',
-    value: function updateImgData() {
+    key: 'updatePastUsersCanvas',
+    value: function updatePastUsersCanvas() {
       this.pointData = [];
       for (var i = 0; i < this.noVisitors; i++) {
         var y = Math.round(Math.random() * this.height);

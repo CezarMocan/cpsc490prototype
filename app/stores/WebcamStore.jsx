@@ -24,15 +24,15 @@ class WebcamStore {
   onWindowSizeUpdate(windowSizeObj) {
     this.height = windowSizeObj.height
     this.width = windowSizeObj.width
-    this.updateImgData();
+    this.updatePastUsersCanvas();
   }
 
   onGetNoVisitorsSuccess(noVisitors) {
     this.noVisitors = noVisitors;
-    this.updateImgData();
+    this.updatePastUsersCanvas();
   }
 
-  updateImgData() {
+  updatePastUsersCanvas() {
     this.pointData = []
     for (var i = 0; i < this.noVisitors; i++) {
       var y = Math.round(Math.random() * this.height)

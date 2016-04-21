@@ -12,7 +12,7 @@ class WebcamActions {
 
   getNoVisitors() {
     setTimeout(() => {
-      this.actions.getNoVisitorsSuccess(500);
+      this.actions.getNoVisitorsSuccess(5000);
     }, 1000);
   }
 }
