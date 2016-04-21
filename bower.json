@@ -26,6 +26,7 @@
     "toastr": "^2.1.1",
     "classnames": "^2.2.3",
     "tracking": "^1.1.2",
-    "headtrackr": "*"
+    "headtrackr": "*",
+    "socket.io-client": "^1.4.5"
   }
 }

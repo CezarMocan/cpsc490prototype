@@ -2,7 +2,7 @@ import React from 'react';
 
 import { TransitionMotion, spring } from 'react-motion';
 
-const SpringModel = { stiffness: 120, damping: 15, precision: 0.05 };
+const SpringModel = { stiffness: 80, damping: 15, precision: 0.05 };
 
 const RouteTransition = React.createClass({
   propTypes: {

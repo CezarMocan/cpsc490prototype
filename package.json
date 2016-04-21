@@ -61,6 +61,7 @@
     "react-dom": "^0.14.2",
     "react-motion": "^0.4.2",
     "react-router": "^1.0.0",
+    "react-socket": "^0.1.4",
     "request": "^2.65.0",
     "require": "^2.4.20",
     "serve-favicon": "^2.3.0",

@@ -3,8 +3,17 @@ import alt from '../alt';
 class WebcamActions {
   constructor() {
     this.generateActions(
-      'webcamUpdate'
+      'webcamUpdate',
+      'windowSizeUpdate',
+      'getNoVisitorsSuccess',
+      'getNoVisitorsFail'
     );
+  }
+
+  getNoVisitors() {
+    setTimeout(() => {
+      this.actions.getNoVisitorsSuccess(500);
+    }, 1000);
   }
 }
 

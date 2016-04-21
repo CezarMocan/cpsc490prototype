@@ -116,6 +116,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _alt = require('../alt');
 
 var _alt2 = _interopRequireDefault(_alt);
@@ -124,11 +126,26 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var WebcamActions = function WebcamActions() {
-  _classCallCheck(this, WebcamActions);
+var WebcamActions = function () {
+  function WebcamActions() {
+    _classCallCheck(this, WebcamActions);
 
-  this.generateActions('webcamUpdate');
-};
+    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail');
+  }
+
+  _createClass(WebcamActions, [{
+    key: 'getNoVisitors',
+    value: function getNoVisitors() {
+      var _this = this;
+
+      setTimeout(function () {
+        _this.actions.getNoVisitorsSuccess(500);
+      }, 1000);
+    }
+  }]);
+
+  return WebcamActions;
+}();
 
 exports.default = _alt2.default.createActions(WebcamActions);
 
@@ -1224,7 +1241,7 @@ var _reactMotion = require('react-motion');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-var SpringModel = { stiffness: 120, damping: 15, precision: 0.05 };
+var SpringModel = { stiffness: 80, damping: 15, precision: 0.05 };
 
 var RouteTransition = _react2.default.createClass({
   displayName: 'RouteTransition',
@@ -1338,14 +1355,17 @@ var TestApp1 = function (_React$Component) {
     _this.onChange = _this.onChange.bind(_this);
     // this.state = {height: 600}
     _this.state = _WebcamStore2.default.getState();
+    _this.currentUsersInterval = {};
+    _this.lastSocketEmit = 0;
+    _this.colorMap = {};
     console.log(_this.state);
     return _this;
   }
 
   _createClass(TestApp1, [{
     key: 'onChange',
-    value: function onChange(state) {
-      this.setState(state);
+    value: function onChange(newState) {
+      this.setState(newState);
     }
   }, {
     key: 'killAllEvents',
@@ -1365,6 +1385,14 @@ var TestApp1 = function (_React$Component) {
     value: function headTrackingFun(ev) {
       var angle = this.state.webcamParams.angle;
       var event = ev.originalEvent;
+
+      var timestamp = Date.now();
+
+      if (timestamp - this.lastSocketEmit > 400) {
+        this.socket.emit('facetracking', { x: event.x, y: event.y });
+        this.lastSocketEmit = timestamp;
+      }
+
       var obj = {
         X: event.x,
         Y: event.y,
@@ -1404,29 +1432,72 @@ var TestApp1 = function (_React$Component) {
   }, {
     key: 'resizeCanvas',
     value: function resizeCanvas(canvas, canvasContext) {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-      this.drawStuff(canvasContext);
+      _WebcamActions2.default.windowSizeUpdate({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
     }
   }, {
-    key: 'drawStuff',
-    value: function drawStuff(canvasContext) {
-      console.log(window.innerWidth);
-      console.log(window.innerHeight);
-      // context.fillStyle = "#FF0000";
-      // context.fillRect(0,0,window.innerWidth / 2,window.innerHeight / 2);
+    key: 'drawPastUsers',
+    value: function drawPastUsers(canvasContext) {
       var imgData = canvasContext.createImageData(window.innerWidth, window.innerHeight); // only do this once per page
-      for (var i = 0; i <= 1000000; i++) {
-        var y = Math.round(Math.random() * window.innerWidth);
-        var x = Math.round(Math.random() * window.innerHeight);
+      for (var i = 0; i < this.state.noVisitors; i++) {
+        var y = this.state.pointData[i].x;
+        var x = this.state.pointData[i].y;
         var index = (x * window.innerWidth + y) * 4;
 
         imgData.data[index + 0] = 0;
         imgData.data[index + 1] = 0;
         imgData.data[index + 2] = 0;
         // Un-comment below if you want a random RGB color. Otherwise, all points are black.
-        //imgData.data[index + Math.round(Math.random() * 3)] = 255;
+        // imgData.data[index + Math.round(Math.random() * 3)] = 255;
         imgData.data[index + 3] = 255;
+      }
+
+      canvasContext.putImageData(imgData, 0, 0);
+    }
+  }, {
+    key: 'getRandom',
+    value: function getRandom(maxVal) {
+      return Math.round(Math.random() * maxVal);
+    }
+  }, {
+    key: 'drawCurrentUsers',
+    value: function drawCurrentUsers(currentUsersCoords, canvasContext) {
+      var positionList = [];
+      for (var key in currentUsersCoords) {
+        //console.log(currentUsersCoords[key].y);
+        if (!(key in this.colorMap)) {
+          this.colorMap[key] = {
+            r: this.getRandom(255),
+            g: this.getRandom(255),
+            b: this.getRandom(255)
+          };
+        }
+        var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * window.innerWidth); //Math.round(Math.random() * window.innerWidth)
+        var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * window.innerHeight);
+        positionList.push({
+          x: x,
+          y: y,
+          key: key
+        });
+      }
+
+      var imgData = canvasContext.getImageData(0, 0, window.innerWidth, window.innerHeight);
+
+      for (var i = 0; i < positionList.length; i++) {
+        var windowWidth = window.innerWidth;
+        var index = (positionList[i].x * windowWidth + positionList[i].y) * 4;
+        var squareSize = 2;
+
+        for (var iBlink = 0; iBlink < squareSize; iBlink++) {
+          for (var jBlink = 0; jBlink < squareSize; jBlink++) {
+            imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 0] = this.colorMap[positionList[i].key].r;
+            imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 1] = this.colorMap[positionList[i].key].g;
+            imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 2] = this.colorMap[positionList[i].key].b;
+            imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 3] = 255;
+          }
+        }
       }
 
       canvasContext.putImageData(imgData, 0, 0);
@@ -1435,8 +1506,11 @@ var TestApp1 = function (_React$Component) {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _WebcamStore2.default.listen(this.onChange);
-
-      this.setState({ height: window.innerHeight - 200 });
+      _WebcamActions2.default.windowSizeUpdate({
+        height: window.innerHeight,
+        width: window.innerWidth
+      });
+      _WebcamActions2.default.getNoVisitors();
 
       var videoInput = document.getElementById('inputVideo');
       var canvasInput = document.getElementById('inputCanvas');
@@ -1451,44 +1525,33 @@ var TestApp1 = function (_React$Component) {
       $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
 
       var canvas = document.getElementById('dotsCanvas');
-      console.log(canvas);
       var context = canvas.getContext('2d');
 
       // resize the canvas to fill browser window dynamically
       window.addEventListener('resize', this.resizeCanvas.bind(this, canvas, context), false);
       this.resizeCanvas(canvas, context);
+      this.drawCurrentUsers([], context);
 
-      var xList = [],
-          yList = [];
-      for (var i = 0; i < 20; i++) {
-        var y = Math.round(Math.random() * window.innerWidth);
-        var x = Math.round(Math.random() * window.innerHeight);
-        xList.push(x);
-        yList.push(y);
+      var that = this;
+      this.socket = io();
+      this.socket.on('positionUpdate', function (users) {
+        that.drawCurrentUsers(users, context);
+      });
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.height == this.state.height && prevState.width == this.state.width && prevState.noVisitors == this.state.noVisitors) {
+        return;
       }
 
-      var oddIteration = 0;
-      var interval = setInterval(function () {
-        var imgData = context.getImageData(0, 0, window.innerWidth, window.innerHeight);
+      var canvas = document.getElementById('dotsCanvas');
+      var canvasContext = canvas.getContext('2d');
 
-        for (var i = 0; i < xList.length; i++) {
-          var windowWidth = window.innerWidth;
-          var index = (xList[i] * windowWidth + yList[i]) * 4;
-          var squareSize = 4;
+      canvas.width = this.state.width;
+      canvas.height = this.state.height;
 
-          for (var iBlink = 0; iBlink < squareSize; iBlink++) {
-            for (var jBlink = 0; jBlink < squareSize; jBlink++) {
-              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 0] = 255;
-              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 1] = 0;
-              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 2] = 0;
-              imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 3] = oddIteration * 255;
-            }
-          }
-        }
-
-        context.putImageData(imgData, 0, 0);
-        oddIteration = 1 - oddIteration;
-      }, 800);
+      this.drawPastUsers(canvasContext);
     }
   }, {
     key: 'componentWillUnmount',
@@ -1511,7 +1574,7 @@ var TestApp1 = function (_React$Component) {
         _react2.default.createElement('canvas', { id: 'dotsCanvas', style: { zIndex: 100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement(
           _RouteTransition2.default,
-          { id: this.props.location.pathname, height: context.state.height },
+          { id: this.props.location.pathname, height: context.state.height - 200 },
           this.props.children
         )
       );
@@ -1755,6 +1818,9 @@ var WebcamStore = function () {
       angle: 0
     };
     this.height = 600;
+    this.width = 600;
+    this.pointData = [];
+    this.noVisitors = 0;
   }
 
   _createClass(WebcamStore, [{
@@ -1762,6 +1828,32 @@ var WebcamStore = function () {
     value: function onWebcamUpdate(webcamParams) {
       //console.log(webcamParams)
       this.webcamParams = webcamParams;
+    }
+  }, {
+    key: 'onWindowSizeUpdate',
+    value: function onWindowSizeUpdate(windowSizeObj) {
+      this.height = windowSizeObj.height;
+      this.width = windowSizeObj.width;
+      this.updateImgData();
+    }
+  }, {
+    key: 'onGetNoVisitorsSuccess',
+    value: function onGetNoVisitorsSuccess(noVisitors) {
+      this.noVisitors = noVisitors;
+      this.updateImgData();
+    }
+  }, {
+    key: 'updateImgData',
+    value: function updateImgData() {
+      this.pointData = [];
+      for (var i = 0; i < this.noVisitors; i++) {
+        var y = Math.round(Math.random() * this.height);
+        var x = Math.round(Math.random() * this.width);
+        this.pointData.push({
+          x: x,
+          y: y
+        });
+      }
     }
   }]);
 

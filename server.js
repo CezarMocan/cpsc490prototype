@@ -13,18 +13,38 @@ var Router = require('react-router');
 var routes = require('./app/routes');
 
 var dbService = require('./db_service.js');
+var ConnectedUsers = require('./connectedUsers.js')
+var connectedUsers = new ConnectedUsers();
+
 
 app.set('port', (process.env.PORT || 8080));
 app.use(express.static(__dirname + '/public'));
 app.use(bodyParser.urlencoded({ extended: true }));
-app.listen(app.get('port'), function() {
-  console.log("Node app is running at localhost:" + app.get('port'));
+
+var server = require('http').createServer(app);
+var io = require('socket.io')(server);
+var onlineUsers = 0;
+
+
+setInterval(function() {
+  io.emit('positionUpdate', connectedUsers.getUsers())
+}, 100);
+
+io.on('connection', function(socket) {
+  onlineUsers++;
+
+  socket.on('facetracking', function(facePositionObject) {
+    connectedUsers.updateUser(socket.id, facePositionObject);
+  })
+
+  socket.on('disconnect', function(){
+    onlineUsers--;
+    connectedUsers.removeUser(socket.id);
+  });
 });
 
-app.get('/api/lessons', function(request, response) {
-  dbService.getAllLessons(function(result) { // Need to do this in order to keep the context
-    // response.send(result)
-  });
+server.listen(app.get('port'), function() {
+  console.log('Express server listening on port ' + app.get('port'));
 });
 
 app.use(function(req, res) {

@@ -7336,7 +7336,7 @@ img.mfp-img {
   z-index: 1000000000;
   position: fixed;
   width: calc(100% - 170px);
-  background: white;
+  background: transparent;
   top: 0;
   padding: 20px 0 10px;
   box-shadow: 0 1px rgba(123, 123, 123, 0.1);
