@@ -39,7 +39,7 @@ class TestApp1 extends React.Component {
 
     var timestamp = Date.now();
 
-    if (timestamp - this.lastSocketEmit > 400) {
+    if (timestamp - this.lastSocketEmit > 50) {
       this.socket.emit('facetracking', {x: event.x, y: event.y});
       this.lastSocketEmit = timestamp;
     }

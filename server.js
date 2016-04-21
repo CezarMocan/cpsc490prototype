@@ -28,7 +28,7 @@ var onlineUsers = 0;
 
 setInterval(function() {
   io.emit('positionUpdate', connectedUsers.getUsers())
-}, 100);
+}, 50);
 
 io.on('connection', function(socket) {
   onlineUsers++;
