@@ -1862,7 +1862,7 @@ var TestApp2 = function (_React$Component) {
         { className: 'gallery-conservative gallery-conservative-v2' },
         _react2.default.createElement(_Header2.default, { prefix: "testApp2" }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none', position: 'fixed', top: 0, right: 0 } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { position: 'fixed', top: 0, right: 0 } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'pastUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement(
