@@ -41,7 +41,8 @@ gulp.task('vendor', function() {
     'bower_components/tracking/build/data/mouth-min.js',
     'bower_components/headtrackr/headtrackr.min.js',
     'bower_components/dat-gui/build/dat.gui.min.js',
-    'bower_components/socket.io-client/socket.io.js'
+    'bower_components/socket.io-client/socket.io.js',
+    'bower_components/d3/d3.js'
   ]).pipe(concat('vendor.js'))
     .pipe(gulpif(production, uglify({ mangle: false })))
     .pipe(gulp.dest('public/js'));

@@ -1,11 +1,12 @@
 import React from 'react';
+//import d3 from 'd3';
 import RouteTransition from './RouteTransition.jsx'
 import Footer from './Footer.jsx';
 import Header from './GalleryConservative/Header.jsx'
 import WebcamStore from '../stores/WebcamStore.jsx'
 import WebcamActions from '../actions/WebcamActions.jsx';
 
-class TestApp1 extends React.Component {
+class TestApp2 extends React.Component {
 
   constructor(props) {
     super(props);
@@ -15,7 +16,6 @@ class TestApp1 extends React.Component {
     this.currentUsersInterval = {};
     this.lastSocketEmit = 0;
     this.colorMap = {}
-    console.log(this.state)
   }
 
   onChange(newState) {
@@ -30,7 +30,7 @@ class TestApp1 extends React.Component {
   }
 
   navigateAway() {
-    window.location = '/testApp1/credits'
+    window.location = '/testApp2/credits'
   }
 
   headTrackingFun(ev) {
@@ -109,7 +109,7 @@ class TestApp1 extends React.Component {
     return Math.round(Math.random() * maxVal);
   }
 
-  drawCurrentUsers(currentUsersCoords, canvasContext) {
+  drawCurrentUsers(svg, currentUsersCoords) {
     var positionList = []
     for (var key in currentUsersCoords) {
       //console.log(currentUsersCoords[key].y);
@@ -120,7 +120,7 @@ class TestApp1 extends React.Component {
           b: this.getRandom(255)
         }
       }
-      var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * this.state.width);//Math.round(Math.random() * window.innerWidth)
+      var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * this.state.width);
       var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * this.state.height)
       positionList.push({
         x: x,
@@ -129,24 +129,25 @@ class TestApp1 extends React.Component {
       })
     }
 
-    var imgData = canvasContext.getImageData(0,0, this.state.width, this.state.height);
     var windowWidth = this.state.width
+    console.log('New positions');
+    for (var i = 0; i < Math.min(positionList.length, 1); i++) {
+      console.log(positionList[i].x, positionList[i].y)
+      svg.insert("circle", "rect")
+          .attr("cy", positionList[i].x)
+          .attr("cx", positionList[i].y)
+          .attr("r", 1e-5)
+          .style("stroke", d3.rgb(this.colorMap[positionList[i].key].r, this.colorMap[positionList[i].key].g, this.colorMap[positionList[i].key].b))
+          .style("stroke-opacity", 1)
+        .transition()
+          .duration(500)
+          .ease(Math.sqrt)
+          .attr("r", 20)
+          .style("stroke-opacity", 1e-6)
+          .remove();
 
-    for (var i = 0; i < positionList.length; i++) {
-      var index = (positionList[i].x * windowWidth + positionList[i].y) * 4
-      var squareSize = 2;
-
-      for (var iBlink = 0; iBlink < squareSize; iBlink++) {
-        for (var jBlink = 0; jBlink < squareSize; jBlink++) {
-          imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 0] = this.colorMap[positionList[i].key].r;
-          imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 1] = this.colorMap[positionList[i].key].g;
-          imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 2] = this.colorMap[positionList[i].key].b;
-          imgData.data[index + jBlink * 4 + iBlink * windowWidth * 4 + 3]= 255;
-        }
-      }
+      //d3.event.preventDefault();
     }
-
-    canvasContext.putImageData(imgData,0,0);
   }
 
   componentDidMount() {
@@ -169,18 +170,24 @@ class TestApp1 extends React.Component {
     $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
     $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
 
-    var currentUsersCanvas = document.getElementById('currentUsersCanvas');
-    var context = currentUsersCanvas.getContext('2d');
+
+    this.svg = d3.select(".gallery-conservative-v2").append("svg")
+        .attr("width", window.innerWidth)
+        .attr("height", window.innerHeight);
+
+    this.svg.append("rect")
+        .attr("width", window.innerWidth)
+        .attr("height", window.innerHeight);
+
 
     // resize the canvas to fill browser window dynamically
     window.addEventListener('resize', this.resizeCanvas.bind(this), false);
     this.resizeCanvas();
-    // this.drawCurrentUsers([], context);
 
     var that = this;
     this.socket = io();
     this.socket.on('positionUpdate', function(users) {
-      that.drawCurrentUsers(users, context);
+      that.drawCurrentUsers(that.svg, users);
     });
 
   }
@@ -196,12 +203,7 @@ class TestApp1 extends React.Component {
     pastUsersCanvas.height = this.state.height;
     this.drawPastUsers(canvasContext);
 
-    var currentUsersCanvas = document.getElementById('currentUsersCanvas');
-    canvasContext = currentUsersCanvas.getContext('2d');
-    currentUsersCanvas.width = this.state.width;
-    currentUsersCanvas.height = this.state.height;
-    var imgData = canvasContext.createImageData(this.state.width, this.state.height); // only do this once per page
-    this.drawCurrentUsers([], canvasContext);
+    this.drawCurrentUsers(this.svg, []);
   }
 
   componentWillUnmount() {
@@ -213,15 +215,14 @@ class TestApp1 extends React.Component {
   	var context = this;
   	// TODO: Set up default style in RouteTransition such that even initial load works.
     return (
-      <div className="gallery-conservative">
-      	<Header prefix={"testApp1"}/>
+      <div className="gallery-conservative gallery-conservative-v2">
+      	<Header prefix={"testApp2"}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
         <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', top: 0, right: 0}}></canvas>
         <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
 
         <canvas id="pastUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>
-        <canvas id="currentUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>
 
     		<RouteTransition id={this.props.location.pathname} height={context.state.height - 200}>
         	{this.props.children}
@@ -231,4 +232,4 @@ class TestApp1 extends React.Component {
   }
 }
 
-export default TestApp1;
+export default TestApp2;

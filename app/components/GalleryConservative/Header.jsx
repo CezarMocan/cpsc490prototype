@@ -16,12 +16,12 @@ class Header extends React.Component {
 	        </div>
         </div>
         <div className="col-sm-6 col-xs-2 no-padding nav-container">
-	        <span className="top-nav"><Link to="/testApp1/about">ABOUT</Link></span>
-	        <span className="top-nav"><Link to="/testApp1/exhibition">E1</Link></span>
-	        <span className="top-nav"><Link to="/testApp1/exhibition2">E2</Link></span>
-          <span className="top-nav"><Link to="/testApp1/exhibition3">E3</Link></span>
-	        <span className="top-nav"><Link to="/testApp1/history">HISTORY</Link></span>
-	        <span className="top-nav"><Link to="/testApp1/credits">CREDITS</Link></span>
+	        <span className="top-nav"><Link to={"/" + this.props.prefix + "/about"}>ABOUT</Link></span>
+	        <span className="top-nav"><Link to={"/" + this.props.prefix + "/exhibition"}>E1</Link></span>
+	        <span className="top-nav"><Link to={"/" + this.props.prefix + "/exhibition2"}>E2</Link></span>
+          <span className="top-nav"><Link to={"/" + this.props.prefix + "/exhibition3"}>E3</Link></span>
+	        <span className="top-nav"><Link to={"/" + this.props.prefix + "/history"}>HISTORY</Link></span>
+	        <span className="top-nav"><Link to={"/" + this.props.prefix + "/credits"}>CREDITS</Link></span>
 	    </div>
       </div>
     );

@@ -7449,6 +7449,19 @@ img.mfp-img {
   margin-top: 10px;
   line-height: 1.8;
 }
+.gallery-conservative-v2 svg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: -100;
+}
+.gallery-conservative-v2 svg rect {
+  fill: none;
+}
+.gallery-conservative-v2 svg circle {
+  fill: none;
+  stroke-width: 1.5px;
+}
 footer {
   position: absolute;
   bottom: 0;
