@@ -131,7 +131,7 @@ class TestApp2 extends React.Component {
 
     var windowWidth = this.state.width
     console.log('New positions');
-    for (var i = 0; i < Math.min(positionList.length, 1); i++) {
+    for (var i = 0; i < positionList.length; i++) {
       console.log(positionList[i].x, positionList[i].y)
       svg.insert("circle", "rect")
           .attr("cy", positionList[i].x)

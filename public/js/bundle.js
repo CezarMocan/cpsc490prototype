@@ -1788,7 +1788,7 @@ var TestApp2 = function (_React$Component) {
 
       var windowWidth = this.state.width;
       console.log('New positions');
-      for (var i = 0; i < Math.min(positionList.length, 1); i++) {
+      for (var i = 0; i < positionList.length; i++) {
         console.log(positionList[i].x, positionList[i].y);
         svg.insert("circle", "rect").attr("cy", positionList[i].x).attr("cx", positionList[i].y).attr("r", 1e-5).style("stroke", d3.rgb(this.colorMap[positionList[i].key].r, this.colorMap[positionList[i].key].g, this.colorMap[positionList[i].key].b)).style("stroke-opacity", 1).transition().duration(500).ease(Math.sqrt).attr("r", 20).style("stroke-opacity", 1e-6).remove();
 
