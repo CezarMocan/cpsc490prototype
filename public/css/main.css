@@ -7387,7 +7387,7 @@ img.mfp-img {
   margin-top: 170px;
   padding-left: 70px;
   padding-right: 80px;
-  padding-bottom: 50px;
+  padding-bottom: 0;
   display: -webkit-box;
   display: -webkit-flex;
   display: -ms-flexbox;
@@ -7395,6 +7395,7 @@ img.mfp-img {
   -webkit-flex-wrap: wrap;
       -ms-flex-wrap: wrap;
           flex-wrap: wrap;
+  height: 100%;
 }
 .gallery-conservative .text-page-container .text-page-title {
   font-family: 'Democratica';
@@ -7415,6 +7416,23 @@ img.mfp-img {
           flex: 1;
   margin-top: 52px;
   text-align: right;
+}
+.gallery-conservative .text-page-container .navigate {
+  font-family: 'Democratica';
+  font-weight: bold;
+  font-size: 28pt;
+  color: #905923;
+  position: absolute;
+  top: 50%;
+  cursor: pointer;
+}
+.gallery-conservative .text-page-container .navigate.navigate-left {
+  -webkit-transform: rotate(90deg);
+          transform: rotate(90deg);
+}
+.gallery-conservative .text-page-container .navigate.navigate-right {
+  -webkit-transform: rotate(-90deg);
+          transform: rotate(-90deg);
 }
 .gallery-conservative .paragraph-content {
   font-family: courier;

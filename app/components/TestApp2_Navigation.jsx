@@ -25,7 +25,7 @@ class TestApp2 extends React.Component {
   killAllEvents(context) {
     $(document).unbind('headtrackingEvent');
     $(document).unbind('headtrackrStatus');
-    console.log(this.htracker);
+    //console.log(this.htracker);
     delete this.htracker;
   }
 
@@ -130,9 +130,9 @@ class TestApp2 extends React.Component {
     }
 
     var windowWidth = this.state.width
-    console.log('New positions');
+    //console.log('New positions');
     for (var i = 0; i < positionList.length; i++) {
-      console.log(positionList[i].x, positionList[i].y)
+      //console.log(positionList[i].x, positionList[i].y)
       svg.insert("circle", "rect")
           .attr("cy", positionList[i].x)
           .attr("cx", positionList[i].y)
@@ -219,7 +219,7 @@ class TestApp2 extends React.Component {
       	<Header prefix={"testApp2"}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
-        <canvas id="outputCanvas" width="320" height="240" style={{position: 'fixed', top: 0, right: 0}}></canvas>
+        <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', bottom: 0, right: 0}}></canvas>
         <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
 
         <canvas id="pastUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>

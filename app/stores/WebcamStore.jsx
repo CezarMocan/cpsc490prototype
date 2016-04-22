@@ -14,6 +14,30 @@ class WebcamStore {
     this.width = 600
     this.pointData = []
     this.noVisitors = 0
+    this.X_RANGE = 14;
+    this.imageIndex = 1;
+    this.imageData = [
+      {
+        title: "glass no. 1",
+        prefix: "img/glass1/glass_",
+        noImages: 18
+      },
+      {
+        title: "glass no. 2",
+        prefix: "img/glass2/",
+        noImages: 18
+      }
+    ]
+  }
+
+  onNextImage() {
+    this.imageIndex++;
+    this.imageIndex %= this.imageData.length;
+  }
+
+  onPreviousImage() {
+    this.imageIndex--;
+    this.imageIndex += this.imageData.length;
   }
 
   onWebcamUpdate(webcamParams) {

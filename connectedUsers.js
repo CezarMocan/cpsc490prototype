@@ -4,7 +4,7 @@ function ConnectedUsers() {
 }
 
 ConnectedUsers.prototype.updateUser = function(socketId, facePositionObject) {
-  console.log(socketId, facePositionObject.x, facePositionObject.y);
+  //console.log(socketId, facePositionObject.x, facePositionObject.y);
   this.connectedUsers[socketId] = {
     x: facePositionObject.x,
     y: facePositionObject.y

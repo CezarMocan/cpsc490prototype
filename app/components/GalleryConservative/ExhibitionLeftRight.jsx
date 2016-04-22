@@ -1,13 +1,16 @@
 import React from 'react';
-import WebcamStore from '../../stores/WebcamStore.jsx'
+import RouteTransition from '../RouteTransition.jsx'
+import WebcamStore from '../../stores/WebcamStore.jsx';
+import WebcamActions from '../../actions/WebcamActions.jsx';
+import Image360 from './Image360.jsx';
 
 class ExhibitionLeftRight extends React.Component {
 	/* <Footer /> */
+
   constructor(props) {
     super(props);
     this.state = WebcamStore.getState();
     this.onChange = this.onChange.bind(this);
-    console.log(this.state)
   }
 
   onChange(state) {
@@ -23,16 +26,43 @@ class ExhibitionLeftRight extends React.Component {
   }
 
 
+  navigateLeft() {
+    WebcamActions.prevImage();
+  }
+
+  navigateRight() {
+    WebcamActions.nextImage();
+  }
 
   render() {
     // {parseInt(this.state.webcamParams.Z)} {parseInt(this.state.webcamParams.X)} {parseInt(this.state.webcamParams.Y)} {this.state.webcamParams.angle}
+    var imageData = this.state.imageData;
+    var index = this.state.imageIndex;
     return (
       <div className="text-page-container credits-container">
+        <span className="navigate navigate-left" onClick={this.navigateLeft}>v</span>
+
         <div className="text-page-left-column exhibition-left-column">
           <div className="text-page-title exhibition-title">
-            warrior
+            {imageData[index].title}
           </div>
           <div className="paragraph-content exhibition-contents">
+            <RouteTransition id={"barbut"} height={this.state.height}>
+              <Image360 prefix={imageData[index].prefix} noImages={imageData[index].noImages}/>
+            </RouteTransition>
+          </div>
+        </div>
+        <div className="text-page-right-column history-right-column">
+          <span className="navigate navigate-right" onClick={this.navigateRight}>v</span>
+        </div>
+      </div>
+    );
+  }
+}
+
+export default ExhibitionLeftRight;
+
+/*
 
             <img className="image-warrior-rotating" src="img/glass_01.png" style={{display: ((this.state.webcamParams.X < -7) ? 'block' : 'none')}}/>
             <img className="image-warrior-rotating" src="img/glass_02.png" style={{display: ((this.state.webcamParams.X >= -7 && this.state.webcamParams.X < -6) ? 'block' : 'none')}}/>
@@ -46,13 +76,6 @@ class ExhibitionLeftRight extends React.Component {
             <img className="image-warrior-rotating" src="img/glass_10.png" style={{display: ((this.state.webcamParams.X >= 4.5 && this.state.webcamParams.X < 5) ? 'block' : 'none')}}/>
             <img className="image-warrior-rotating" src="img/glass_11.png" style={{display: ((this.state.webcamParams.X >= 5 && this.state.webcamParams.X < 5.5) ? 'block' : 'none')}}/>
             <img className="image-warrior-rotating" src="img/glass_12.png" style={{display: ((this.state.webcamParams.X >= 5.5) ? 'block' : 'none')}}/>
-          </div>
-        </div>
-        <div className="text-page-right-column history-right-column">
-        </div>
-      </div>
-    );
-  }
-}
 
-export default ExhibitionLeftRight;
+
+*/

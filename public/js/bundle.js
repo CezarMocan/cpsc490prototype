@@ -130,7 +130,7 @@ var WebcamActions = function () {
   function WebcamActions() {
     _classCallCheck(this, WebcamActions);
 
-    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail');
+    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage');
   }
 
   _createClass(WebcamActions, [{
@@ -335,7 +335,7 @@ var Footer = function (_React$Component) {
 
 exports.default = Footer;
 
-},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":21,"react":"react","react-router":"react-router"}],7:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":1,"../stores/FooterStore.jsx":22,"react":"react","react-router":"react-router"}],7:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -642,7 +642,7 @@ var Exhibition = function (_React$Component) {
 
 exports.default = Exhibition;
 
-},{"../../stores/WebcamStore.jsx":23,"react":"react"}],10:[function(require,module,exports){
+},{"../../stores/WebcamStore.jsx":24,"react":"react"}],10:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -735,7 +735,7 @@ var ExhibitionDiscrete = function (_React$Component) {
 
 exports.default = ExhibitionDiscrete;
 
-},{"../../stores/WebcamStore.jsx":23,"react":"react"}],11:[function(require,module,exports){
+},{"../../stores/WebcamStore.jsx":24,"react":"react"}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -748,9 +748,21 @@ var _react = require('react');
 
 var _react2 = _interopRequireDefault(_react);
 
+var _RouteTransition = require('../RouteTransition.jsx');
+
+var _RouteTransition2 = _interopRequireDefault(_RouteTransition);
+
 var _WebcamStore = require('../../stores/WebcamStore.jsx');
 
 var _WebcamStore2 = _interopRequireDefault(_WebcamStore);
+
+var _WebcamActions = require('../../actions/WebcamActions.jsx');
+
+var _WebcamActions2 = _interopRequireDefault(_WebcamActions);
+
+var _Image = require('./Image360.jsx');
+
+var _Image2 = _interopRequireDefault(_Image);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -772,7 +784,6 @@ var ExhibitionLeftRight = function (_React$Component) {
 
     _this.state = _WebcamStore2.default.getState();
     _this.onChange = _this.onChange.bind(_this);
-    console.log(_this.state);
     return _this;
   }
 
@@ -792,38 +803,56 @@ var ExhibitionLeftRight = function (_React$Component) {
       _WebcamStore2.default.unlisten(this.onChange);
     }
   }, {
+    key: 'navigateLeft',
+    value: function navigateLeft() {
+      _WebcamActions2.default.prevImage();
+    }
+  }, {
+    key: 'navigateRight',
+    value: function navigateRight() {
+      _WebcamActions2.default.nextImage();
+    }
+  }, {
     key: 'render',
     value: function render() {
       // {parseInt(this.state.webcamParams.Z)} {parseInt(this.state.webcamParams.X)} {parseInt(this.state.webcamParams.Y)} {this.state.webcamParams.angle}
+      var imageData = this.state.imageData;
+      var index = this.state.imageIndex;
       return _react2.default.createElement(
         'div',
         { className: 'text-page-container credits-container' },
+        _react2.default.createElement(
+          'span',
+          { className: 'navigate navigate-left', onClick: this.navigateLeft },
+          'v'
+        ),
         _react2.default.createElement(
           'div',
           { className: 'text-page-left-column exhibition-left-column' },
           _react2.default.createElement(
             'div',
             { className: 'text-page-title exhibition-title' },
-            'warrior'
+            imageData[index].title
           ),
           _react2.default.createElement(
             'div',
             { className: 'paragraph-content exhibition-contents' },
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_01.png', style: { display: this.state.webcamParams.X < -7 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_02.png', style: { display: this.state.webcamParams.X >= -7 && this.state.webcamParams.X < -6 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_03.png', style: { display: this.state.webcamParams.X >= -6 && this.state.webcamParams.X < -5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_04.png', style: { display: this.state.webcamParams.X >= -5 && this.state.webcamParams.X < -4 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_05.png', style: { display: this.state.webcamParams.X >= -4 && this.state.webcamParams.X < -3.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_06.png', style: { display: this.state.webcamParams.X >= -3.5 && this.state.webcamParams.X < -2.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_07.png', style: { display: this.state.webcamParams.X >= -2.5 && this.state.webcamParams.X < 2.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_08.png', style: { display: this.state.webcamParams.X >= 2.5 && this.state.webcamParams.X < 3.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_09.png', style: { display: this.state.webcamParams.X >= 3.5 && this.state.webcamParams.X < 4.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_10.png', style: { display: this.state.webcamParams.X >= 4.5 && this.state.webcamParams.X < 5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_11.png', style: { display: this.state.webcamParams.X >= 5 && this.state.webcamParams.X < 5.5 ? 'block' : 'none' } }),
-            _react2.default.createElement('img', { className: 'image-warrior-rotating', src: 'img/glass_12.png', style: { display: this.state.webcamParams.X >= 5.5 ? 'block' : 'none' } })
+            _react2.default.createElement(
+              _RouteTransition2.default,
+              { id: "barbut", height: this.state.height },
+              _react2.default.createElement(_Image2.default, { prefix: imageData[index].prefix, noImages: imageData[index].noImages })
+            )
           )
         ),
-        _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
+        _react2.default.createElement(
+          'div',
+          { className: 'text-page-right-column history-right-column' },
+          _react2.default.createElement(
+            'span',
+            { className: 'navigate navigate-right', onClick: this.navigateRight },
+            'v'
+          )
+        )
       );
     }
   }]);
@@ -833,7 +862,25 @@ var ExhibitionLeftRight = function (_React$Component) {
 
 exports.default = ExhibitionLeftRight;
 
-},{"../../stores/WebcamStore.jsx":23,"react":"react"}],12:[function(require,module,exports){
+/*
+
+            <img className="image-warrior-rotating" src="img/glass_01.png" style={{display: ((this.state.webcamParams.X < -7) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_02.png" style={{display: ((this.state.webcamParams.X >= -7 && this.state.webcamParams.X < -6) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_03.png" style={{display: ((this.state.webcamParams.X >= -6 && this.state.webcamParams.X < -5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_04.png" style={{display: ((this.state.webcamParams.X >= -5 && this.state.webcamParams.X < -4) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_05.png" style={{display: ((this.state.webcamParams.X >= -4 && this.state.webcamParams.X < -3.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_06.png" style={{display: ((this.state.webcamParams.X >= -3.5 && this.state.webcamParams.X < -2.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_07.png" style={{display: ((this.state.webcamParams.X >= -2.5 && this.state.webcamParams.X < 2.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_08.png" style={{display: ((this.state.webcamParams.X >= 2.5 && this.state.webcamParams.X < 3.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_09.png" style={{display: ((this.state.webcamParams.X >= 3.5 && this.state.webcamParams.X < 4.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_10.png" style={{display: ((this.state.webcamParams.X >= 4.5 && this.state.webcamParams.X < 5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_11.png" style={{display: ((this.state.webcamParams.X >= 5 && this.state.webcamParams.X < 5.5) ? 'block' : 'none')}}/>
+            <img className="image-warrior-rotating" src="img/glass_12.png" style={{display: ((this.state.webcamParams.X >= 5.5) ? 'block' : 'none')}}/>
+
+
+*/
+
+},{"../../actions/WebcamActions.jsx":3,"../../stores/WebcamStore.jsx":24,"../RouteTransition.jsx":17,"./Image360.jsx":14,"react":"react"}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1046,6 +1093,127 @@ var History = function (_React$Component) {
 exports.default = History;
 
 },{"react":"react"}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _react = require('react');
+
+var _react2 = _interopRequireDefault(_react);
+
+var _WebcamStore = require('../../stores/WebcamStore.jsx');
+
+var _WebcamStore2 = _interopRequireDefault(_WebcamStore);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var Image360 = function (_React$Component) {
+  _inherits(Image360, _React$Component);
+
+  /* <Footer /> */
+
+  function Image360(props) {
+    _classCallCheck(this, Image360);
+
+    var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Image360).call(this, props));
+
+    _this.state = _WebcamStore2.default.getState();
+    _this.onChange = _this.onChange.bind(_this);
+    return _this;
+  }
+
+  _createClass(Image360, [{
+    key: 'onChange',
+    value: function onChange(state) {
+      this.setState(state);
+    }
+  }, {
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      //console.log('image mount');
+      _WebcamStore2.default.listen(this.onChange);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _WebcamStore2.default.unlisten(this.onChange);
+    }
+  }, {
+    key: 'componentWillReceiveProps',
+    value: function componentWillReceiveProps(nextProps) {
+      if (this.props.prefix != nextProps.prefix) console.log(nextProps);
+    }
+  }, {
+    key: 'getLeftThreshold',
+    value: function getLeftThreshold(i) {
+      return this.state.X_RANGE / (1.0 * this.props.noImages) * i - this.state.X_RANGE / 2.0;
+    }
+  }, {
+    key: 'getRightThreshold',
+    value: function getRightThreshold(i) {
+      return this.state.X_RANGE / (1.0 * this.props.noImages) * (i + 1) - this.state.X_RANGE / 2.0;
+    }
+  }, {
+    key: 'sgn',
+    value: function sgn(x) {
+      if (x > 0) {
+        return 1;
+      }
+      return -1;
+    }
+  }, {
+    key: 'shouldDisplay',
+    value: function shouldDisplay(i) {
+      var normalizedXPos = this.state.webcamParams.X; // this.sgn(x) * this.state.X_RANGE + x % this.state.X_RANGE;
+      // THIS IS SO SHITTY.
+      while (normalizedXPos < -this.state.X_RANGE / 2) {
+        normalizedXPos += this.state.X_RANGE;
+      }
+      while (normalizedXPos > this.state.X_RANGE / 2) {
+        normalizedXPos -= this.state.X_RANGE;
+      }
+      return normalizedXPos >= this.getLeftThreshold(i) && normalizedXPos < this.getRightThreshold(i);
+    }
+  }, {
+    key: 'render',
+    value: function render() {
+      var _this2 = this;
+
+      // {parseInt(this.state.webcamParams.Z)} {parseInt(this.state.webcamParams.X)} {parseInt(this.state.webcamParams.Y)} {this.state.webcamParams.angle}
+      return _react2.default.createElement(
+        'div',
+        { className: 'image360' },
+        [].concat(_toConsumableArray(Array(this.props.noImages))).map(function (x, i) {
+          return _react2.default.createElement('img', { className: 'image-warrior-rotating', src: _this2.props.prefix + (i + 1).toString() + ".png",
+            style: { display: _this2.shouldDisplay(i) ? 'block' : 'none' } });
+        })
+      );
+    }
+  }]);
+
+  return Image360;
+}(_react2.default.Component);
+
+Image360.propTypes = {
+  prefix: _react2.default.PropTypes.string.isRequired,
+  noImages: _react2.default.PropTypes.number.isRequired
+};
+
+exports.default = Image360;
+
+},{"../../stores/WebcamStore.jsx":24,"react":"react"}],15:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -1117,7 +1285,7 @@ var Home = function (_React$Component) {
 
 exports.default = Home;
 
-},{"react":"react"}],15:[function(require,module,exports){
+},{"react":"react"}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1237,7 +1405,7 @@ var Lessons = function (_React$Component) {
 
 exports.default = Lessons;
 
-},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":22,"react":"react","react-router":"react-router"}],16:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":2,"../stores/LessonsStore.jsx":23,"react":"react","react-router":"react-router"}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1314,7 +1482,7 @@ var RouteTransition = _react2.default.createClass({
 
 exports.default = RouteTransition;
 
-},{"react":"react","react-motion":49}],17:[function(require,module,exports){
+},{"react":"react","react-motion":50}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1604,7 +1772,7 @@ var TestApp1 = function (_React$Component) {
 
 exports.default = TestApp1;
 
-},{"../actions/WebcamActions.jsx":3,"../stores/WebcamStore.jsx":23,"./Footer.jsx":6,"./GalleryConservative/Header.jsx":12,"./RouteTransition.jsx":16,"react":"react"}],18:[function(require,module,exports){
+},{"../actions/WebcamActions.jsx":3,"../stores/WebcamStore.jsx":24,"./Footer.jsx":6,"./GalleryConservative/Header.jsx":12,"./RouteTransition.jsx":17,"react":"react"}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1674,7 +1842,7 @@ var TestApp2 = function (_React$Component) {
     value: function killAllEvents(context) {
       $(document).unbind('headtrackingEvent');
       $(document).unbind('headtrackrStatus');
-      console.log(this.htracker);
+      //console.log(this.htracker);
       delete this.htracker;
     }
   }, {
@@ -1787,9 +1955,9 @@ var TestApp2 = function (_React$Component) {
       }
 
       var windowWidth = this.state.width;
-      console.log('New positions');
+      //console.log('New positions');
       for (var i = 0; i < positionList.length; i++) {
-        console.log(positionList[i].x, positionList[i].y);
+        //console.log(positionList[i].x, positionList[i].y)
         svg.insert("circle", "rect").attr("cy", positionList[i].x).attr("cx", positionList[i].y).attr("r", 1e-5).style("stroke", d3.rgb(this.colorMap[positionList[i].key].r, this.colorMap[positionList[i].key].g, this.colorMap[positionList[i].key].b)).style("stroke-opacity", 1).transition().duration(500).ease(Math.sqrt).attr("r", 20).style("stroke-opacity", 1e-6).remove();
 
         //d3.event.preventDefault();
@@ -1862,7 +2030,7 @@ var TestApp2 = function (_React$Component) {
         { className: 'gallery-conservative gallery-conservative-v2' },
         _react2.default.createElement(_Header2.default, { prefix: "testApp2" }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { position: 'fixed', top: 0, right: 0 } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none', position: 'fixed', bottom: 0, right: 0 } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'pastUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement(
@@ -1879,7 +2047,7 @@ var TestApp2 = function (_React$Component) {
 
 exports.default = TestApp2;
 
-},{"../actions/WebcamActions.jsx":3,"../stores/WebcamStore.jsx":23,"./Footer.jsx":6,"./GalleryConservative/Header.jsx":12,"./RouteTransition.jsx":16,"react":"react"}],19:[function(require,module,exports){
+},{"../actions/WebcamActions.jsx":3,"../stores/WebcamStore.jsx":24,"./Footer.jsx":6,"./GalleryConservative/Header.jsx":12,"./RouteTransition.jsx":17,"react":"react"}],20:[function(require,module,exports){
 'use strict';
 
 var _react = require('react');
@@ -1912,7 +2080,7 @@ _reactDom2.default.render(_react2.default.createElement(
   _routes2.default
 ), document.getElementById('app'));
 
-},{"./routes":20,"history/lib/createBrowserHistory":30,"react":"react","react-dom":"react-dom","react-router":"react-router"}],20:[function(require,module,exports){
+},{"./routes":21,"history/lib/createBrowserHistory":31,"react":"react","react-dom":"react-dom","react-router":"react-router"}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1998,7 +2166,7 @@ exports.default = _react2.default.createElement(
   )
 );
 
-},{"./components/App":5,"./components/GalleryConservative/About.jsx":7,"./components/GalleryConservative/Credits.jsx":8,"./components/GalleryConservative/Exhibition.jsx":9,"./components/GalleryConservative/ExhibitionDiscrete.jsx":10,"./components/GalleryConservative/ExhibitionLeftRight.jsx":11,"./components/GalleryConservative/History.jsx":13,"./components/Home":14,"./components/Lessons.jsx":15,"./components/TestApp1.jsx":17,"./components/TestApp2_Navigation.jsx":18,"react":"react","react-router":"react-router"}],21:[function(require,module,exports){
+},{"./components/App":5,"./components/GalleryConservative/About.jsx":7,"./components/GalleryConservative/Credits.jsx":8,"./components/GalleryConservative/Exhibition.jsx":9,"./components/GalleryConservative/ExhibitionDiscrete.jsx":10,"./components/GalleryConservative/ExhibitionLeftRight.jsx":11,"./components/GalleryConservative/History.jsx":13,"./components/Home":15,"./components/Lessons.jsx":16,"./components/TestApp1.jsx":18,"./components/TestApp2_Navigation.jsx":19,"react":"react","react-router":"react-router"}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2045,7 +2213,7 @@ var FooterStore = function () {
 
 exports.default = _alt2.default.createStore(FooterStore);
 
-},{"../actions/FooterActions.jsx":1,"../alt":4}],22:[function(require,module,exports){
+},{"../actions/FooterActions.jsx":1,"../alt":4}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2092,7 +2260,7 @@ var LessonsStore = function () {
 
 exports.default = _alt2.default.createStore(LessonsStore);
 
-},{"../actions/LessonsActions.jsx":2,"../alt":4}],23:[function(require,module,exports){
+},{"../actions/LessonsActions.jsx":2,"../alt":4}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -2128,9 +2296,32 @@ var WebcamStore = function () {
     this.width = 600;
     this.pointData = [];
     this.noVisitors = 0;
+    this.X_RANGE = 14;
+    this.imageIndex = 1;
+    this.imageData = [{
+      title: "glass no. 1",
+      prefix: "img/glass1/glass_",
+      noImages: 18
+    }, {
+      title: "glass no. 2",
+      prefix: "img/glass2/",
+      noImages: 18
+    }];
   }
 
   _createClass(WebcamStore, [{
+    key: 'onNextImage',
+    value: function onNextImage() {
+      this.imageIndex++;
+      this.imageIndex %= this.imageData.length;
+    }
+  }, {
+    key: 'onPreviousImage',
+    value: function onPreviousImage() {
+      this.imageIndex--;
+      this.imageIndex += this.imageData.length;
+    }
+  }, {
     key: 'onWebcamUpdate',
     value: function onWebcamUpdate(webcamParams) {
       //console.log(webcamParams)
@@ -2169,7 +2360,7 @@ var WebcamStore = function () {
 
 exports.default = _alt2.default.createStore(WebcamStore);
 
-},{"../actions/WebcamActions.jsx":3,"../alt":4}],24:[function(require,module,exports){
+},{"../actions/WebcamActions.jsx":3,"../alt":4}],25:[function(require,module,exports){
 // shim for using process in browser
 
 var process = module.exports = {};
@@ -2262,7 +2453,7 @@ process.chdir = function (dir) {
 };
 process.umask = function() { return 0; };
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 /**
  * Indicates that navigation was caused by a call to history.push.
  */
@@ -2294,7 +2485,7 @@ exports['default'] = {
   REPLACE: REPLACE,
   POP: POP
 };
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -2321,7 +2512,7 @@ function loopAsync(turns, work, callback) {
 
   next();
 }
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 (function (process){
 /*eslint-disable no-empty */
 'use strict';
@@ -2392,7 +2583,7 @@ function readState(key) {
   return null;
 }
 }).call(this,require('_process'))
-},{"_process":24,"warning":42}],28:[function(require,module,exports){
+},{"_process":25,"warning":43}],29:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -2473,13 +2664,13 @@ function supportsGoWithoutReloadUsingHash() {
   var ua = navigator.userAgent;
   return ua.indexOf('Firefox') === -1;
 }
-},{}],29:[function(require,module,exports){
+},{}],30:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
 var canUseDOM = !!(typeof window !== 'undefined' && window.document && window.document.createElement);
 exports.canUseDOM = canUseDOM;
-},{}],30:[function(require,module,exports){
+},{}],31:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2660,7 +2851,7 @@ function createBrowserHistory() {
 exports['default'] = createBrowserHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./Actions":25,"./DOMStateStorage":27,"./DOMUtils":28,"./ExecutionEnvironment":29,"./createDOMHistory":31,"./parsePath":36,"_process":24,"invariant":41}],31:[function(require,module,exports){
+},{"./Actions":26,"./DOMStateStorage":28,"./DOMUtils":29,"./ExecutionEnvironment":30,"./createDOMHistory":32,"./parsePath":37,"_process":25,"invariant":42}],32:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -2703,7 +2894,7 @@ function createDOMHistory(options) {
 exports['default'] = createDOMHistory;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./DOMUtils":28,"./ExecutionEnvironment":29,"./createHistory":32,"_process":24,"invariant":41}],32:[function(require,module,exports){
+},{"./DOMUtils":29,"./ExecutionEnvironment":30,"./createHistory":33,"_process":25,"invariant":42}],33:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -2995,7 +3186,7 @@ function createHistory() {
 
 exports['default'] = createHistory;
 module.exports = exports['default'];
-},{"./Actions":25,"./AsyncUtils":26,"./createLocation":33,"./deprecate":34,"./parsePath":36,"./runTransitionHook":37,"deep-equal":38}],33:[function(require,module,exports){
+},{"./Actions":26,"./AsyncUtils":27,"./createLocation":34,"./deprecate":35,"./parsePath":37,"./runTransitionHook":38,"deep-equal":39}],34:[function(require,module,exports){
 //import warning from 'warning'
 'use strict';
 
@@ -3050,7 +3241,7 @@ function createLocation() {
 
 exports['default'] = createLocation;
 module.exports = exports['default'];
-},{"./Actions":25,"./parsePath":36}],34:[function(require,module,exports){
+},{"./Actions":26,"./parsePath":37}],35:[function(require,module,exports){
 //import warning from 'warning'
 
 "use strict";
@@ -3066,7 +3257,7 @@ function deprecate(fn) {
 
 exports["default"] = deprecate;
 module.exports = exports["default"];
-},{}],35:[function(require,module,exports){
+},{}],36:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -3080,7 +3271,7 @@ function extractPath(string) {
 
 exports["default"] = extractPath;
 module.exports = exports["default"];
-},{}],36:[function(require,module,exports){
+},{}],37:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -3127,7 +3318,7 @@ function parsePath(path) {
 exports['default'] = parsePath;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"./extractPath":35,"_process":24,"warning":42}],37:[function(require,module,exports){
+},{"./extractPath":36,"_process":25,"warning":43}],38:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -3154,7 +3345,7 @@ function runTransitionHook(hook, location, callback) {
 exports['default'] = runTransitionHook;
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":24,"warning":42}],38:[function(require,module,exports){
+},{"_process":25,"warning":43}],39:[function(require,module,exports){
 var pSlice = Array.prototype.slice;
 var objectKeys = require('./lib/keys.js');
 var isArguments = require('./lib/is_arguments.js');
@@ -3250,7 +3441,7 @@ function objEquiv(a, b, opts) {
   return typeof a === typeof b;
 }
 
-},{"./lib/is_arguments.js":39,"./lib/keys.js":40}],39:[function(require,module,exports){
+},{"./lib/is_arguments.js":40,"./lib/keys.js":41}],40:[function(require,module,exports){
 var supportsArgumentsClass = (function(){
   return Object.prototype.toString.call(arguments)
 })() == '[object Arguments]';
@@ -3272,7 +3463,7 @@ function unsupported(object){
     false;
 };
 
-},{}],40:[function(require,module,exports){
+},{}],41:[function(require,module,exports){
 exports = module.exports = typeof Object.keys === 'function'
   ? Object.keys : shim;
 
@@ -3283,7 +3474,7 @@ function shim (obj) {
   return keys;
 }
 
-},{}],41:[function(require,module,exports){
+},{}],42:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2013-2015, Facebook, Inc.
@@ -3338,7 +3529,7 @@ var invariant = function(condition, format, a, b, c, d, e, f) {
 module.exports = invariant;
 
 }).call(this,require('_process'))
-},{"_process":24}],42:[function(require,module,exports){
+},{"_process":25}],43:[function(require,module,exports){
 (function (process){
 /**
  * Copyright 2014-2015, Facebook, Inc.
@@ -3402,7 +3593,7 @@ if (process.env.NODE_ENV !== 'production') {
 module.exports = warning;
 
 }).call(this,require('_process'))
-},{"_process":24}],43:[function(require,module,exports){
+},{"_process":25}],44:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3644,7 +3835,7 @@ var Motion = _react2['default'].createClass({
 
 exports['default'] = Motion;
 module.exports = exports['default'];
-},{"./mapToZero":46,"./shouldStopAnimation":51,"./stepper":53,"./stripStyle":54,"performance-now":55,"raf":56,"react":"react"}],44:[function(require,module,exports){
+},{"./mapToZero":47,"./shouldStopAnimation":52,"./stepper":54,"./stripStyle":55,"performance-now":56,"raf":57,"react":"react"}],45:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -3907,7 +4098,7 @@ var StaggeredMotion = _react2['default'].createClass({
 
 exports['default'] = StaggeredMotion;
 module.exports = exports['default'];
-},{"./mapToZero":46,"./shouldStopAnimation":51,"./stepper":53,"./stripStyle":54,"performance-now":55,"raf":56,"react":"react"}],45:[function(require,module,exports){
+},{"./mapToZero":47,"./shouldStopAnimation":52,"./stepper":54,"./stripStyle":55,"performance-now":56,"raf":57,"react":"react"}],46:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4396,7 +4587,7 @@ module.exports = exports['default'];
 
 // the array that keeps track of currently rendered stuff! Including stuff
 // that you've unmounted but that's still animating. This is where it lives
-},{"./mapToZero":46,"./mergeDiff":47,"./shouldStopAnimation":51,"./stepper":53,"./stripStyle":54,"performance-now":55,"raf":56,"react":"react"}],46:[function(require,module,exports){
+},{"./mapToZero":47,"./mergeDiff":48,"./shouldStopAnimation":52,"./stepper":54,"./stripStyle":55,"performance-now":56,"raf":57,"react":"react"}],47:[function(require,module,exports){
 
 
 // currently used to initiate the velocity style object to 0
@@ -4416,7 +4607,7 @@ function mapToZero(obj) {
 }
 
 module.exports = exports['default'];
-},{}],47:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 
 
 // core keys merging algorithm. If previous render's keys are [a, b], and the
@@ -4525,7 +4716,7 @@ function mergeDiff(prev, next, onRemove) {
 
 module.exports = exports['default'];
 // to loop through and find a key's index each time), but I no longer care
-},{}],48:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 "use strict";
 
 exports.__esModule = true;
@@ -4536,7 +4727,7 @@ exports["default"] = {
   stiff: { stiffness: 210, damping: 20 }
 };
 module.exports = exports["default"];
-},{}],49:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4568,7 +4759,7 @@ exports.presets = _interopRequire(_presets);
 var _reorderKeys = require('./reorderKeys');
 
 exports.reorderKeys = _interopRequire(_reorderKeys);
-},{"./Motion":43,"./StaggeredMotion":44,"./TransitionMotion":45,"./presets":48,"./reorderKeys":50,"./spring":52}],50:[function(require,module,exports){
+},{"./Motion":44,"./StaggeredMotion":45,"./TransitionMotion":46,"./presets":49,"./reorderKeys":51,"./spring":53}],51:[function(require,module,exports){
 (function (process){
 'use strict';
 
@@ -4588,7 +4779,7 @@ function reorderKeys() {
 
 module.exports = exports['default'];
 }).call(this,require('_process'))
-},{"_process":24}],51:[function(require,module,exports){
+},{"_process":25}],52:[function(require,module,exports){
 
 
 // usage assumption: currentStyle values have already been rendered but it says
@@ -4620,7 +4811,7 @@ function shouldStopAnimation(currentStyle, style, currentVelocity) {
 }
 
 module.exports = exports['default'];
-},{}],52:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 'use strict';
 
 exports.__esModule = true;
@@ -4644,7 +4835,7 @@ function spring(val, config) {
 }
 
 module.exports = exports['default'];
-},{"./presets":48}],53:[function(require,module,exports){
+},{"./presets":49}],54:[function(require,module,exports){
 
 
 // stepper is used a lot. Saves allocation to return the same array wrapper.
@@ -4688,7 +4879,7 @@ function stepper(secondPerFrame, x, v, destX, k, b, precision) {
 
 module.exports = exports["default"];
 // array reference around.
-},{}],54:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 
 // turn {x: {val: 1, stiffness: 1, damping: 2}, y: 2} generated by
 // `{x: spring(1, {stiffness: 1, damping: 2}), y: 2}` into {x: 1, y: 2}
@@ -4710,7 +4901,7 @@ function stripStyle(style) {
 }
 
 module.exports = exports['default'];
-},{}],55:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function (process){
 // Generated by CoffeeScript 1.7.1
 (function() {
@@ -4746,7 +4937,7 @@ module.exports = exports['default'];
 }).call(this);
 
 }).call(this,require('_process'))
-},{"_process":24}],56:[function(require,module,exports){
+},{"_process":25}],57:[function(require,module,exports){
 (function (global){
 var now = require('performance-now')
   , root = typeof window === 'undefined' ? global : window
@@ -4822,4 +5013,4 @@ module.exports.polyfill = function() {
 }
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{"performance-now":55}]},{},[19]);
+},{"performance-now":56}]},{},[20]);

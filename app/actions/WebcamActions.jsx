@@ -6,7 +6,9 @@ class WebcamActions {
       'webcamUpdate',
       'windowSizeUpdate',
       'getNoVisitorsSuccess',
-      'getNoVisitorsFail'
+      'getNoVisitorsFail',
+      'nextImage',
+      'prevImage'
     );
   }
 

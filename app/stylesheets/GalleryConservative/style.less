@@ -95,9 +95,10 @@
 		margin-top: 170px;
 		padding-left: 70px;
 		padding-right: 80px;
-		padding-bottom: 50px;
+		padding-bottom: 0;
 		display: flex;
 		flex-wrap: wrap;
+		height: 100%;
 
 		.text-page-title {
 			font-family: 'Democratica';
@@ -114,6 +115,24 @@
 			flex: 1;
 			margin-top: 52px;
 			text-align: right;
+		}
+
+		.navigate {
+			font-family: 'Democratica';
+			font-weight: bold;
+			font-size: 28pt;
+			color: @bronze;
+			position: absolute;
+			top: 50%;
+			cursor: pointer;
+			&.navigate-left {
+				transform: rotate(90deg);
+			}
+
+			&.navigate-right {
+				transform: rotate(-90deg);
+			}
+
 		}
 	}
 
