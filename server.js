@@ -27,6 +27,8 @@ var onlineUsers = 0;
 
 
 setInterval(function() {
+  //console.log(Date.now())
+  //console.log(connectedUsers.getUsers());
   io.emit('positionUpdate', connectedUsers.getUsers())
 }, 50);
 

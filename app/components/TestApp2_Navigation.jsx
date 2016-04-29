@@ -11,11 +11,23 @@ class TestApp2 extends React.Component {
   constructor(props) {
     super(props);
     this.onChange = this.onChange.bind(this);
+
+    this.SERVER_UPDATE_INTERVAL = 125;
     // this.state = {height: 600}
     this.state = WebcamStore.getState();
     this.currentUsersInterval = {};
     this.lastSocketEmit = 0;
+
+    this.lastTwoPositions = {}
+    this.lastFakePosition = {}
+
     this.colorMap = {}
+    this.selfColor = {
+      r: this.getRandom(255),
+      g: this.getRandom(255),
+      b: this.getRandom(255)
+    }
+
   }
 
   onChange(newState) {
@@ -38,8 +50,7 @@ class TestApp2 extends React.Component {
     var event = ev.originalEvent;
 
     var timestamp = Date.now();
-
-    if (timestamp - this.lastSocketEmit > 50) {
+    if (timestamp - this.lastSocketEmit > this.SERVER_UPDATE_INTERVAL) {
       this.socket.emit('facetracking', {x: event.x, y: event.y});
       this.lastSocketEmit = timestamp;
     }
@@ -52,6 +63,7 @@ class TestApp2 extends React.Component {
     }
     //console.log(obj)
     WebcamActions.webcamUpdate(obj);
+    this.drawSelf(event.x, event.y);
   }
 
   headStatusFun(ev) {
@@ -109,44 +121,158 @@ class TestApp2 extends React.Component {
     return Math.round(Math.random() * maxVal);
   }
 
+  cameraXToScreenX(cameraX) {
+    return Math.round((cameraX + 15) / 30.0 * this.state.width);
+  }
+
+  cameraYToScreenY(cameraY) {
+    return Math.round((20 - cameraY) / 20.0 * this.state.height)
+  }
+
+  drawCircle(x, y, colorObj, radius) {
+    var svg = this.svg;
+    svg.insert("circle", "rect")
+        .attr("cy", y)
+        .attr("cx", x)
+        .attr("r", 1e-5)
+        .style("stroke", d3.rgb(colorObj.r, colorObj.g, colorObj.b))
+        .style("stroke-opacity", 1)
+      .transition()
+        .duration(500)
+        .ease(Math.sqrt)
+        .attr("r", radius)
+        .style("stroke-opacity", 1e-6)
+        .remove();
+  }
+
+  drawSelf(X, Y) {
+    var svg = this.svg;
+    var x = this.cameraXToScreenX(X);
+    var y = this.cameraYToScreenY(Y);
+
+    this.drawCircle(x, y, this.selfColor, 20);
+  }
+
+  isSelf(key) {
+    if (key.indexOf(this.socket.id) != -1)
+      return true;
+    return false;
+  }
+
+  checkAssignColor(key) {
+    if (!(key in this.colorMap)) {
+      this.colorMap[key] = {
+        r: this.getRandom(255),
+        g: this.getRandom(255),
+        b: this.getRandom(255)
+      }
+    }
+  }
+
+
+  // It's too intensive for the server to send updates from client at 20fps. So we send less often, and predict movemment of other users.
+  checkCreateFakePosition(key, x, y) {
+    if (!(key in this.lastTwoPositions)) {
+      this.lastTwoPositions[key] = []
+      this.lastTwoPositions[key].push({
+        x: x,
+        y: y,
+        timestamp: Date.now()
+      })
+      return {
+        x: x,
+        y: y
+      };
+    }
+
+    var len = this.lastTwoPositions[key].length
+    var last = this.lastTwoPositions[key][len - 1]
+    var serverPos = {
+      x: x,
+      y: y
+    }
+    // Got new position from server --> it's real man, return it.
+    if (last.x != x || last.y != y) {
+      this.lastTwoPositions[key].push({
+        x: x,
+        y: y,
+        timestamp: Date.now()
+      })
+      if (this.lastTwoPositions[key].length > 2)
+        this.lastTwoPositions[key].shift()
+
+      if (key in this.lastFakePosition) {
+        var xDelta = x - this.lastFakePosition[key].x
+        var yDelta = y - this.lastFakePosition[key].y
+        if (Math.abs(xDelta) + Math.abs(yDelta) > 20) {
+          var xSign = Math.sign(xDelta)
+          var ySign = Math.sign(yDelta)
+          var xCurr = this.lastFakePosition[key].x;
+          var yCurr = this.lastFakePosition[key].y
+
+          /*
+          var intervalId = setInterval(function() {
+            xCurr = xCurr + 10 * xSign;
+            yCurr = yCurr + this.getRandom(10) - 5;
+            if (Math.sign(x - xCurr) != xSign) {
+              window.clearInterval(intervalId)
+            }
+            this.drawCircle(xCurr, yCurr, this.colorMap[key], this.getRandom(10))
+          }, 5)
+          */
+
+          while (Math.sign(x - xCurr) == xSign) {
+            xCurr = xCurr + 10 * xSign;
+            yCurr = yCurr + this.getRandom(10) - 5;
+            this.drawCircle(xCurr, yCurr, this.colorMap[key], this.getRandom(10))
+          }
+
+        }
+      }
+
+      return serverPos;
+    } else {
+      if (len == 1)
+        return serverPos
+
+      var timeDelta = this.lastTwoPositions[key][1].timestamp - this.lastTwoPositions[key][0].timestamp
+      var xDelta = this.lastTwoPositions[key][1].x - this.lastTwoPositions[key][0].x
+      var yDelta = this.lastTwoPositions[key][1].y - this.lastTwoPositions[key][0].y
+      var timeRatio = (Date.now() - this.lastTwoPositions[key][1].timestamp) / timeDelta;
+
+
+      this.lastFakePosition[key] = {
+        x: this.lastTwoPositions[key][1].x + (xDelta * timeRatio) + this.getRandom(10) - 5,
+        y: this.lastTwoPositions[key][1].y + (yDelta * timeRatio) + this.getRandom(10) - 5
+      }
+
+      return this.lastFakePosition[key]
+    }
+  }
+
   drawCurrentUsers(svg, currentUsersCoords) {
     var positionList = []
     for (var key in currentUsersCoords) {
-      //console.log(currentUsersCoords[key].y);
-      if (!(key in this.colorMap)) {
-        this.colorMap[key] = {
-          r: this.getRandom(255),
-          g: this.getRandom(255),
-          b: this.getRandom(255)
-        }
+      if (this.isSelf(key)) {
+        continue;
       }
-      var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * this.state.width);
-      var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * this.state.height)
+      this.checkAssignColor(key);
+      var x = this.cameraXToScreenX(currentUsersCoords[key].x);
+      var y = this.cameraYToScreenY(currentUsersCoords[key].y);
+
+      var positionObj = this.checkCreateFakePosition(key, x, y)
+      //console.log(positionObj)
+
       positionList.push({
-        x: x,
-        y: y,
+        x: positionObj.x,
+        y: positionObj.y,
         key: key
       })
     }
 
     var windowWidth = this.state.width
-    //console.log('New positions');
     for (var i = 0; i < positionList.length; i++) {
-      //console.log(positionList[i].x, positionList[i].y)
-      svg.insert("circle", "rect")
-          .attr("cy", positionList[i].x)
-          .attr("cx", positionList[i].y)
-          .attr("r", 1e-5)
-          .style("stroke", d3.rgb(this.colorMap[positionList[i].key].r, this.colorMap[positionList[i].key].g, this.colorMap[positionList[i].key].b))
-          .style("stroke-opacity", 1)
-        .transition()
-          .duration(500)
-          .ease(Math.sqrt)
-          .attr("r", 20)
-          .style("stroke-opacity", 1e-6)
-          .remove();
-
-      //d3.event.preventDefault();
+      this.drawCircle(positionList[i].x, positionList[i].y, this.colorMap[positionList[i].key], 10)
     }
   }
 
@@ -162,13 +288,13 @@ class TestApp2 extends React.Component {
     var canvasInput = document.getElementById('inputCanvas');
     var canvasOutput = document.getElementById('outputCanvas');
 
-    this.htracker = new headtrackr.Tracker({ui: false, detectionInterval: 20, debug: canvasOutput, calcAngles: true});
+    this.htracker = new headtrackr.Tracker({ui: false, detectionInterval: 40, debug: canvasOutput, calcAngles: true});
     this.htracker.init(videoInput, canvasInput);
     this.htracker.start();
 
     $(document).bind('headtrackrStatus', this.headStatusFun.bind(this));
     $(document).bind('headtrackingEvent', this.headTrackingFun.bind(this));
-    $(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
+    //$(document).bind('facetrackingEvent', this.faceTrackingFun.bind(this));
 
 
     this.svg = d3.select(".gallery-conservative-v2").append("svg")
@@ -187,15 +313,31 @@ class TestApp2 extends React.Component {
     var that = this;
     this.socket = io();
     this.socket.on('positionUpdate', function(users) {
+      //console.log(Date.now());
       that.drawCurrentUsers(that.svg, users);
     });
 
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (nextState.height != this.state.height || nextState.width != this.state.width || nextState.noVisitors != this.state.noVisitors) {
+      return true;
+    }
+
+    if (nextProps.location.pathname != this.props.location.pathname) {
+      return true;
+    }
+
+    return false;
+  }
+
   componentDidUpdate(prevProps, prevState) {
+    //console.log(this.state);
     if (prevState.height == this.state.height && prevState.width == this.state.width && prevState.noVisitors == this.state.noVisitors) {
       return
     }
+
+    //console.log('component did update');
 
     var pastUsersCanvas = document.getElementById('pastUsersCanvas');
     var canvasContext = pastUsersCanvas.getContext('2d');
@@ -219,7 +361,7 @@ class TestApp2 extends React.Component {
       	<Header prefix={"testApp2"}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
-        <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', bottom: 0, right: 0}}></canvas>
+        <canvas id="outputCanvas" width="320" height="240" style={{position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH'}}></canvas>
         <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
 
         <canvas id="pastUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>
