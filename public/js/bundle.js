@@ -2043,7 +2043,7 @@ var TestApp2 = function (_React$Component) {
             while (Math.sign(x - xCurr) == xSign) {
               xCurr = xCurr + 10 * xSign;
               yCurr = yCurr + this.getRandom(10) - 5;
-              this.drawCircle(xCurr, yCurr, this.colorMap[key], this.getRandom(10));
+              this.drawCircle(xCurr, yCurr, this.colorMap[key], 6 + 3 * Math.random());
             }
           }
         }
