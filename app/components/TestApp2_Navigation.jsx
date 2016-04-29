@@ -325,9 +325,10 @@ class TestApp2 extends React.Component {
       return true;
     if (nextProps.location.pathname != this.props.location.pathname)
       return true;
-    if (nextState.pageIndex != this.state.pageIndex) {
+    if (nextState.pageIndex != this.state.pageIndex)
       return true;
-    }
+    if (nextState.webcamCanvas != this.state.webcamCanvas)
+      return true;
 
     return false;
   }
@@ -399,6 +400,10 @@ class TestApp2 extends React.Component {
     });
   }
 
+  toggleWebcamCanvas() {
+    WebcamActions.toggleWebcamCanvas()
+  }
+
   render() {
   	var context = this;
   	// TODO: Set up default style in RouteTransition such that even initial load works.
@@ -407,10 +412,13 @@ class TestApp2 extends React.Component {
       	<Header prefix={this.PATHNAME_PREFIX}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
-        <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH'}}></canvas>
+        <canvas id="outputCanvas" width="320" height="240" className={!this.state.webcamCanvas ? "no-display" : ""} style={{position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH'}}></canvas>
         <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
-
         <canvas id="pastUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>
+
+        <div className="toggle-webcam" onClick={this.toggleWebcamCanvas}>
+          <span className="glyphicon glyphicon-eye-open" ariaHidden="false"></span>
+        </div>
 
     		<RouteTransition id={this.props.location.pathname} height={context.state.height - 200}>
         	{this.props.children}

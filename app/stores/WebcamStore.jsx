@@ -15,6 +15,9 @@ class WebcamStore {
     this.pointData = []
     this.noVisitors = 0
     this.X_RANGE = 14;
+
+    this.webcamCanvas = false;
+
     this.imageIndex = 0;
     this.imageData = [
       {
@@ -86,6 +89,10 @@ class WebcamStore {
   onPreviousImage() {
     this.imageIndex--;
     this.imageIndex += this.imageData.length;
+  }
+
+  onToggleWebcamCanvas() {
+    this.webcamCanvas = !this.webcamCanvas;
   }
 
   onWebcamUpdate(webcamParams) {

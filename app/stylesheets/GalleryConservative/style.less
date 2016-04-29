@@ -2,6 +2,7 @@
 @black: #000000;
 @grey: #7d7d7d;
 @bgcolor: #fdfdfd;
+@white: #fdfdfd;
 
 .gallery-conservative {
 	padding-left: 70px;
@@ -187,5 +188,23 @@
 		  fill: none;
 		  stroke-width: 1.5px;
 		}
+	}
+
+	.toggle-webcam {
+		position: fixed;
+	    bottom: 20px;
+	    right: -10px;
+	    width: 45px;
+	    height: 45px;
+	    font-size: 15pt;
+	    text-align: center;
+	    background-color: rgba(253, 253, 253, .8);
+	    border: 1px solid @bronze;
+	    padding-top: 9px;
+	    cursor: pointer;
+	    border-radius: 40px;
+	    .glyphicon {
+	    	color: @bronze;
+	    }
 	}
 }

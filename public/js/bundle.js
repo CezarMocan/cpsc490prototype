@@ -130,7 +130,7 @@ var WebcamActions = function () {
   function WebcamActions() {
     _classCallCheck(this, WebcamActions);
 
-    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage', 'nextPage');
+    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage', 'nextPage', 'toggleWebcamCanvas');
   }
 
   _createClass(WebcamActions, [{
@@ -2127,9 +2127,8 @@ var TestApp2 = function (_React$Component) {
 
       if (nextState.height != this.state.height || nextState.width != this.state.width || nextState.noVisitors != this.state.noVisitors) return true;
       if (nextProps.location.pathname != this.props.location.pathname) return true;
-      if (nextState.pageIndex != this.state.pageIndex) {
-        return true;
-      }
+      if (nextState.pageIndex != this.state.pageIndex) return true;
+      if (nextState.webcamCanvas != this.state.webcamCanvas) return true;
 
       return false;
     }
@@ -2198,6 +2197,11 @@ var TestApp2 = function (_React$Component) {
       });
     }
   }, {
+    key: 'toggleWebcamCanvas',
+    value: function toggleWebcamCanvas() {
+      _WebcamActions2.default.toggleWebcamCanvas();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var context = this;
@@ -2207,9 +2211,14 @@ var TestApp2 = function (_React$Component) {
         { className: 'gallery-conservative gallery-conservative-v2' },
         _react2.default.createElement(_Header2.default, { prefix: this.PATHNAME_PREFIX }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none', position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH' } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', className: !this.state.webcamCanvas ? "no-display" : "", style: { position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH' } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'pastUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
+        _react2.default.createElement(
+          'div',
+          { className: 'toggle-webcam', onClick: this.toggleWebcamCanvas },
+          _react2.default.createElement('span', { className: 'glyphicon glyphicon-eye-open', ariaHidden: 'false' })
+        ),
         _react2.default.createElement(
           _RouteTransition2.default,
           { id: this.props.location.pathname, height: context.state.height - 200 },
@@ -2474,6 +2483,9 @@ var WebcamStore = function () {
     this.pointData = [];
     this.noVisitors = 0;
     this.X_RANGE = 14;
+
+    this.webcamCanvas = false;
+
     this.imageIndex = 0;
     this.imageData = [{
       title: "glass no. 1",
@@ -2541,6 +2553,11 @@ var WebcamStore = function () {
     value: function onPreviousImage() {
       this.imageIndex--;
       this.imageIndex += this.imageData.length;
+    }
+  }, {
+    key: 'onToggleWebcamCanvas',
+    value: function onToggleWebcamCanvas() {
+      this.webcamCanvas = !this.webcamCanvas;
     }
   }, {
     key: 'onWebcamUpdate',

@@ -9,7 +9,8 @@ class WebcamActions {
       'getNoVisitorsFail',
       'nextImage',
       'prevImage',
-      'nextPage'
+      'nextPage',
+      'toggleWebcamCanvas'
     );
   }
 

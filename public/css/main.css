@@ -6694,7 +6694,7 @@ button.close {
 }
 .toast-message a,
 .toast-message label {
-  color: #FFFFFF;
+  color: #fdfdfd;
 }
 .toast-message a:hover {
   color: #CCCCCC;
@@ -6707,7 +6707,7 @@ button.close {
   float: right;
   font-size: 20px;
   font-weight: bold;
-  color: #FFFFFF;
+  color: #fdfdfd;
   -webkit-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
   opacity: 0.8;
@@ -6789,7 +6789,7 @@ button.toast-close-button {
   background-position: 15px center;
   background-repeat: no-repeat;
   box-shadow: 0 0 12px #7d7d7d;
-  color: #FFFFFF;
+  color: #fdfdfd;
   opacity: 0.8;
   -ms-filter: progid:DXImageTransform.Microsoft.Alpha(Opacity=80);
   filter: alpha(opacity=80);
@@ -7475,9 +7475,29 @@ img.mfp-img {
   fill: none;
   stroke-width: 1.5px;
 }
+.gallery-conservative-v2 .toggle-webcam {
+  position: fixed;
+  bottom: 20px;
+  right: -10px;
+  width: 45px;
+  height: 45px;
+  font-size: 15pt;
+  text-align: center;
+  background-color: rgba(253, 253, 253, 0.8);
+  border: 1px solid #905923;
+  padding-top: 9px;
+  cursor: pointer;
+  border-radius: 40px;
+}
+.gallery-conservative-v2 .toggle-webcam .glyphicon {
+  color: #905923;
+}
 body {
   background-color: #FDFDFD;
   color: #111111;
+}
+#app .no-display {
+  display: none;
 }
 footer {
   position: absolute;
