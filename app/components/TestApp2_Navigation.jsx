@@ -361,7 +361,7 @@ class TestApp2 extends React.Component {
       	<Header prefix={"testApp2"}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
-        <canvas id="outputCanvas" width="320" height="240" style={{position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH'}}></canvas>
+        <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH'}}></canvas>
         <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
 
         <canvas id="pastUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>
