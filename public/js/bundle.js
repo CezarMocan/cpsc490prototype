@@ -130,7 +130,7 @@ var WebcamActions = function () {
   function WebcamActions() {
     _classCallCheck(this, WebcamActions);
 
-    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage');
+    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage', 'nextPage');
   }
 
   _createClass(WebcamActions, [{
@@ -822,11 +822,6 @@ var ExhibitionLeftRight = function (_React$Component) {
         'div',
         { className: 'text-page-container credits-container' },
         _react2.default.createElement(
-          'span',
-          { className: 'navigate navigate-left', onClick: this.navigateLeft },
-          'v'
-        ),
-        _react2.default.createElement(
           'div',
           { className: 'text-page-left-column exhibition-left-column' },
           _react2.default.createElement(
@@ -844,15 +839,7 @@ var ExhibitionLeftRight = function (_React$Component) {
             )
           )
         ),
-        _react2.default.createElement(
-          'div',
-          { className: 'text-page-right-column history-right-column' },
-          _react2.default.createElement(
-            'span',
-            { className: 'navigate navigate-right', onClick: this.navigateRight },
-            'v'
-          )
-        )
+        _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
       );
     }
   }]);
@@ -861,6 +848,9 @@ var ExhibitionLeftRight = function (_React$Component) {
 }(_react2.default.Component);
 
 exports.default = ExhibitionLeftRight;
+
+// <span className="navigate navigate-left" onClick={this.navigateLeft}>v</span>
+// <span className="navigate navigate-right" onClick={this.navigateRight}>v</span>
 
 /*
 
@@ -1825,6 +1815,8 @@ var TestApp2 = function (_React$Component) {
 
     _this.onChange = _this.onChange.bind(_this);
 
+    _this.PATHNAME_PREFIX = 'testApp2';
+
     _this.SERVER_UPDATE_INTERVAL = 125;
     // this.state = {height: 600}
     _this.state = _WebcamStore2.default.getState();
@@ -1841,6 +1833,10 @@ var TestApp2 = function (_React$Component) {
       b: _this.getRandom(255)
     };
 
+    _this.NAVIGATE_ZONE_BUFFER = 50;
+    _this.NAVIGATE_ZONE_REQUIRED = 40;
+    _this.lastWebcamCoords = [];
+    _this.navigateZoneCount = 0;
     return _this;
   }
 
@@ -1860,7 +1856,7 @@ var TestApp2 = function (_React$Component) {
   }, {
     key: 'navigateAway',
     value: function navigateAway() {
-      window.location = '/testApp2/credits';
+      //window.location = '/testApp2/credits'
     }
   }, {
     key: 'headTrackingFun',
@@ -2029,17 +2025,6 @@ var TestApp2 = function (_React$Component) {
             var xCurr = this.lastFakePosition[key].x;
             var yCurr = this.lastFakePosition[key].y;
 
-            /*
-            var intervalId = setInterval(function() {
-              xCurr = xCurr + 10 * xSign;
-              yCurr = yCurr + this.getRandom(10) - 5;
-              if (Math.sign(x - xCurr) != xSign) {
-                window.clearInterval(intervalId)
-              }
-              this.drawCircle(xCurr, yCurr, this.colorMap[key], this.getRandom(10))
-            }, 5)
-            */
-
             while (Math.sign(x - xCurr) == xSign) {
               xCurr = xCurr + 10 * xSign;
               yCurr = yCurr + this.getRandom(10) - 5;
@@ -2093,6 +2078,85 @@ var TestApp2 = function (_React$Component) {
       }
     }
   }, {
+    key: 'drawNavigationZone',
+    value: function drawNavigationZone(svg) {
+      var obj = this.state.pages[this.state.pageIndex];
+
+      svg.insert("circle", "rect").attr("id", "navCircle").attr("cy", obj.circleY).attr("cx", obj.circleX).attr("r", obj.circleRadius).style("stroke", d3.rgb(144, 89, 35)).style("fill", d3.rgb(255, 255, 255)).style("stroke-opacity", 1).style("fill-opacity", .8);
+    }
+  }, {
+    key: 'isInNavigateZone',
+    value: function isInNavigateZone(x, y) {
+      var obj = this.state.pages[this.state.pageIndex];
+      if (Math.sqrt((x - obj.circleX) * (x - obj.circleX) + (y - obj.circleY) * (y - obj.circleY)) <= obj.circleRadius) return true;
+      return false;
+    }
+  }, {
+    key: 'checkNavigateNext',
+    value: function checkNavigateNext() {
+      var lastX = this.cameraXToScreenX(this.state.webcamParams.X);
+      var lastY = this.cameraYToScreenY(this.state.webcamParams.Y);
+
+      this.lastWebcamCoords.push({
+        x: lastX,
+        y: lastY
+      });
+      if (this.isInNavigateZone(lastX, lastY)) this.navigateZoneCount++;
+
+      if (this.lastWebcamCoords.length > this.NAVIGATE_ZONE_BUFFER) {
+        if (this.isInNavigateZone(this.lastWebcamCoords[0].x, this.lastWebcamCoords[0].y)) this.navigateZoneCount--;
+        this.lastWebcamCoords.shift();
+      }
+
+      if (this.navigateZoneCount > this.NAVIGATE_ZONE_REQUIRED) {
+        this.navigateZoneCount = 0;
+        this.lastWebcamCoords = [];
+        setTimeout(function () {
+          _WebcamActions2.default.nextPage();
+        }, 1);
+      }
+    }
+  }, {
+    key: 'shouldComponentUpdate',
+    value: function shouldComponentUpdate(nextProps, nextState) {
+      this.checkNavigateNext();
+
+      if (nextState.height != this.state.height || nextState.width != this.state.width || nextState.noVisitors != this.state.noVisitors) return true;
+      if (nextProps.location.pathname != this.props.location.pathname) return true;
+      if (nextState.pageIndex != this.state.pageIndex) {
+        return true;
+      }
+
+      return false;
+    }
+  }, {
+    key: 'componentDidUpdate',
+    value: function componentDidUpdate(prevProps, prevState) {
+      if (prevState.pageIndex != this.state.pageIndex) {
+        this.props.history.push(this.PATHNAME_PREFIX + '/' + this.state.pages[this.state.pageIndex].path);
+        return;
+      }
+
+      var pastUsersCanvas = document.getElementById('pastUsersCanvas');
+      var canvasContext = pastUsersCanvas.getContext('2d');
+      pastUsersCanvas.width = this.state.width;
+      pastUsersCanvas.height = this.state.height;
+
+      this.svg.selectAll("*").remove();
+      this.svg.attr("height", this.state.height);
+      //this.svg.setAttribute("width", this.state.width);
+
+      this.drawNavigationZone(this.svg);
+      this.drawPastUsers(canvasContext);
+      this.drawCurrentUsers(this.svg, []);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      _WebcamStore2.default.unlisten(this.onChange);
+      this.killAllEvents();
+    }
+  }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
       _WebcamStore2.default.listen(this.onChange);
@@ -2130,43 +2194,6 @@ var TestApp2 = function (_React$Component) {
       });
     }
   }, {
-    key: 'shouldComponentUpdate',
-    value: function shouldComponentUpdate(nextProps, nextState) {
-      if (nextState.height != this.state.height || nextState.width != this.state.width || nextState.noVisitors != this.state.noVisitors) {
-        return true;
-      }
-
-      if (nextProps.location.pathname != this.props.location.pathname) {
-        return true;
-      }
-
-      return false;
-    }
-  }, {
-    key: 'componentDidUpdate',
-    value: function componentDidUpdate(prevProps, prevState) {
-      //console.log(this.state);
-      if (prevState.height == this.state.height && prevState.width == this.state.width && prevState.noVisitors == this.state.noVisitors) {
-        return;
-      }
-
-      //console.log('component did update');
-
-      var pastUsersCanvas = document.getElementById('pastUsersCanvas');
-      var canvasContext = pastUsersCanvas.getContext('2d');
-      pastUsersCanvas.width = this.state.width;
-      pastUsersCanvas.height = this.state.height;
-      this.drawPastUsers(canvasContext);
-
-      this.drawCurrentUsers(this.svg, []);
-    }
-  }, {
-    key: 'componentWillUnmount',
-    value: function componentWillUnmount() {
-      _WebcamStore2.default.unlisten(this.onChange);
-      this.killAllEvents();
-    }
-  }, {
     key: 'render',
     value: function render() {
       var context = this;
@@ -2174,7 +2201,7 @@ var TestApp2 = function (_React$Component) {
       return _react2.default.createElement(
         'div',
         { className: 'gallery-conservative gallery-conservative-v2' },
-        _react2.default.createElement(_Header2.default, { prefix: "testApp2" }),
+        _react2.default.createElement(_Header2.default, { prefix: this.PATHNAME_PREFIX }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none', position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH' } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
@@ -2443,7 +2470,7 @@ var WebcamStore = function () {
     this.pointData = [];
     this.noVisitors = 0;
     this.X_RANGE = 14;
-    this.imageIndex = 1;
+    this.imageIndex = 0;
     this.imageData = [{
       title: "glass no. 1",
       prefix: "img/glass1/glass_",
@@ -2453,9 +2480,51 @@ var WebcamStore = function () {
       prefix: "img/glass2/",
       noImages: 18
     }];
+
+    this.pageIndex = 0;
+    this.pages = [{
+      path: 'about',
+      circleRadius: 80,
+      circleY: 300,
+      circleX: 300,
+      circleYPageRatio: 0.5
+    }, {
+      path: 'exhibition3',
+      circleRadius: 80,
+      circleY: 300,
+      circleX: 300,
+      circleYPageRatio: 0.5
+    }, {
+      path: 'history',
+      circleRadius: 80,
+      circleY: 300,
+      circleX: 300,
+      circleYPageRatio: 0.5
+    }, {
+      path: 'credits',
+      circleRadius: 80,
+      circleY: 300,
+      circleX: 300,
+      circleYPageRatio: 0.5
+    }];
   }
 
   _createClass(WebcamStore, [{
+    key: 'onNextPage',
+    value: function onNextPage() {
+      if (this.pages[this.pageIndex].path == 'exhibition3' && this.imageIndex < this.imageData.length - 1) {
+        this.onNextImage();
+        return;
+      }
+
+      this.pageIndex++;
+      this.pageIndex %= this.pages.length;
+
+      if (this.pages[this.pageIndex].path == 'exhibition3') {
+        this.imageIndex = 0;
+      }
+    }
+  }, {
     key: 'onNextImage',
     value: function onNextImage() {
       this.imageIndex++;
@@ -2479,12 +2548,21 @@ var WebcamStore = function () {
       this.height = windowSizeObj.height;
       this.width = windowSizeObj.width;
       this.updatePastUsersCanvas();
+      this.updateNavigationCircleY();
     }
   }, {
     key: 'onGetNoVisitorsSuccess',
     value: function onGetNoVisitorsSuccess(noVisitors) {
       this.noVisitors = noVisitors;
       this.updatePastUsersCanvas();
+    }
+  }, {
+    key: 'updateNavigationCircleY',
+    value: function updateNavigationCircleY() {
+      for (var i = 0; i < this.pages.length; i++) {
+        this.pages[i].circleY = Math.round(this.pages[i].circleYPageRatio * this.height);
+        this.pages[i].circleX = Math.round(this.width - 0.6 * this.pages[i].circleRadius);
+      }
     }
   }, {
     key: 'updatePastUsersCanvas',

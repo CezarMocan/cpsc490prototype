@@ -40,8 +40,6 @@ class ExhibitionLeftRight extends React.Component {
     var index = this.state.imageIndex;
     return (
       <div className="text-page-container credits-container">
-        <span className="navigate navigate-left" onClick={this.navigateLeft}>v</span>
-
         <div className="text-page-left-column exhibition-left-column">
           <div className="text-page-title exhibition-title">
             {imageData[index].title}
@@ -53,7 +51,6 @@ class ExhibitionLeftRight extends React.Component {
           </div>
         </div>
         <div className="text-page-right-column history-right-column">
-          <span className="navigate navigate-right" onClick={this.navigateRight}>v</span>
         </div>
       </div>
     );
@@ -61,6 +58,9 @@ class ExhibitionLeftRight extends React.Component {
 }
 
 export default ExhibitionLeftRight;
+
+// <span className="navigate navigate-left" onClick={this.navigateLeft}>v</span>
+// <span className="navigate navigate-right" onClick={this.navigateRight}>v</span>
 
 /*
 

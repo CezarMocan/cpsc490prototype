@@ -8,7 +8,8 @@ class WebcamActions {
       'getNoVisitorsSuccess',
       'getNoVisitorsFail',
       'nextImage',
-      'prevImage'
+      'prevImage',
+      'nextPage'
     );
   }
 

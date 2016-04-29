@@ -15,7 +15,7 @@ class WebcamStore {
     this.pointData = []
     this.noVisitors = 0
     this.X_RANGE = 14;
-    this.imageIndex = 1;
+    this.imageIndex = 0;
     this.imageData = [
       {
         title: "glass no. 1",
@@ -28,6 +28,52 @@ class WebcamStore {
         noImages: 18
       }
     ]
+
+    this.pageIndex = 0;
+    this.pages = [
+      {
+        path: 'about',
+        circleRadius: 80,
+        circleY: 300,
+        circleX: 300,
+        circleYPageRatio: 0.5
+      },
+      {
+        path: 'exhibition3',
+        circleRadius: 80,
+        circleY: 300,
+        circleX: 300,
+        circleYPageRatio: 0.5
+      },
+      {
+        path: 'history',
+        circleRadius: 80,
+        circleY: 300,
+        circleX: 300,
+        circleYPageRatio: 0.5
+      },
+      {
+        path: 'credits',
+        circleRadius: 80,
+        circleY: 300,
+        circleX: 300,
+        circleYPageRatio: 0.5
+      }
+    ]
+  }
+
+  onNextPage() {
+    if (this.pages[this.pageIndex].path == 'exhibition3' && this.imageIndex < this.imageData.length - 1) {
+      this.onNextImage();
+      return;
+    }
+
+    this.pageIndex++;
+    this.pageIndex %= this.pages.length;
+
+    if (this.pages[this.pageIndex].path == 'exhibition3') {
+      this.imageIndex = 0;
+    }
   }
 
   onNextImage() {
@@ -49,11 +95,19 @@ class WebcamStore {
     this.height = windowSizeObj.height
     this.width = windowSizeObj.width
     this.updatePastUsersCanvas();
+    this.updateNavigationCircleY();
   }
 
   onGetNoVisitorsSuccess(noVisitors) {
     this.noVisitors = noVisitors;
     this.updatePastUsersCanvas();
+  }
+
+  updateNavigationCircleY() {
+    for (var i = 0; i < this.pages.length; i++) {
+      this.pages[i].circleY = Math.round(this.pages[i].circleYPageRatio * this.height);
+      this.pages[i].circleX = Math.round(this.width - 0.6 * this.pages[i].circleRadius);
+    }
   }
 
   updatePastUsersCanvas() {

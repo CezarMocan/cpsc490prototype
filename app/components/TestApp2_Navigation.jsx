@@ -12,6 +12,8 @@ class TestApp2 extends React.Component {
     super(props);
     this.onChange = this.onChange.bind(this);
 
+    this.PATHNAME_PREFIX = 'testApp2'
+
     this.SERVER_UPDATE_INTERVAL = 125;
     // this.state = {height: 600}
     this.state = WebcamStore.getState();
@@ -28,6 +30,10 @@ class TestApp2 extends React.Component {
       b: this.getRandom(255)
     }
 
+    this.NAVIGATE_ZONE_BUFFER = 50;
+    this.NAVIGATE_ZONE_REQUIRED = 40;
+    this.lastWebcamCoords = []
+    this.navigateZoneCount = 0
   }
 
   onChange(newState) {
@@ -42,7 +48,7 @@ class TestApp2 extends React.Component {
   }
 
   navigateAway() {
-    window.location = '/testApp2/credits'
+    //window.location = '/testApp2/credits'
   }
 
   headTrackingFun(ev) {
@@ -210,17 +216,6 @@ class TestApp2 extends React.Component {
           var xCurr = this.lastFakePosition[key].x;
           var yCurr = this.lastFakePosition[key].y
 
-          /*
-          var intervalId = setInterval(function() {
-            xCurr = xCurr + 10 * xSign;
-            yCurr = yCurr + this.getRandom(10) - 5;
-            if (Math.sign(x - xCurr) != xSign) {
-              window.clearInterval(intervalId)
-            }
-            this.drawCircle(xCurr, yCurr, this.colorMap[key], this.getRandom(10))
-          }, 5)
-          */
-
           while (Math.sign(x - xCurr) == xSign) {
             xCurr = xCurr + 10 * xSign;
             yCurr = yCurr + this.getRandom(10) - 5;
@@ -276,6 +271,92 @@ class TestApp2 extends React.Component {
     }
   }
 
+  drawNavigationZone(svg) {
+    var obj = this.state.pages[this.state.pageIndex];
+
+    svg.insert("circle", "rect")
+        .attr("id", "navCircle")
+        .attr("cy", obj.circleY)
+        .attr("cx", obj.circleX)
+        .attr("r", obj.circleRadius)
+        .style("stroke", d3.rgb(144, 89, 35))
+        .style("fill", d3.rgb(255, 255, 255))
+        .style("stroke-opacity", 1)
+        .style("fill-opacity", .8)
+  }
+
+  isInNavigateZone(x, y) {
+    var obj = this.state.pages[this.state.pageIndex];
+    if (Math.sqrt((x - obj.circleX) * (x - obj.circleX) + (y - obj.circleY) * (y - obj.circleY)) <= obj.circleRadius)
+      return true;
+    return false;
+  }
+
+  checkNavigateNext() {
+    var lastX = this.cameraXToScreenX(this.state.webcamParams.X)
+    var lastY = this.cameraYToScreenY(this.state.webcamParams.Y)
+
+    this.lastWebcamCoords.push({
+      x: lastX,
+      y: lastY
+    })
+    if (this.isInNavigateZone(lastX, lastY))
+      this.navigateZoneCount++;
+
+    if (this.lastWebcamCoords.length > this.NAVIGATE_ZONE_BUFFER) {
+      if (this.isInNavigateZone(this.lastWebcamCoords[0].x, this.lastWebcamCoords[0].y))
+        this.navigateZoneCount--;
+      this.lastWebcamCoords.shift();
+    }
+
+    if (this.navigateZoneCount > this.NAVIGATE_ZONE_REQUIRED) {
+      this.navigateZoneCount = 0;
+      this.lastWebcamCoords = []
+      setTimeout(function() {
+        WebcamActions.nextPage();
+      }, 1)
+    }
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    this.checkNavigateNext();
+
+    if (nextState.height != this.state.height || nextState.width != this.state.width || nextState.noVisitors != this.state.noVisitors)
+      return true;
+    if (nextProps.location.pathname != this.props.location.pathname)
+      return true;
+    if (nextState.pageIndex != this.state.pageIndex) {
+      return true;
+    }
+
+    return false;
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    if (prevState.pageIndex != this.state.pageIndex) {
+      this.props.history.push(this.PATHNAME_PREFIX + '/' + this.state.pages[this.state.pageIndex].path);
+      return;
+    }
+
+    var pastUsersCanvas = document.getElementById('pastUsersCanvas');
+    var canvasContext = pastUsersCanvas.getContext('2d');
+    pastUsersCanvas.width = this.state.width;
+    pastUsersCanvas.height = this.state.height;
+
+    this.svg.selectAll("*").remove();
+    this.svg.attr("height", this.state.height);
+    //this.svg.setAttribute("width", this.state.width);
+
+    this.drawNavigationZone(this.svg);
+    this.drawPastUsers(canvasContext);
+    this.drawCurrentUsers(this.svg, []);
+  }
+
+  componentWillUnmount() {
+    WebcamStore.unlisten(this.onChange);
+    this.killAllEvents();
+  }
+
   componentDidMount() {
     WebcamStore.listen(this.onChange);
     WebcamActions.windowSizeUpdate({
@@ -316,41 +397,6 @@ class TestApp2 extends React.Component {
       //console.log(Date.now());
       that.drawCurrentUsers(that.svg, users);
     });
-
-  }
-
-  shouldComponentUpdate(nextProps, nextState) {
-    if (nextState.height != this.state.height || nextState.width != this.state.width || nextState.noVisitors != this.state.noVisitors) {
-      return true;
-    }
-
-    if (nextProps.location.pathname != this.props.location.pathname) {
-      return true;
-    }
-
-    return false;
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    //console.log(this.state);
-    if (prevState.height == this.state.height && prevState.width == this.state.width && prevState.noVisitors == this.state.noVisitors) {
-      return
-    }
-
-    //console.log('component did update');
-
-    var pastUsersCanvas = document.getElementById('pastUsersCanvas');
-    var canvasContext = pastUsersCanvas.getContext('2d');
-    pastUsersCanvas.width = this.state.width;
-    pastUsersCanvas.height = this.state.height;
-    this.drawPastUsers(canvasContext);
-
-    this.drawCurrentUsers(this.svg, []);
-  }
-
-  componentWillUnmount() {
-    WebcamStore.unlisten(this.onChange);
-    this.killAllEvents();
   }
 
   render() {
@@ -358,7 +404,7 @@ class TestApp2 extends React.Component {
   	// TODO: Set up default style in RouteTransition such that even initial load works.
     return (
       <div className="gallery-conservative gallery-conservative-v2">
-      	<Header prefix={"testApp2"}/>
+      	<Header prefix={this.PATHNAME_PREFIX}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
         <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH'}}></canvas>
