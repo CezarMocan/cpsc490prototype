@@ -62,7 +62,7 @@ class Image360 extends React.Component {
         {
           [...Array(this.props.noImages)].map((x, i) =>
             <img className="image-warrior-rotating" src={this.props.prefix + (i + 1).toString() + ".png"}
-              style={{display: (this.shouldDisplay(i) ? 'block' : 'none')}}/>
+              style={{display: (this.shouldDisplay(i) ? 'block' : 'none'), height: (this.state.height * 1.1) + 'px'}}/>
           )
         }
       </div>

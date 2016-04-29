@@ -20,12 +20,14 @@ class WebcamStore {
       {
         title: "glass no. 1",
         prefix: "img/glass1/glass_",
-        noImages: 18
+        noImages: 18,
+        text: "The “Mould in Motion” glass piece is blown into a modular wooden mould. The modules have a different heights and different shaped cavities. Each module can be turned around a pivot while the glassblower blows soft glass into the mould. The result reflects the dynamic impact on the blowing process."
       },
       {
         title: "glass no. 2",
         prefix: "img/glass2/",
-        noImages: 18
+        noImages: 18,
+        text: "The “DIY Mould” is a game where steel sicks of different heights are displayed in different positions on a base, allowing the creation of multiple shapes with a single mould and encouraging a creative input during the glassblowing process."
       }
     ]
 
@@ -106,7 +108,7 @@ class WebcamStore {
   updateNavigationCircleY() {
     for (var i = 0; i < this.pages.length; i++) {
       this.pages[i].circleY = Math.round(this.pages[i].circleYPageRatio * this.height);
-      this.pages[i].circleX = Math.round(this.width - 0.6 * this.pages[i].circleRadius);
+      this.pages[i].circleX = Math.round(this.width - 0.3 * this.pages[i].circleRadius);
     }
   }
 

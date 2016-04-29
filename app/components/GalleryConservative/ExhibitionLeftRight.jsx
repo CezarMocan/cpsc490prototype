@@ -45,12 +45,13 @@ class ExhibitionLeftRight extends React.Component {
             {imageData[index].title}
           </div>
           <div className="paragraph-content exhibition-contents">
-            <RouteTransition id={"barbut"} height={this.state.height}>
-              <Image360 prefix={imageData[index].prefix} noImages={imageData[index].noImages}/>
-            </RouteTransition>
+            {imageData[index].text}
           </div>
         </div>
         <div className="text-page-right-column history-right-column">
+            <RouteTransition id={"barbut"} height={this.state.height}>
+              <Image360 prefix={imageData[index].prefix} noImages={imageData[index].noImages}/>
+            </RouteTransition>
         </div>
       </div>
     );

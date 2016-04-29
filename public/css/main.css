@@ -7346,7 +7346,6 @@ img.mfp-img {
   font-size: 100%;
 }
 .gallery-conservative .header-container .logo {
-  color: black;
   font-family: 'Democratica';
   font-weight: bold;
   font-size: 25pt;
@@ -7354,7 +7353,6 @@ img.mfp-img {
   white-space: nowrap;
 }
 .gallery-conservative .header-container .logo-museum {
-  color: black;
   font-size: 10pt;
   margin-top: -15px;
   margin-left: 27px;
@@ -7404,10 +7402,10 @@ img.mfp-img {
   color: #905923;
 }
 .gallery-conservative .text-page-container .text-page-left-column {
-  -webkit-box-flex: 1.7;
-  -webkit-flex: 1.7;
-      -ms-flex: 1.7;
-          flex: 1.7;
+  -webkit-box-flex: 2.7;
+  -webkit-flex: 2.7;
+      -ms-flex: 2.7;
+          flex: 2.7;
 }
 .gallery-conservative .text-page-container .text-page-right-column {
   -webkit-box-flex: 1;
@@ -7436,21 +7434,18 @@ img.mfp-img {
 }
 .gallery-conservative .paragraph-content {
   font-family: courier;
-  font-size: 11pt;
+  font-size: 10pt;
   margin-top: 20px;
 }
 .gallery-conservative .paragraph-content img.image-warrior {
   -webkit-transition-property: height, width;
   -webkit-transition-duration: .5s;
 }
-.gallery-conservative .paragraph-content img.image-warrior-rotating {
+.gallery-conservative img.image-warrior-rotating {
   -webkit-transition-property: height, width;
   -webkit-transition-duration: .5s;
-  height: 800px;
   display: block;
-  position: fixed;
-  top: 25px;
-  left: 300px;
+  margin-top: -200px;
 }
 .gallery-conservative .side-element {
   margin-bottom: 100px;
@@ -7463,7 +7458,7 @@ img.mfp-img {
 }
 .gallery-conservative .side-element .side-paragraph-content {
   font-family: courier;
-  font-size: 9pt;
+  font-size: 8.5pt;
   margin-top: 10px;
   line-height: 1.8;
 }
@@ -7479,6 +7474,10 @@ img.mfp-img {
 .gallery-conservative-v2 svg circle {
   fill: none;
   stroke-width: 1.5px;
+}
+body {
+  background-color: #FDFDFD;
+  color: #111111;
 }
 footer {
   position: absolute;

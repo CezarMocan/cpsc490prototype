@@ -25,9 +25,9 @@ class TestApp2 extends React.Component {
 
     this.colorMap = {}
     this.selfColor = {
-      r: this.getRandom(255),
-      g: this.getRandom(255),
-      b: this.getRandom(255)
+      r: this.getRandom(144),
+      g: this.getRandom(89),
+      b: this.getRandom(35)
     }
 
     this.NAVIGATE_ZONE_BUFFER = 50;
@@ -279,7 +279,7 @@ class TestApp2 extends React.Component {
         .attr("cy", obj.circleY)
         .attr("cx", obj.circleX)
         .attr("r", obj.circleRadius)
-        .style("stroke", d3.rgb(144, 89, 35))
+        .style("stroke", d3.rgb(124, 89, 35))
         .style("fill", d3.rgb(255, 255, 255))
         .style("stroke-opacity", 1)
         .style("fill-opacity", .8)

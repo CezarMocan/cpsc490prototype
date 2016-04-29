@@ -832,14 +832,18 @@ var ExhibitionLeftRight = function (_React$Component) {
           _react2.default.createElement(
             'div',
             { className: 'paragraph-content exhibition-contents' },
-            _react2.default.createElement(
-              _RouteTransition2.default,
-              { id: "barbut", height: this.state.height },
-              _react2.default.createElement(_Image2.default, { prefix: imageData[index].prefix, noImages: imageData[index].noImages })
-            )
+            imageData[index].text
           )
         ),
-        _react2.default.createElement('div', { className: 'text-page-right-column history-right-column' })
+        _react2.default.createElement(
+          'div',
+          { className: 'text-page-right-column history-right-column' },
+          _react2.default.createElement(
+            _RouteTransition2.default,
+            { id: "barbut", height: this.state.height },
+            _react2.default.createElement(_Image2.default, { prefix: imageData[index].prefix, noImages: imageData[index].noImages })
+          )
+        )
       );
     }
   }]);
@@ -1187,7 +1191,7 @@ var Image360 = function (_React$Component) {
         { className: 'image360' },
         [].concat(_toConsumableArray(Array(this.props.noImages))).map(function (x, i) {
           return _react2.default.createElement('img', { className: 'image-warrior-rotating', src: _this2.props.prefix + (i + 1).toString() + ".png",
-            style: { display: _this2.shouldDisplay(i) ? 'block' : 'none' } });
+            style: { display: _this2.shouldDisplay(i) ? 'block' : 'none', height: _this2.state.height * 1.1 + 'px' } });
         })
       );
     }
@@ -1828,9 +1832,9 @@ var TestApp2 = function (_React$Component) {
 
     _this.colorMap = {};
     _this.selfColor = {
-      r: _this.getRandom(255),
-      g: _this.getRandom(255),
-      b: _this.getRandom(255)
+      r: _this.getRandom(144),
+      g: _this.getRandom(89),
+      b: _this.getRandom(35)
     };
 
     _this.NAVIGATE_ZONE_BUFFER = 50;
@@ -2082,7 +2086,7 @@ var TestApp2 = function (_React$Component) {
     value: function drawNavigationZone(svg) {
       var obj = this.state.pages[this.state.pageIndex];
 
-      svg.insert("circle", "rect").attr("id", "navCircle").attr("cy", obj.circleY).attr("cx", obj.circleX).attr("r", obj.circleRadius).style("stroke", d3.rgb(144, 89, 35)).style("fill", d3.rgb(255, 255, 255)).style("stroke-opacity", 1).style("fill-opacity", .8);
+      svg.insert("circle", "rect").attr("id", "navCircle").attr("cy", obj.circleY).attr("cx", obj.circleX).attr("r", obj.circleRadius).style("stroke", d3.rgb(124, 89, 35)).style("fill", d3.rgb(255, 255, 255)).style("stroke-opacity", 1).style("fill-opacity", .8);
     }
   }, {
     key: 'isInNavigateZone',
@@ -2474,11 +2478,13 @@ var WebcamStore = function () {
     this.imageData = [{
       title: "glass no. 1",
       prefix: "img/glass1/glass_",
-      noImages: 18
+      noImages: 18,
+      text: "The “Mould in Motion” glass piece is blown into a modular wooden mould. The modules have a different heights and different shaped cavities. Each module can be turned around a pivot while the glassblower blows soft glass into the mould. The result reflects the dynamic impact on the blowing process."
     }, {
       title: "glass no. 2",
       prefix: "img/glass2/",
-      noImages: 18
+      noImages: 18,
+      text: "The “DIY Mould” is a game where steel sicks of different heights are displayed in different positions on a base, allowing the creation of multiple shapes with a single mould and encouraging a creative input during the glassblowing process."
     }];
 
     this.pageIndex = 0;
@@ -2561,7 +2567,7 @@ var WebcamStore = function () {
     value: function updateNavigationCircleY() {
       for (var i = 0; i < this.pages.length; i++) {
         this.pages[i].circleY = Math.round(this.pages[i].circleYPageRatio * this.height);
-        this.pages[i].circleX = Math.round(this.width - 0.6 * this.pages[i].circleRadius);
+        this.pages[i].circleX = Math.round(this.width - 0.3 * this.pages[i].circleRadius);
       }
     }
   }, {
