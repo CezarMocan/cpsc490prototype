@@ -1947,7 +1947,10 @@ var TestApp2 = function (_React$Component) {
   }, {
     key: 'cameraXToScreenX',
     value: function cameraXToScreenX(cameraX) {
-      return Math.round((cameraX + 15) / 30.0 * this.state.width);
+      var halfWidth = Math.round(this.state.width / 2);
+      var xCoord = Math.round(cameraX / 3 * halfWidth + halfWidth);
+      return xCoord;
+      //return Math.round((cameraX + 15) / 30.0 * this.state.width);
     }
   }, {
     key: 'cameraYToScreenY',
@@ -2482,7 +2485,7 @@ var WebcamStore = function () {
     this.width = 600;
     this.pointData = [];
     this.noVisitors = 0;
-    this.X_RANGE = 14;
+    this.X_RANGE = 5;
 
     this.webcamCanvas = false;
 

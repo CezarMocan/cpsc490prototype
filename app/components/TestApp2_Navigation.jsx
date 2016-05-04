@@ -128,7 +128,10 @@ class TestApp2 extends React.Component {
   }
 
   cameraXToScreenX(cameraX) {
-    return Math.round((cameraX + 15) / 30.0 * this.state.width);
+    var halfWidth = Math.round(this.state.width / 2);
+    var xCoord = Math.round(cameraX / 3 * halfWidth + halfWidth);
+    return xCoord;
+    //return Math.round((cameraX + 15) / 30.0 * this.state.width);
   }
 
   cameraYToScreenY(cameraY) {

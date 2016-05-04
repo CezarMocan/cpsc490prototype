@@ -14,7 +14,7 @@ class WebcamStore {
     this.width = 600
     this.pointData = []
     this.noVisitors = 0
-    this.X_RANGE = 14;
+    this.X_RANGE = 5;
 
     this.webcamCanvas = false;
 
