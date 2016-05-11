@@ -14,7 +14,8 @@ class WebcamStore {
     this.width = 600
     this.pointData = []
     this.noVisitors = 0
-    this.X_RANGE = 5;
+    // Has to do with the webcam sensitivity --> basically how many centimeters left & right of the webcam means navigating the whole screen.
+    this.X_RANGE = 8;
 
     this.webcamCanvas = false;
 

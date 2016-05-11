@@ -138,9 +138,18 @@ var WebcamActions = function () {
     value: function getNoVisitors() {
       var _this = this;
 
-      setTimeout(function () {
-        _this.actions.getNoVisitorsSuccess(5000);
+      $.ajax({ url: '/api/usercount/' }).done(function (data) {
+        //console.log(data);
+        _this.actions.getNoVisitorsSuccess(data.count);
+      }).fail(function (jqXhr) {
+        _this.actions.getNoVisitorsFail(jqXhr);
+      });
+
+      /*
+      setTimeout(() => {
+        this.actions.getNoVisitorsSuccess(5000);
       }, 1000);
+      */
     }
   }]);
 
@@ -1246,8 +1255,19 @@ var Home = function (_React$Component) {
           " ",
           _react2.default.createElement(
             "a",
+            { href: "/earlyExperiment" },
+            "#1—Early Experiment"
+          ),
+          " "
+        ),
+        _react2.default.createElement(
+          "h3",
+          null,
+          " ",
+          _react2.default.createElement(
+            "a",
             { href: "/testApp1/about" },
-            "#1"
+            "#2—Webcam Image Rotation + Pixels"
           ),
           " "
         ),
@@ -1258,7 +1278,7 @@ var Home = function (_React$Component) {
           _react2.default.createElement(
             "a",
             { href: "/testApp2/about" },
-            "#2"
+            "#3—Webcam Image Rotation + Navigation"
           ),
           " "
         )
@@ -2506,7 +2526,8 @@ var WebcamStore = function () {
     this.width = 600;
     this.pointData = [];
     this.noVisitors = 0;
-    this.X_RANGE = 5;
+    // Has to do with the webcam sensitivity --> basically how many centimeters left & right of the webcam means navigating the whole screen.
+    this.X_RANGE = 8;
 
     this.webcamCanvas = false;
 

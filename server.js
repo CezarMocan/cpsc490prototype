@@ -25,14 +25,20 @@ var server = require('http').createServer(app);
 var io = require('socket.io')(server);
 var onlineUsers = 0;
 
-
 setInterval(function() {
   //console.log(Date.now())
   //console.log(connectedUsers.getUsers());
   io.emit('positionUpdate', connectedUsers.getUsers())
 }, 50);
 
+var noCallback = function() {
+
+}
+
 io.on('connection', function(socket) {
+
+  dbService.increaseUserCount(noCallback);
+
   onlineUsers++;
 
   socket.on('facetracking', function(facePositionObject) {
@@ -51,6 +57,12 @@ server.listen(app.get('port'), function() {
 
 app.get('/earlyExperiment', function(request, response) {
   response.sendFile(__dirname + '/public/earlyExperiment/exp.html');
+});
+
+app.get('/api/usercount', function(request, response) {
+  dbService.getUserCount(function(result) {
+    response.send(result[0]);
+  })
 });
 
 app.use(function(req, res) {

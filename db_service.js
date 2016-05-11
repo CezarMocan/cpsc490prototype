@@ -17,8 +17,16 @@ var resolveQuery = function(callbackFun, query) {
         console.error(err);
         callbackFun("Error " + err);
       }
-      else
+      //else
        callbackFun(result.rows);
     });
   });
+}
+
+exports.increaseUserCount = function(callbackFun) {
+  resolveQuery(callbackFun, "UPDATE users SET count = count+1");
+}
+
+exports.getUserCount = function(callbackFun) {
+  resolveQuery(callbackFun, "select count from users limit 1;");
 }
