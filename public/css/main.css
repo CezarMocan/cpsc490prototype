@@ -7503,7 +7503,7 @@ img.mfp-img {
   stroke-width: 1.5px;
 }
 body {
-  background: #FDFDFD url(http://www.thewildernessdowntown.com/img/pattern.jpg) repeat-x;
+  background-color: #F5F5F5;
   color: #333;
 }
 #app .no-display {
@@ -7515,10 +7515,19 @@ footer {
   background-color: aliceblue;
   width: 100%;
 }
+.home {
+  font-family: 'CutiveMono';
+}
 .home .home-page-title {
-  border-bottom: 1px solid #222222;
+  border-bottom: 2px solid #222222;
+  text-align: center;
+  padding-bottom: 10px;
+  padding-top: 30px;
 }
 .home .home-page-title h1 {
   font-size: 28px;
   margin-top: 15px;
+}
+.home .description {
+  text-align: center;
 }

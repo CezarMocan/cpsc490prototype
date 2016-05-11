@@ -1212,7 +1212,7 @@ exports.default = Image360;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true
+		value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1230,63 +1230,119 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Home = function (_React$Component) {
-  _inherits(Home, _React$Component);
+		_inherits(Home, _React$Component);
 
-  function Home() {
-    _classCallCheck(this, Home);
+		function Home() {
+				_classCallCheck(this, Home);
 
-    return _possibleConstructorReturn(this, Object.getPrototypeOf(Home).apply(this, arguments));
-  }
+				return _possibleConstructorReturn(this, Object.getPrototypeOf(Home).apply(this, arguments));
+		}
 
-  _createClass(Home, [{
-    key: "render",
-    value: function render() {
-      return _react2.default.createElement(
-        "div",
-        { className: "col-sm-12 home" },
-        _react2.default.createElement(
-          "h1",
-          { className: "home-page-title" },
-          " Cezar Mocan—CPSC 490—Prototypes "
-        ),
-        _react2.default.createElement(
-          "h3",
-          null,
-          " ",
-          _react2.default.createElement(
-            "a",
-            { href: "/earlyExperiment" },
-            "#1—Early Experiment"
-          ),
-          " "
-        ),
-        _react2.default.createElement(
-          "h3",
-          null,
-          " ",
-          _react2.default.createElement(
-            "a",
-            { href: "/testApp1/about" },
-            "#2—Webcam Image Rotation + Pixels"
-          ),
-          " "
-        ),
-        _react2.default.createElement(
-          "h3",
-          null,
-          " ",
-          _react2.default.createElement(
-            "a",
-            { href: "/testApp2/about" },
-            "#3—Webcam Image Rotation + Navigation"
-          ),
-          " "
-        )
-      );
-    }
-  }]);
+		_createClass(Home, [{
+				key: "render",
+				value: function render() {
+						return _react2.default.createElement(
+								"div",
+								null,
+								_react2.default.createElement("div", { className: "col-sm-2" }),
+								_react2.default.createElement(
+										"div",
+										{ className: "col-sm-8 home" },
+										_react2.default.createElement(
+												"h1",
+												{ className: "home-page-title" },
+												" Rethinking the Online Exhibition "
+										),
+										_react2.default.createElement(
+												"div",
+												{ className: "row" },
+												_react2.default.createElement(
+														"div",
+														{ className: "col-sm-12 description" },
+														_react2.default.createElement(
+																"h5",
+																null,
+																" Cezar Mocan | Advisor: Prof. Holly Rushmeier | ",
+																_react2.default.createElement(
+																		"a",
+																		{ href: "/thesis/ProjectProposal.pdf", target: "_blank" },
+																		"Proposal (PDF)"
+																),
+																" | ",
+																_react2.default.createElement(
+																		"a",
+																		{ href: "/thesis/RethinkingtheOnlineExhibit.pdf", target: "_blank" },
+																		"Thesis (PDF)"
+																),
+																" "
+														)
+												)
+										),
+										_react2.default.createElement(
+												"div",
+												{ className: "row" },
+												_react2.default.createElement(
+														"h4",
+														{ className: "col-sm-12" },
+														" ",
+														_react2.default.createElement(
+																"a",
+																{ href: "/earlyExperiment", target: "_blank" },
+																"#1—Early Experiment"
+														),
+														" "
+												),
+												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/early_experiment.gif" })
+										),
+										_react2.default.createElement(
+												"div",
+												{ className: "row" },
+												_react2.default.createElement(
+														"h4",
+														{ className: "col-sm-12" },
+														" ",
+														_react2.default.createElement(
+																"a",
+																{ href: "/testApp2/about", target: "_blank" },
+																"#2—Webcam Image Rotation + Navigation"
+														),
+														" "
+												),
+												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/webcam_navigation_solo.gif" })
+										),
+										_react2.default.createElement(
+												"div",
+												{ className: "row" },
+												_react2.default.createElement(
+														"h4",
+														{ className: "col-sm-12" },
+														" ",
+														_react2.default.createElement(
+																"a",
+																{ href: "/testApp1/about", target: "_blank" },
+																"#3—Webcam Image Rotation + Pixels"
+														),
+														" "
+												),
+												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/pixels_3_users.gif" })
+										),
+										_react2.default.createElement(
+												"div",
+												{ className: "row" },
+												_react2.default.createElement(
+														"h4",
+														{ className: "col-sm-12" },
+														" Bonus "
+												),
+												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/user_increase_cropped.gif" })
+										)
+								),
+								_react2.default.createElement("div", { className: "col-sm-2" })
+						);
+				}
+		}]);
 
-  return Home;
+		return Home;
 }(_react2.default.Component);
 
 exports.default = Home;
