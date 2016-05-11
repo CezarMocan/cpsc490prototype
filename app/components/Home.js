@@ -13,6 +13,9 @@ class Home extends React.Component {
 	        	</div>
 	        </div>
 	        <div className="row">
+	        	<h4 className="col-sm-12 orange"> All the prototypes were built and tested using Google Chrome, so (at least) the webcam dependent features do not work in different browsers.</h4>
+	        </div>
+	        <div className="row">
 	        	<h4 className="col-sm-12"> <a href="/earlyExperiment" target="_blank">1. Early Experiment</a> </h4>
 	        	<div className="col-sm-12 vertical-padding"> The research phase of the project proved extremely useful in seeing and understanding
 	        	the different types of interactions used by existing online exhibitions and paved the way to an important question:

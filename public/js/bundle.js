@@ -1283,6 +1283,15 @@ var Home = function (_React$Component) {
 																		{ className: "row" },
 																		_react2.default.createElement(
 																					"h4",
+																					{ className: "col-sm-12 orange" },
+																					" All the prototypes were built and tested using Google Chrome, so (at least) the webcam dependent features do not work in different browsers."
+																		)
+															),
+															_react2.default.createElement(
+																		"div",
+																		{ className: "row" },
+																		_react2.default.createElement(
+																					"h4",
 																					{ className: "col-sm-12" },
 																					" ",
 																					_react2.default.createElement(
