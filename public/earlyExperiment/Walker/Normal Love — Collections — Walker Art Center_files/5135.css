@@ -1,0 +1,46 @@
+.artwork_sidebar .artwork_center .zoom a.plus {
+    margin: 5px 0;
+    background: url(./collections/assets/zoom_plus-c1fec584470a55c4c86789fc4bc847c7.png) center top no-repeat;
+}
+
+.main-image {
+    display: flex;
+    margin-left: auto;
+    margin-right: auto;
+    max-height: 500px;
+}
+
+@font-face {
+    font-family: 'Apercu Regular';
+    src: url("./apercu_regular_pro.otf");
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Apercu Bold Italic';
+    src: url("./apercu_bold_italic_pro.otf");
+    font-weight: bold;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Apercu Bold';
+    src: url("./apercu_bold_pro.otf");
+    font-weight: bold;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Apercu Italic';
+    src: url("./apercu_regular_italic_pro.otf");
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Apercu Mono Regular';
+    src: url("./apercu_mono_pro.otf");
+    font-weight: normal;
+    font-style: normal;
+}

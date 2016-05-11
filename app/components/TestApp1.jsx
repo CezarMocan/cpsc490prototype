@@ -122,11 +122,22 @@ class TestApp1 extends React.Component {
       }
       var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * this.state.width);//Math.round(Math.random() * window.innerWidth)
       var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * this.state.height)
-      positionList.push({
-        x: x,
-        y: y,
-        key: key
-      })
+      for (var test = 0; test < 8; test++) {
+        var pwr = Math.round(Math.pow(2, test + 1));
+        positionList.push({
+          x: x + this.getRandom(pwr) - pwr / 2,
+          y: y + this.getRandom(pwr) - pwr / 2,
+          key: key
+        })
+      }
+      for (var test = 0; test < 5; test++) {
+        var pwr = Math.round(Math.pow(2, test + 1));
+        positionList.push({
+          x: x + this.getRandom(pwr) - pwr / 2,
+          y: y + this.getRandom(pwr) - pwr / 2,
+          key: key
+        })
+      }
     }
 
     var imgData = canvasContext.getImageData(0,0, this.state.width, this.state.height);
@@ -217,7 +228,7 @@ class TestApp1 extends React.Component {
       	<Header prefix={"testApp1"}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>
-        <canvas id="outputCanvas" width="320" height="240" style={{display: 'none', position: 'fixed', top: 0, right: 0}}></canvas>
+        <canvas id="outputCanvas" width="320" height="240" style={{position: 'fixed', top: 0, right: 0}}></canvas>
         <video id="inputVideo" autoPlay loop style={{display:'none'}}></video>
 
         <canvas id="pastUsersCanvas" style={{zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%'}}></canvas>

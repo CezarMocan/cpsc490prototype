@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+	<title>Exhibition Roulette</title>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
+
+	<script>
+		rouletteStarted = false;
+		startRoulette = function() {
+			iterations = 0;
+			rouletteStarted = true;
+    		selected = 1;
+    		interval = setInterval(function() {
+    			selectedOld = selected;
+    			while (selected == selectedOld)
+    				selected = Math.floor(Math.random() * 5) + 1;
+
+    			selectedId = "#no_" + selected.toString();
+    			// console.log(selectedId)
+    			$(".frame").css('visibility', 'hidden');
+    			$(selectedId).css('visibility', 'visible');
+    		}, 700);
+
+		}
+
+		setExhibition = function(strId) {
+			selectedId = "#no_" + strId.toString();
+			$(".frame").css('visibility', 'hidden');
+			$(selectedId).css('visibility', 'visible');
+			$("#content").css('visibility', 'hidden');
+		}
+
+		$( document ).ready(function() {
+
+			// setTimeout(pula, 3000);
+    		//setTimeout(startRoulette, 2000);
+
+    		$("#navigation").hover(function() {
+    			console.log('in');
+    			$("#navigation").css("left", "0");
+    		},
+    		function() {
+    			console.log('out');
+    			var leftProp = (-($("#navigation").innerWidth() - 40)) + "px"
+    			$("#navigation").css("left", leftProp);
+    		})
+
+    		$(".item").hover(function() {
+    			$(this).css('color', 'yellow');
+    		},
+    		function() {
+    			$(this).css('color', 'white');
+    		})
+
+
+		});
+
+		stopRoulette = function() {
+			console.log("stop roulette")
+			clearInterval(interval);
+			rouletteStarted = false;
+		}
+
+		$(document).keypress(function(e){
+			console.log(rouletteStarted);
+			if (rouletteStarted)
+				stopRoulette();
+			else
+				startRoulette();
+		});
+
+	</script>
+</head>
+
+<body>
+
+	<div id="navigation" style="position: fixed; left: 0; bottom: 100px; z-index: 100000; background-color: #222; color: #FDFDFD; font-family: courier; font-size: 10pt; padding: 10px 40px 10px 10px; transition: 0.5s all ease;">
+		Select an exhibition design to explore:
+		<div class="item" style="color: #FDFDFD; padding: 5px 5px; cursor: pointer;" onclick = "setExhibition(3)"> 1. Black Sun </div>
+		<div class="item" style="color: #FDFDFD; padding: 5px 5px; cursor: pointer;" onclick = "setExhibition(2)"> 2. ECAL-Heart of Glass </div>
+		<div class="item" style="color: #FDFDFD; padding: 5px 5px; cursor: pointer;" onclick = "setExhibition(4)"> 3. MoMA-Cindy Sherman Retrospective </div>
+		<div class="item" style="color: #FDFDFD; padding: 5px 5px; cursor: pointer;" onclick = "setExhibition(5)"> 4. YUAG-Robert Adams Retrospective </div>
+		<div class="item" style="color: #FDFDFD; padding: 5px 5px; cursor: pointer;" onclick = "setExhibition(1)"> 5. Walker Art Center </div>
+	</div>
+
+
+	<div id="content" style="height: 100%; width: 95%; padding: 30px; color: #222; font-family: courier; font-size: 1.7vw; line-height: 1.6; visibility: visible;">
+	This is the earliest experiment performed during the project, and is described in Section 4.1. of the writeup. We took the design of 5 existing online exhibitions, and replaced their exhibited objects with a subset of our own objects, in order to gain a better understanding of how different types of design work with our content. As a general rule, the 5 presented exhibitions are interactive when it comes to controls related to the objects (e.g. navigation between objects, zooming where it exists), but the links to other parts of the original websites have been inactivated, as we were only interested in the pages displaying the artworks.
+	</div>
+
+	<iframe id="no_1" class="frame" src="./Walker/walker.html" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; border: none; visibility: hidden;"> </iframe>
+
+	<!-- <iframe id="no_2" class="frame" src="./HeartOfGlass/ECAL%20-%20Heart%20of%20GLass%20%E2%80%93%20D001.html" style="width: 100%; height: 100%; position: fixed; left: 265px; top: -75px; border: none; visibility: visible; transform: scale(0.93);"> </iframe> -->
+
+	<iframe id="no_2" class="frame" src="./HeartOfGlass/ECAL%20-%20Heart%20of%20GLass%20%E2%80%93%20D001.html" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; border: none; visibility: hidden;"> </iframe>
+
+
+	<iframe id="no_3" class="frame" src="./blackSun/bs.html" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; border: none; visibility: hidden;"> </iframe>
+
+	<iframe id="no_4" class="frame" src="./MoMA_Sherman/sherman.html" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; border: none; visibility: hidden;"> </iframe>
+
+	<iframe id="no_5" class="frame" src="./ThePlaceWeLive/01.html" style="width: 100%; height: 100%; position: fixed; left: 0; top: 0; border: none; visibility: hidden;"> </iframe>
+</body>
+
+
+</html>

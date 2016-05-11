@@ -1650,11 +1650,22 @@ var TestApp1 = function (_React$Component) {
         }
         var y = Math.round((currentUsersCoords[key].x + 15) / 30.0 * this.state.width); //Math.round(Math.random() * window.innerWidth)
         var x = Math.round((20 - currentUsersCoords[key].y) / 20.0 * this.state.height);
-        positionList.push({
-          x: x,
-          y: y,
-          key: key
-        });
+        for (var test = 0; test < 8; test++) {
+          var pwr = Math.round(Math.pow(2, test + 1));
+          positionList.push({
+            x: x + this.getRandom(pwr) - pwr / 2,
+            y: y + this.getRandom(pwr) - pwr / 2,
+            key: key
+          });
+        }
+        for (var test = 0; test < 5; test++) {
+          var pwr = Math.round(Math.pow(2, test + 1));
+          positionList.push({
+            x: x + this.getRandom(pwr) - pwr / 2,
+            y: y + this.getRandom(pwr) - pwr / 2,
+            key: key
+          });
+        }
       }
 
       var imgData = canvasContext.getImageData(0, 0, this.state.width, this.state.height);
@@ -1748,7 +1759,7 @@ var TestApp1 = function (_React$Component) {
         { className: 'gallery-conservative' },
         _react2.default.createElement(_Header2.default, { prefix: "testApp1" }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { display: 'none', position: 'fixed', top: 0, right: 0 } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { position: 'fixed', top: 0, right: 0 } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'pastUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement('canvas', { id: 'currentUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
@@ -1832,13 +1843,13 @@ var TestApp2 = function (_React$Component) {
 
     _this.colorMap = {};
     _this.selfColor = {
-      r: _this.getRandom(144),
-      g: _this.getRandom(89),
-      b: _this.getRandom(35)
+      r: 144,
+      g: 89,
+      b: 35
     };
 
-    _this.NAVIGATE_ZONE_BUFFER = 50;
-    _this.NAVIGATE_ZONE_REQUIRED = 40;
+    _this.NAVIGATE_ZONE_BUFFER = 30;
+    _this.NAVIGATE_ZONE_REQUIRED = 25;
     _this.lastWebcamCoords = [];
     _this.navigateZoneCount = 0;
     return _this;
@@ -1929,11 +1940,11 @@ var TestApp2 = function (_React$Component) {
         var x = this.state.pointData[i].y;
         var index = (x * windowWidth + y) * 4;
 
-        imgData.data[index + 0] = 0;
-        imgData.data[index + 1] = 0;
-        imgData.data[index + 2] = 0;
+        imgData.data[index + 0] = 16;
+        imgData.data[index + 1] = 16;
+        imgData.data[index + 2] = 16;
         // Un-comment below if you want a random RGB color. Otherwise, all points are black.
-        // imgData.data[index + Math.round(Math.random() * 3)] = 255;
+        //imgData.data[index + Math.round(Math.random() * 3)] = 255;
         imgData.data[index + 3] = 255;
       }
 
@@ -1948,7 +1959,7 @@ var TestApp2 = function (_React$Component) {
     key: 'cameraXToScreenX',
     value: function cameraXToScreenX(cameraX) {
       var halfWidth = Math.round(this.state.width / 2);
-      var xCoord = Math.round(cameraX / 3 * halfWidth + halfWidth);
+      var xCoord = Math.round(cameraX / 3.5 * halfWidth + halfWidth);
       return xCoord;
       //return Math.round((cameraX + 15) / 30.0 * this.state.width);
     }

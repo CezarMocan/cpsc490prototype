@@ -1,0 +1,637 @@
+html {
+	overflow: -moz-scrollbars-vertical;
+	height:100%;
+	margin: 0;
+	padding: 0;
+	border: none;
+	text-align: center;
+	margin: 0px 23px 0px 23px;
+}
+
+body {
+	margin: 0px;
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	color: #212121;
+	line-height: 21px;
+	height:100%;
+	padding: 0;
+	border: none;
+	text-align: center;
+}
+
+.caption {
+	color: #918083;
+}
+
+a {
+	text-decoration: none;
+	font-family: "Plan Grotesque Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	color: #867979;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+.chrono_column a, .chrono_column a:visited { 
+	color: #a59595; 
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 12.5px;
+	line-height: 14px;
+}
+
+b {
+	font-family: "Plan Grotesque Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+}
+
+strong {
+	font-family: "Plan Grotesque Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+}
+
+h2 {
+	margin-bottom: 18px;
+	font-weight: bold;
+}
+
+p {
+	margin-bottom: 18px;
+}
+
+table {
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	color: #212121;
+	line-height: 21px;
+	/*white-space:nowrap;*/
+}
+
+td.mainNav {
+	white-space:nowrap;
+}
+
+.yuag {
+	margin-right: 14px;
+}
+
+.gray {
+	color: #6c6262;
+	line-height: 20px;
+}
+
+.bodyTitle {
+	margin: 25px 0 50px 0;
+}
+
+.copy {
+	color: #6c6262;
+	font-size: 12px;
+}
+
+img {
+	border: 0;
+}
+
+p.main-image-p {
+	// background-color: #F0F0F0;
+}
+
+.main-image {
+	max-height: 500px;
+}
+
+
+#cursorTrail {
+	position:absolute; 
+	overflow:hidden; 
+	visibility: hidden;
+	z-index:999; 
+	padding: 5px 0px 10px 0px;
+	width:0px; 
+	height:15px;
+	background-color:#e8e6e2; 
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	color:#4d4141;
+	text-align:center;
+	vertical-align:middle;
+}
+
+img.cover {
+	margin: 0px 20px 0px 0px;
+}
+
+img.thumb {
+	margin: 0px 20px 0px 20px;
+	border: none;
+	vertical-align: middle; 
+}
+
+img.tic {
+	margin: 39px 7px 8px 0px;
+}
+
+img.decades {
+	margin: 0px 0px 35px 0px;
+}
+
+img.year {
+	margin: 0px 0px 0px 0px;
+}
+
+.black {
+	font-family: "Plan Grotesque Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	color: #212121;
+	line-height: 20px;
+}
+
+table.sort {
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 12px;
+	width: 131px;
+	height: 100px;
+}
+
+a.sort {
+	color: #867979;
+}
+
+img.spine {
+	margin: 0px 0px 0px 0px;
+	padding: 0px 0px 0px 0px;
+	border: none;
+}
+
+div.bookPop {
+	visibility: hidden;
+	position:absolute; 
+	top: 100px;
+	right: 0px;
+	background-color:#e8e6e2;
+	z-index:25;
+	padding: 10px 15px 10px 15px;
+	border-style: none;
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	line-height: 18px;
+	color: #484040;
+	max-width:165xpx;
+	/*width: 240px;*/
+}
+
+div.intro {
+	visibility: visible;
+	position:absolute; 
+	bottom:0; 
+	left:0;
+	background-color:#e8e6e2;
+	z-index:25;
+	padding: 10px 5px 10px 15px;
+	border-style: none;
+	width: 100%;
+}
+
+div.intro_hidden {
+	visibility: hidden;
+	position:absolute; 
+	bottom:0; 
+	left:0;
+	background-color:#e8e6e2;
+	z-index:25;
+	padding: 10px 5px 10px 15px;
+	border-style: none;
+}
+
+table.intro {
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13px;
+	color: #484040;
+	line-height: 20px;
+}
+
+div#intro_left {
+	float: left;
+	height: 200px;
+	width: 300px;
+	padding-right: 20px;
+	margin-top: 15px;
+	text-align: left;
+}
+
+div#intro_right {
+	float: right;
+	height: 275px;
+	width: 300px;
+	padding-right: 10px;
+	margin-top: 15px;
+	text-align: left;
+}
+
+div#intro_left p {
+	display: block;
+	font-family: "Plan Grotesque Regular";
+font-style: normal;
+font-weight: normal;
+font-stretch: normal;
+font-variant: normal;
+	font-size: 13px;
+	color: #484040;
+	line-height: 20px;
+}
+
+div#intro_right p {
+	display: block;
+	font-family: "Plan Grotesque Regular";
+font-style: normal;
+font-weight: normal;
+font-stretch: normal;
+font-variant: normal;
+	font-size: 13px;
+	color: #484040;
+	line-height: 20px;
+}
+
+
+.right {
+	float: right;
+	text-align: right;
+	right: 0px;
+}
+
+.left {
+	float: left;
+	text-align: left;
+	left: 0px;
+}
+
+#main_menu {
+	margin: 0;
+	padding: 0;	
+	white-space: nowrap;
+}
+
+#main_menu li {
+	float: left;
+	list-style: none;
+}
+
+#main_menu li a:hover {
+
+}
+
+#main_menu li ul {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	visibility: hidden;
+}
+
+#main_menu ul li {
+	float: none;
+	display: inline;
+}
+
+#exhibit_menu {
+	padding: 14px 0px 4px 20px;
+	margin-top: -1px;
+	font-family: "Plan Grotesque Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	color: #000;
+	width: 99px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #e5e4e4;
+	background-color: #e8e6e2;
+	line-height: 18px;
+	color: #000;
+	text-align: left;
+}
+
+#exhibit_menu p {
+	margin: 0px 0px 10px 0px;
+	background-color: #e8e6e2;
+	width: 99px;
+	z-index: 100;
+	border-width: 0px;
+}
+
+#exhibit_menu a {
+	color: #867979;
+	font-size: 13px;
+	}
+
+#exhibit_nav_img {
+	margin-bottom: -7px;
+	padding: 0px;
+}
+
+#photos_menu {
+	float: left;
+	margin-left: -254px;
+	margin-top: -1px;
+	padding: 14px 0px 4px 20px;
+	font-family: "Plan Grotesque Medium";
+font-style: normal;
+font-weight: normal;
+font-stretch: normal;
+font-variant: normal;
+	font-size: 13.5px;
+	color: #000;
+	width: 582px;
+	border-style: solid;
+	border-width: 1px;
+	border-color: #e8e6e2;
+	background-color: #e8e6e2;
+	line-height: 18px;
+	color: #000;
+	z-index: 1500;
+	text-align: left;
+}
+
+#photos_nav_img {
+	margin-bottom: -7px;
+	padding: 0px;
+}
+
+#photos_left_column {
+	float: left;
+	width: 194px;
+	background-color: #e8e6e2;
+}
+
+#photos_middle_column {
+	float: left;
+	width: 194px;
+	background-color: #e8e6e2;
+}
+
+#photos_right_column {
+	float: left;
+	width: 194px;
+	background-color: #e8e6e2;
+}
+
+#photos_menu p {
+	margin: 0px 0px 10px 0px;
+	background-color: #e8e6e2;
+	z-index: 1500;
+	border-width: 0px;
+	font-size: 12.5px;
+}
+
+#photos_menu a {
+	color: #867979;
+}
+
+#photos_nav {
+	width: 108px;
+}
+
+#books_nav {
+	width: 65px;
+}
+
+#chrono_nav {
+	width: 103px;
+}
+
+#credits_nav {
+	width: 74px;
+}
+
+#left_nav {
+	float: left;
+	font-family: "Plan Grotesque Medium";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	width: 182px;
+}
+
+#left_nav a {
+	color: #6c6262;
+	line-height: 20px;
+}
+
+#selected a {
+	color: #000;
+}
+
+#content_wrapper {
+	margin: 24px 0px 0px 3px;
+}
+
+#content {
+	float: left;
+	width: 525px;
+}
+
+#content a {
+	color: #6c6262;
+}
+
+.section {
+	float: left;
+	margin-bottom: 35px;
+}
+
+.fader {
+	display: none;
+}
+
+.times_text {
+	/*font-family: "Fedra Serif B Book";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 11.5px;
+	color: #6d6262;	
+	*/
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 13.5px;
+	color: #212121;
+	line-height: 21px;
+	margin-bottom: 15px;
+	text-align: left;
+}
+
+.attribution {
+	font-size: 12px;
+	line-height:13px;
+}
+
+.quote {
+	font-family: "Fedra Serif B Book";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	font-size: 11.5px;
+	color: #6d6262;	
+	
+	line-height: 21px;
+	margin-bottom: 15px;
+	text-align: left;
+}
+
+#related, #relatedInChrono {
+	position: relative;
+	left: -10px;
+	margin: 0px 0px 0px 0px;
+	color: #6d6262;
+}
+
+#relatedLabel {
+	margin: 0px;
+	margin-bottom: 23px;
+	padding: 0px;
+	font-family: "Plan Grotesque Regular";
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	font-variant: normal;
+	background-color: #e8e6e2;
+	font-size: 12.5px;
+	width: 150px;
+	height: 32px;
+	color: #6d6262;
+}
+
+#relatedLabel li {
+	float: left;
+	list-style: none;
+}
+
+#relatedLabel li a {
+	color: #6d6262;
+}
+
+#relatedLabel li a:hover {
+	text-decoration: none;
+}
+
+#relatedLabel li ul {
+	margin: 0px;
+	margin-top: -8px;
+	padding-top: 12px;
+	padding-bottom: 7px;
+	background-color: #e8e6e2;
+	width: 150px;
+	min-width: 150px;
+	position: absolute;
+	left: 0px;
+	visibility: hidden;
+}
+
+#relatedLabel ul li {
+	margin: 0px;
+	float: none;
+	margin-left: -30px;
+	display: block;
+	width: 150px;
+	padding: 0px 10px 5px 0px;
+}
+
+#relatedLabel ul li a:hover {
+	text-decoration: underline;
+}
+
+.chrono_column p {
+	margin-top: 0px;
+	padding-top: 0px;
+}
+
+.bookTitle {
+	color: #584e4e; 
+	font-size: 16px; 
+}
+
+.bookSubTitle {
+	color: #786c6c;
+}
+
+
+/*** IE FIXES ***/
+
+/* Adjusts dropdown menu position for IE */
+.ie7 #photos_nav ul {
+	margin: 30px 0px 0px -123px;
+}
+	
+.ie7 #exhibit_nav ul {
+	margin: 30px 0px 0px -167px;
+	width: 200px;
+}
+
+.ie7 #thumbs_cell {
+	height: 100%;
+	text-align: middle !important;
+}
+
+.ie7 #relatedLabel li ul {
+	margin: 25px 0px 0px 0px;
+	display: none;
+}
+
+.ie7 #relatedLabel li ul li {
+	margin: 0px 0px 0px 10px;
+}
+
+body.ie7 {
+	overflow-x:hidden!important;
+}

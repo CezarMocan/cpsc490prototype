@@ -1,0 +1,39 @@
+/*
+It is illegal to download, distribute, open, modify or doing anything else with these fonts.
+If you like them and want to use them you can always ask me.
+
+All fonts copyright Luke Archer 2015
+*/
+
+@font-face {
+	font-family: 'PP Terrazzo';
+    src: url('PP_Terrazzo_Regular.eot'); /* IE9 Compat Modes */
+    src: url('PP_Terrazzo_Regular.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('PP_Terrazzo_Regular.woff') format('woff'), /* Modern Browsers */
+         url('PP_Terrazzo_Regular.ttf') format('truetype'); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+    font-family: 'Icons';
+    src: url('PP_Terrazzo_Regular_Icons_2015-01-19.eot'); /* IE9 Compat Modes */
+    src: url('PP_Terrazzo_Regular_Icons_2015-01-19.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('PP_Terrazzo_Regular_Icons_2015-01-19.woff') format('woff'), /* Modern Browsers */
+         url('PP_Terrazzo_Regular_Icons_2015-01-19.ttf') format('truetype'); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}
+
+@font-face {
+    font-family: 'Monospace';
+    src: url('PP_Terrazzo_Monospace_2015-01-20.eot'); /* IE9 Compat Modes */
+    src: url('PP_Terrazzo_Monospace_2015-01-20.eot?#iefix') format('embedded-opentype'), /* IE6-IE8 */
+         url('PP_Terrazzo_Monospace_2015-01-20.woff') format('woff'), /* Modern Browsers */
+         url('PP_Terrazzo_Monospace_2015-01-20.ttf') format('truetype'); /* Safari, Android, iOS */
+    font-style: normal;
+    font-weight: normal;
+    text-rendering: optimizeLegibility;
+}

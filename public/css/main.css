@@ -7493,8 +7493,8 @@ img.mfp-img {
   color: #905923;
 }
 body {
-  background-color: #FDFDFD;
-  color: #111111;
+  background: #FDFDFD url(http://www.thewildernessdowntown.com/img/pattern.jpg) repeat-x;
+  color: #333;
 }
 #app .no-display {
   display: none;

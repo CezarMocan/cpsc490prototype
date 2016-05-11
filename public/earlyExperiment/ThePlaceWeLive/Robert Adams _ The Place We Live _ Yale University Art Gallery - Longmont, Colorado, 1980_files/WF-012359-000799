@@ -1,0 +1,43 @@
+/*
+* Webfonts served by Typotheque.com
+*
+* To make the font files as small as possible,
+* most glyphs and OpenType features were removed.
+* To edit the fonts, add more language support,
+* log it to your Typotheque account:
+* http://www.typotheque.com/my_account/webfonts
+*
+* The Typotheque Font Software is protected under domestic
+* and international trademark and copyright law.
+* Modifying, reverse engineering or otherwise copying
+* of Typotheque Font Software is illegal.
+* http://www.typotheque.com/licensing/
+*
+* (c) 2013, Typotheque
+* Generated: 2013-05-18 16:03:41
+*/
+
+@font-face {
+	font-family: "Fedra Serif B Book";
+	src: url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000104-1373432947.eot");
+	src: url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000104-1373432947.eot?#iefix") format("embedded-opentype"), url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000104-1373432947.woff") format("woff"), url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000104-1373432947.svg#typotheque_webfonts_service") format("svg");
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	}
+@font-face {
+	font-family: "Plan Grotesque Regular";
+	src: url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000414-1373432948.eot");
+	src: url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000414-1373432948.eot?#iefix") format("embedded-opentype"), url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000414-1373432948.woff") format("woff"), url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000414-1373432948.svg#typotheque_webfonts_service") format("svg");
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	}
+@font-face {
+	font-family: "Plan Grotesque Medium";
+	src: url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000416-1373432948.eot");
+	src: url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000416-1373432948.eot?#iefix") format("embedded-opentype"), url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000416-1373432948.woff") format("woff"), url("https://s3.amazonaws.com/fonts.typotheque.com/WF-012359-000799-000416-1373432948.svg#typotheque_webfonts_service") format("svg");
+	font-style: normal;
+	font-weight: normal;
+	font-stretch: normal;
+	}

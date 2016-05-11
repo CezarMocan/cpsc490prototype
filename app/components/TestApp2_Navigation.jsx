@@ -25,13 +25,13 @@ class TestApp2 extends React.Component {
 
     this.colorMap = {}
     this.selfColor = {
-      r: this.getRandom(144),
-      g: this.getRandom(89),
-      b: this.getRandom(35)
+      r: 144,
+      g: 89,
+      b: 35
     }
 
-    this.NAVIGATE_ZONE_BUFFER = 50;
-    this.NAVIGATE_ZONE_REQUIRED = 40;
+    this.NAVIGATE_ZONE_BUFFER = 30;
+    this.NAVIGATE_ZONE_REQUIRED = 25;
     this.lastWebcamCoords = []
     this.navigateZoneCount = 0
   }
@@ -112,11 +112,11 @@ class TestApp2 extends React.Component {
       var x = this.state.pointData[i].y
       var index = (x * windowWidth + y) * 4
 
-      imgData.data[index+0]=0;
-      imgData.data[index+1]=0;
-      imgData.data[index+2]=0;
+      imgData.data[index+0]=16;
+      imgData.data[index+1]=16;
+      imgData.data[index+2]=16;
       // Un-comment below if you want a random RGB color. Otherwise, all points are black.
-      // imgData.data[index + Math.round(Math.random() * 3)] = 255;
+      //imgData.data[index + Math.round(Math.random() * 3)] = 255;
       imgData.data[index+3]=255;
     }
 
@@ -129,7 +129,7 @@ class TestApp2 extends React.Component {
 
   cameraXToScreenX(cameraX) {
     var halfWidth = Math.round(this.state.width / 2);
-    var xCoord = Math.round(cameraX / 3 * halfWidth + halfWidth);
+    var xCoord = Math.round(cameraX / 3.5 * halfWidth + halfWidth);
     return xCoord;
     //return Math.round((cameraX + 15) / 30.0 * this.state.width);
   }

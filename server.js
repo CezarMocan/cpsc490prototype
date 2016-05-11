@@ -49,6 +49,10 @@ server.listen(app.get('port'), function() {
   console.log('Express server listening on port ' + app.get('port'));
 });
 
+app.get('/earlyExperiment', function(request, response) {
+  response.sendFile(__dirname + '/public/earlyExperiment/exp.html');
+});
+
 app.use(function(req, res) {
   Router.match({ routes: routes.default, location: req.url }, function(err, redirectLocation, renderProps) {
     if (err) {
@@ -64,6 +68,7 @@ app.use(function(req, res) {
     }
   });
 });
+
 
 app.get('/', function(request, response) {
   response.send('Hello World!');
