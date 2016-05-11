@@ -10,7 +10,8 @@ class WebcamActions {
       'nextImage',
       'prevImage',
       'nextPage',
-      'toggleWebcamCanvas'
+      'toggleWebcamCanvas',
+      'hideImageNavigation'
     );
   }
 

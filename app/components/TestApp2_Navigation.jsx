@@ -362,6 +362,7 @@ class TestApp2 extends React.Component {
   }
 
   componentDidMount() {
+    WebcamActions.hideImageNavigation();
     WebcamStore.listen(this.onChange);
     WebcamActions.windowSizeUpdate({
       height: window.innerHeight,
@@ -407,11 +408,17 @@ class TestApp2 extends React.Component {
     WebcamActions.toggleWebcamCanvas()
   }
 
+  onCanvasClick(ev) {
+    if (this.isInNavigateZone(ev.clientX, ev.clientY)) {
+      WebcamActions.nextPage();
+    }
+  }
+
   render() {
   	var context = this;
   	// TODO: Set up default style in RouteTransition such that even initial load works.
     return (
-      <div className="gallery-conservative gallery-conservative-v2">
+      <div className="gallery-conservative gallery-conservative-v2" onClick={this.onCanvasClick.bind(this)}>
       	<Header prefix={this.PATHNAME_PREFIX}/>
 
         <canvas id="inputCanvas" width="320" height="240" style={{display:'none'}}></canvas>

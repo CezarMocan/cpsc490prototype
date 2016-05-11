@@ -65,6 +65,13 @@ class WebcamStore {
         circleYPageRatio: 0.5
       }
     ]
+
+    this.showImageNavigation = true;
+  }
+
+
+  onHideImageNavigation() {
+    this.showImageNavigation = false;
   }
 
   onNextPage() {

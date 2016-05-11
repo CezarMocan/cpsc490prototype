@@ -7309,6 +7309,12 @@ img.mfp-img {
   font-weight: normal;
   font-style: normal;
 }
+@font-face {
+  font-family: 'CutiveMono';
+  src: url('../fonts/CutiveMono-Regular.ttf');
+  font-weight: normal;
+  font-style: normal;
+}
 .gallery-conservative {
   padding-left: 70px;
   padding-right: 100px;
@@ -7335,9 +7341,11 @@ img.mfp-img {
 .gallery-conservative .header-container {
   z-index: 1000000000;
   position: fixed;
-  width: calc(100% - 170px);
+  width: calc(100% - 320px);
   background: transparent;
   top: 0;
+  margin-left: 70px;
+  margin-right: 80px;
   padding: 20px 0 10px;
   box-shadow: 0 1px rgba(123, 123, 123, 0.1);
 }
@@ -7427,14 +7435,16 @@ img.mfp-img {
 .gallery-conservative .text-page-container .navigate.navigate-left {
   -webkit-transform: rotate(90deg);
           transform: rotate(90deg);
+  left: 50px;
 }
 .gallery-conservative .text-page-container .navigate.navigate-right {
   -webkit-transform: rotate(-90deg);
           transform: rotate(-90deg);
+  right: 50px;
 }
 .gallery-conservative .paragraph-content {
-  font-family: courier;
-  font-size: 10pt;
+  font-family: 'CutiveMono';
+  font-size: 14px;
   margin-top: 20px;
 }
 .gallery-conservative .paragraph-content img.image-warrior {
@@ -7457,10 +7467,27 @@ img.mfp-img {
   color: #905923;
 }
 .gallery-conservative .side-element .side-paragraph-content {
-  font-family: courier;
-  font-size: 8.5pt;
+  font-family: 'CutiveMono';
+  font-size: 12px;
   margin-top: 10px;
   line-height: 1.8;
+}
+.toggle-webcam {
+  position: fixed;
+  bottom: -5px;
+  right: -10px;
+  width: 45px;
+  height: 45px;
+  font-size: 15pt;
+  text-align: center;
+  background-color: rgba(253, 253, 253, 0.8);
+  border: 1px solid #905923;
+  padding-top: 9px;
+  cursor: pointer;
+  border-radius: 40px;
+}
+.toggle-webcam .glyphicon {
+  color: #905923;
 }
 .gallery-conservative-v2 svg {
   position: fixed;
@@ -7474,23 +7501,6 @@ img.mfp-img {
 .gallery-conservative-v2 svg circle {
   fill: none;
   stroke-width: 1.5px;
-}
-.gallery-conservative-v2 .toggle-webcam {
-  position: fixed;
-  bottom: 20px;
-  right: -10px;
-  width: 45px;
-  height: 45px;
-  font-size: 15pt;
-  text-align: center;
-  background-color: rgba(253, 253, 253, 0.8);
-  border: 1px solid #905923;
-  padding-top: 9px;
-  cursor: pointer;
-  border-radius: 40px;
-}
-.gallery-conservative-v2 .toggle-webcam .glyphicon {
-  color: #905923;
 }
 body {
   background: #FDFDFD url(http://www.thewildernessdowntown.com/img/pattern.jpg) repeat-x;

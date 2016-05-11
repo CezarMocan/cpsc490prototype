@@ -36,10 +36,11 @@
 	.header-container {
 		z-index: 1000000000;
 		position: fixed;
-		width: calc(~"100% - 170px");
+		width: calc(~"100% - 320px");
 		background: transparent;
 		top: 0;
-
+		margin-left: 70px;
+    	margin-right: 80px;
 		padding: 20px 0 10px;
 		box-shadow: 0 1px rgba(123, 123, 123, 0.1);
 
@@ -128,18 +129,20 @@
 			cursor: pointer;
 			&.navigate-left {
 				transform: rotate(90deg);
+				left: 50px;
 			}
 
 			&.navigate-right {
 				transform: rotate(-90deg);
+				right: 50px;
 			}
 
 		}
 	}
 
 	.paragraph-content {
-		font-family: courier;
-		font-size: 10pt;
+		font-family: 'CutiveMono';
+		font-size: 14px;
 		margin-top: 20px;
 		img.image-warrior {
 			-webkit-transition-property: height, width;
@@ -166,14 +169,33 @@
 		}
 
 		.side-paragraph-content {
-			font-family: courier;
-			font-size: 8.5pt;
+			font-family: 'CutiveMono';
+			font-size: 12px;
 			margin-top: 10px;
 			line-height: 1.8;
 		}
 	}
 
 }
+
+.toggle-webcam {
+	position: fixed;
+    bottom: -5px;
+    right: -10px;
+    width: 45px;
+    height: 45px;
+    font-size: 15pt;
+    text-align: center;
+    background-color: rgba(253, 253, 253, .8);
+    border: 1px solid @bronze;
+    padding-top: 9px;
+    cursor: pointer;
+    border-radius: 40px;
+    .glyphicon {
+    	color: @bronze;
+    }
+}
+
 
 .gallery-conservative-v2 {
 	svg {
@@ -188,23 +210,5 @@
 		  fill: none;
 		  stroke-width: 1.5px;
 		}
-	}
-
-	.toggle-webcam {
-		position: fixed;
-	    bottom: 20px;
-	    right: -10px;
-	    width: 45px;
-	    height: 45px;
-	    font-size: 15pt;
-	    text-align: center;
-	    background-color: rgba(253, 253, 253, .8);
-	    border: 1px solid @bronze;
-	    padding-top: 9px;
-	    cursor: pointer;
-	    border-radius: 40px;
-	    .glyphicon {
-	    	color: @bronze;
-	    }
 	}
 }

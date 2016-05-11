@@ -41,6 +41,7 @@ class ExhibitionLeftRight extends React.Component {
     return (
       <div className="text-page-container credits-container">
         <div className="text-page-left-column exhibition-left-column">
+          <span className={(!this.state.showImageNavigation ? "no-display" : "") + " navigate navigate-left"} onClick={this.navigateLeft}>v</span>
           <div className="text-page-title exhibition-title">
             {imageData[index].title}
           </div>
@@ -53,6 +54,7 @@ class ExhibitionLeftRight extends React.Component {
               <Image360 prefix={imageData[index].prefix} noImages={imageData[index].noImages}/>
             </RouteTransition>
         </div>
+        <span className={(!this.state.showImageNavigation ? "no-display" : "") + " navigate navigate-right"} onClick={this.navigateRight}>v</span>
       </div>
     );
   }

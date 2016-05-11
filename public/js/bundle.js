@@ -130,7 +130,7 @@ var WebcamActions = function () {
   function WebcamActions() {
     _classCallCheck(this, WebcamActions);
 
-    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage', 'nextPage', 'toggleWebcamCanvas');
+    this.generateActions('webcamUpdate', 'windowSizeUpdate', 'getNoVisitorsSuccess', 'getNoVisitorsFail', 'nextImage', 'prevImage', 'nextPage', 'toggleWebcamCanvas', 'hideImageNavigation');
   }
 
   _createClass(WebcamActions, [{
@@ -825,6 +825,11 @@ var ExhibitionLeftRight = function (_React$Component) {
           'div',
           { className: 'text-page-left-column exhibition-left-column' },
           _react2.default.createElement(
+            'span',
+            { className: (!this.state.showImageNavigation ? "no-display" : "") + " navigate navigate-left", onClick: this.navigateLeft },
+            'v'
+          ),
+          _react2.default.createElement(
             'div',
             { className: 'text-page-title exhibition-title' },
             imageData[index].title
@@ -843,6 +848,11 @@ var ExhibitionLeftRight = function (_React$Component) {
             { id: "barbut", height: this.state.height },
             _react2.default.createElement(_Image2.default, { prefix: imageData[index].prefix, noImages: imageData[index].noImages })
           )
+        ),
+        _react2.default.createElement(
+          'span',
+          { className: (!this.state.showImageNavigation ? "no-display" : "") + " navigate navigate-right", onClick: this.navigateRight },
+          'v'
         )
       );
     }
@@ -968,26 +978,8 @@ var Header = function (_React$Component) {
             { className: 'top-nav' },
             _react2.default.createElement(
               _reactRouter.Link,
-              { to: "/" + this.props.prefix + "/exhibition" },
-              'E1'
-            )
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: 'top-nav' },
-            _react2.default.createElement(
-              _reactRouter.Link,
-              { to: "/" + this.props.prefix + "/exhibition2" },
-              'E2'
-            )
-          ),
-          _react2.default.createElement(
-            'span',
-            { className: 'top-nav' },
-            _react2.default.createElement(
-              _reactRouter.Link,
               { to: "/" + this.props.prefix + "/exhibition3" },
-              'E3'
+              'EXHIBITION'
             )
           ),
           _react2.default.createElement(
@@ -1750,6 +1742,11 @@ var TestApp1 = function (_React$Component) {
       this.killAllEvents();
     }
   }, {
+    key: 'toggleWebcamCanvas',
+    value: function toggleWebcamCanvas() {
+      _WebcamActions2.default.toggleWebcamCanvas();
+    }
+  }, {
     key: 'render',
     value: function render() {
       var context = this;
@@ -1759,10 +1756,15 @@ var TestApp1 = function (_React$Component) {
         { className: 'gallery-conservative' },
         _react2.default.createElement(_Header2.default, { prefix: "testApp1" }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
-        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', style: { position: 'fixed', top: 0, right: 0 } }),
+        _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', className: !this.state.webcamCanvas ? "no-display" : "", style: { position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH' } }),
         _react2.default.createElement('video', { id: 'inputVideo', autoPlay: true, loop: true, style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'pastUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
         _react2.default.createElement('canvas', { id: 'currentUsersCanvas', style: { zIndex: -100, position: 'fixed', top: 0, left: 0, height: '100%', width: '100%' } }),
+        _react2.default.createElement(
+          'div',
+          { className: 'toggle-webcam', onClick: this.toggleWebcamCanvas },
+          _react2.default.createElement('span', { className: 'glyphicon glyphicon-eye-open', ariaHidden: 'false' })
+        ),
         _react2.default.createElement(
           _RouteTransition2.default,
           { id: this.props.location.pathname, height: context.state.height - 200 },
@@ -2176,6 +2178,7 @@ var TestApp2 = function (_React$Component) {
   }, {
     key: 'componentDidMount',
     value: function componentDidMount() {
+      _WebcamActions2.default.hideImageNavigation();
       _WebcamStore2.default.listen(this.onChange);
       _WebcamActions2.default.windowSizeUpdate({
         height: window.innerHeight,
@@ -2216,13 +2219,20 @@ var TestApp2 = function (_React$Component) {
       _WebcamActions2.default.toggleWebcamCanvas();
     }
   }, {
+    key: 'onCanvasClick',
+    value: function onCanvasClick(ev) {
+      if (this.isInNavigateZone(ev.clientX, ev.clientY)) {
+        _WebcamActions2.default.nextPage();
+      }
+    }
+  }, {
     key: 'render',
     value: function render() {
       var context = this;
       // TODO: Set up default style in RouteTransition such that even initial load works.
       return _react2.default.createElement(
         'div',
-        { className: 'gallery-conservative gallery-conservative-v2' },
+        { className: 'gallery-conservative gallery-conservative-v2', onClick: this.onCanvasClick.bind(this) },
         _react2.default.createElement(_Header2.default, { prefix: this.PATHNAME_PREFIX }),
         _react2.default.createElement('canvas', { id: 'inputCanvas', width: '320', height: '240', style: { display: 'none' } }),
         _react2.default.createElement('canvas', { id: 'outputCanvas', width: '320', height: '240', className: !this.state.webcamCanvas ? "no-display" : "", style: { position: 'fixed', bottom: 0, right: 0, transform: 'scaleX(-1)', filter: 'FlipH' } }),
@@ -2539,9 +2549,16 @@ var WebcamStore = function () {
       circleX: 300,
       circleYPageRatio: 0.5
     }];
+
+    this.showImageNavigation = true;
   }
 
   _createClass(WebcamStore, [{
+    key: 'onHideImageNavigation',
+    value: function onHideImageNavigation() {
+      this.showImageNavigation = false;
+    }
+  }, {
     key: 'onNextPage',
     value: function onNextPage() {
       if (this.pages[this.pageIndex].path == 'exhibition3' && this.imageIndex < this.imageData.length - 1) {
