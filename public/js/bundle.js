@@ -1212,7 +1212,7 @@ exports.default = Image360;
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-		value: true
+			value: true
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
@@ -1230,119 +1230,156 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 var Home = function (_React$Component) {
-		_inherits(Home, _React$Component);
+			_inherits(Home, _React$Component);
 
-		function Home() {
-				_classCallCheck(this, Home);
+			function Home() {
+						_classCallCheck(this, Home);
 
-				return _possibleConstructorReturn(this, Object.getPrototypeOf(Home).apply(this, arguments));
-		}
+						return _possibleConstructorReturn(this, Object.getPrototypeOf(Home).apply(this, arguments));
+			}
 
-		_createClass(Home, [{
-				key: "render",
-				value: function render() {
-						return _react2.default.createElement(
-								"div",
-								null,
-								_react2.default.createElement("div", { className: "col-sm-2" }),
-								_react2.default.createElement(
-										"div",
-										{ className: "col-sm-8 home" },
-										_react2.default.createElement(
-												"h1",
-												{ className: "home-page-title" },
-												" Rethinking the Online Exhibition "
-										),
-										_react2.default.createElement(
+			_createClass(Home, [{
+						key: "render",
+						value: function render() {
+									return _react2.default.createElement(
 												"div",
-												{ className: "row" },
+												null,
+												_react2.default.createElement("div", { className: "col-sm-2" }),
 												_react2.default.createElement(
-														"div",
-														{ className: "col-sm-12 description" },
-														_react2.default.createElement(
-																"h5",
-																null,
-																" Cezar Mocan | Advisor: Prof. Holly Rushmeier | ",
-																_react2.default.createElement(
-																		"a",
-																		{ href: "/thesis/ProjectProposal.pdf", target: "_blank" },
-																		"Proposal (PDF)"
-																),
-																" | ",
-																_react2.default.createElement(
-																		"a",
-																		{ href: "/thesis/RethinkingtheOnlineExhibit.pdf", target: "_blank" },
-																		"Thesis (PDF)"
-																),
-																" "
-														)
-												)
-										),
-										_react2.default.createElement(
-												"div",
-												{ className: "row" },
-												_react2.default.createElement(
-														"h4",
-														{ className: "col-sm-12" },
-														" ",
-														_react2.default.createElement(
-																"a",
-																{ href: "/earlyExperiment", target: "_blank" },
-																"#1—Early Experiment"
-														),
-														" "
+															"div",
+															{ className: "col-sm-8 home" },
+															_react2.default.createElement(
+																		"h1",
+																		{ className: "home-page-title" },
+																		" Rethinking the Online Exhibition "
+															),
+															_react2.default.createElement(
+																		"div",
+																		{ className: "row first" },
+																		_react2.default.createElement(
+																					"div",
+																					{ className: "col-sm-12 description" },
+																					_react2.default.createElement(
+																								"h5",
+																								null,
+																								" Cezar Mocan | Advisor: Prof. Holly Rushmeier | ",
+																								_react2.default.createElement(
+																											"a",
+																											{ href: "/thesis/ProjectProposal.pdf", target: "_blank" },
+																											"Proposal (PDF)"
+																								),
+																								" | ",
+																								_react2.default.createElement(
+																											"a",
+																											{ href: "/thesis/RethinkingtheOnlineExhibit.pdf", target: "_blank" },
+																											"Thesis (PDF)"
+																								),
+																								" "
+																					)
+																		)
+															),
+															_react2.default.createElement(
+																		"div",
+																		{ className: "row" },
+																		_react2.default.createElement(
+																					"h4",
+																					{ className: "col-sm-12" },
+																					" ",
+																					_react2.default.createElement(
+																								"a",
+																								{ href: "/earlyExperiment", target: "_blank" },
+																								"1. Early Experiment"
+																					),
+																					" "
+																		),
+																		_react2.default.createElement(
+																					"div",
+																					{ className: "col-sm-12 vertical-padding" },
+																					" The research phase of the project proved extremely useful in seeing and understanding the different types of interactions used by existing online exhibitions and paved the way to an important question: How can two different designs be compared? The design of each exhibition reflects to a certain extent the contents of the showcased collection, and we were interested in understanding what type of UX design would suit the objects we were working with best. As a result, we decided to recreate five of the exhibitions analyzed in the research phase using the objects in our collection. Keeping a constant element on the page—the exhibition subject in our case—allows for a much easier comparison of the different designs and how they influence the user’s perception. ",
+																					_react2.default.createElement("br", null),
+																					"For each of the websites, we only re-created the page displaying the objects of the collection, and appropriated the user actions related to 1) interacting with an object and 2) moving through the collection. The contextual information pages were not of interest for our question. "
+																		),
+																		_react2.default.createElement(
+																					"a",
+																					{ href: "/earlyExperiment", target: "_blank" },
+																					_react2.default.createElement("img", { className: "col-sm-12 vertical-padding", src: "../img/gifs/early_experiment.gif" })
+																		)
+															),
+															_react2.default.createElement(
+																		"div",
+																		{ className: "row" },
+																		_react2.default.createElement(
+																					"h4",
+																					{ className: "col-sm-12" },
+																					" ",
+																					_react2.default.createElement(
+																								"a",
+																								{ href: "/testApp2/about", target: "_blank" },
+																								"2. Webcam Image Rotation + Navigation"
+																					),
+																					" "
+																		),
+																		_react2.default.createElement(
+																					"div",
+																					{ className: "col-sm-12 vertical-padding" },
+																					"We decided to present the objects in a 360° view, using 18 photos for each object—roughly one per 20° turn of the object. As we were not in the possession of such photographs for our bronze statues, we used placeholder objects, as a proof of concept. Going further with this idea, we tried finding the most natural type of user interaction for rotating the sculptures, as we were not content with the click & drag approach used by websites with a similar presentation of the objects. We found our response in the web camera and a face tracking library, and decided that the rotation of the objects would be directed by the user’s head movement in front of the computer screen.",
+																					_react2.default.createElement("br", null),
+																					"The use of the webcam opened up a new possibility: a new type of website navigation, different than the traditional mouse-click approach. We ended up implementing navigation based on head position in this prototype. Mouse navigation is also possible, by using the top navigation bar, or by clicking the sequential navigation circle at on the right of the page. ",
+																					_react2.default.createElement("br", null)
+																		),
+																		_react2.default.createElement(
+																					"a",
+																					{ href: "/testApp2/about", target: "_blank" },
+																					_react2.default.createElement("img", { className: "col-sm-12 vertical-padding", src: "../img/gifs/webcam_navigation_solo.gif" })
+																		)
+															),
+															_react2.default.createElement(
+																		"div",
+																		{ className: "row" },
+																		_react2.default.createElement(
+																					"h4",
+																					{ className: "col-sm-12" },
+																					" ",
+																					_react2.default.createElement(
+																								"a",
+																								{ href: "/testApp1/about", target: "_blank" },
+																								"3. Webcam Image Rotation + Pixels"
+																					),
+																					" "
+																		),
+																		_react2.default.createElement(
+																					"div",
+																					{ className: "col-sm-12 vertical-padding" },
+																					"One characteristic borrowed from the physical exhibition takes the form of the exhibition as collective experience. Briefly, we wanted to make visitors aware of the fact that they are not alone in their visit, so a visitor is able to see screen traces of the relative position of his own face with respect to his webcam, as well as the face positions of all the other visitors present on the website. You can see in the GIF below the traces left by 3 users on the pages. Both prototypes #2 and #3 implement this strategy (even though it's not visible in the GIF presentation of #2, try it out with a friend!)"
+																		),
+																		_react2.default.createElement(
+																					"a",
+																					{ href: "/testApp1/about", target: "_blank" },
+																					_react2.default.createElement("img", { className: "col-sm-12 vertical-padding", src: "../img/gifs/pixels_3_users.gif" })
+																		)
+															),
+															_react2.default.createElement(
+																		"div",
+																		{ className: "row last" },
+																		_react2.default.createElement(
+																					"h4",
+																					{ className: "col-sm-12" },
+																					"4. Bonus "
+																		),
+																		_react2.default.createElement(
+																					"div",
+																					{ className: "col-sm-12 vertical-padding" },
+																					"Ephemerality was the first concept we became interested in introducing into our exhibition. We seeked a creative way of making our website disappear after a period of time, in order to emulate the existence in time of a physical exhibition. The process we came up with was a simple one: every time a visitor accesses the exhibition page, an active pixel of the page becomes dead—it is rendered as a black pixel. This way, the exhibition will gradually fade away in time, visitor after visitor. You can see in the image below what the exhibition would look like after 10000, 20000, 50000, 100000, 200000, 300000, 500000, 1000000, 2000000, 3000000, 4000000 and 5000000 visits."
+																		),
+																		_react2.default.createElement("img", { className: "col-sm-12 vertical-padding", src: "../img/gifs/user_increase_cropped.gif" })
+															)
 												),
-												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/early_experiment.gif" })
-										),
-										_react2.default.createElement(
-												"div",
-												{ className: "row" },
-												_react2.default.createElement(
-														"h4",
-														{ className: "col-sm-12" },
-														" ",
-														_react2.default.createElement(
-																"a",
-																{ href: "/testApp2/about", target: "_blank" },
-																"#2—Webcam Image Rotation + Navigation"
-														),
-														" "
-												),
-												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/webcam_navigation_solo.gif" })
-										),
-										_react2.default.createElement(
-												"div",
-												{ className: "row" },
-												_react2.default.createElement(
-														"h4",
-														{ className: "col-sm-12" },
-														" ",
-														_react2.default.createElement(
-																"a",
-																{ href: "/testApp1/about", target: "_blank" },
-																"#3—Webcam Image Rotation + Pixels"
-														),
-														" "
-												),
-												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/pixels_3_users.gif" })
-										),
-										_react2.default.createElement(
-												"div",
-												{ className: "row" },
-												_react2.default.createElement(
-														"h4",
-														{ className: "col-sm-12" },
-														" Bonus "
-												),
-												_react2.default.createElement("img", { className: "col-sm-12", src: "../img/gifs/user_increase_cropped.gif" })
-										)
-								),
-								_react2.default.createElement("div", { className: "col-sm-2" })
-						);
-				}
-		}]);
+												_react2.default.createElement("div", { className: "col-sm-2" })
+									);
+						}
+			}]);
 
-		return Home;
+			return Home;
 }(_react2.default.Component);
 
 exports.default = Home;

@@ -7531,3 +7531,13 @@ footer {
 .home .description {
   text-align: center;
 }
+.home .row:not(.first) {
+  margin-top: 40px;
+}
+.home .last {
+  margin-bottom: 100px;
+}
+.home .vertical-padding {
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
